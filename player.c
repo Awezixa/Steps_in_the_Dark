@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include "player.h"
+#include "map.c"
+#include "map.h"
+
+
 
 struct  Player player = {16, 1};
 

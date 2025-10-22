@@ -2,9 +2,20 @@
 Game for IADE grid based project Class
 
 
+# Formatting
+
+Header files will be required and used for initialization of functions
+
+Separate C files will be required for declaration and writing of functions
+
+File naming & vairable declaration convention(s): camel case 
+                    eg: menuMain.c
+                        int stepCounter = 0;
+
+
 # Compile
 
-`gcc -Wall -Wextra -Werror -std=c17 game.c -o game`
+`gcc -Wall -Wextra -Werror -std=c17 main.c menu.c player.c torch.c -o game && game`
 
 We need:
 
