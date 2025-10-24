@@ -14,4 +14,4 @@ char getTorchSymbol(int player_x, int player_y);
 void TorchLight(int player_x, int player_y, char map[][20], int rows, int cols);
 void torchInteract();
 
-#endif TORCH_H
+#endif 

@@ -19,6 +19,7 @@ void movePlayer(char dir)
     case 'w':
         if (isTileWalkable(map[player.position_x - 1][player.position_y]))
         {
+            stepCounter();
             if (map[player.position_x][player.position_y] == 'T')
             {
                 printf("You stepped on a trap and died!\n");
@@ -31,6 +32,7 @@ void movePlayer(char dir)
     case 'a':
         if (isTileWalkable(map[player.position_x][player.position_y - 1]))
         {
+            stepCounter();
             if (map[player.position_x][player.position_y] == 'T')
             {
                 printf("You stepped on a trap and died!\n");
@@ -43,6 +45,7 @@ void movePlayer(char dir)
     case 's':
         if (isTileWalkable(map[player.position_x + 1][player.position_y]))
         {
+            stepCounter();
             if (map[player.position_x][player.position_y] == 'T')
             {
                 printf("You stepped on a trap and died!\n");
@@ -55,6 +58,7 @@ void movePlayer(char dir)
     case 'd':
         if (isTileWalkable(map[player.position_x][player.position_y + 1]))
         {
+            stepCounter();
             if (map[player.position_x][player.position_y] == 'T')
             {
                 printf("You stepped on a trap and died!\n");
@@ -66,3 +70,28 @@ void movePlayer(char dir)
     }
 }
 
+char readUserInput(){
+    char  input;
+    scanf("%c", &input);
+    return input;
+}
+
+
+bool isTileWalkable(char t){
+    return(t != 'W');
+}
+
+void stepCounter(){
+    int count = 0;
+    if (player.position_x++ || player.position_y++ || player.position_x-- || player.position_y--)
+    {
+        count++;
+        printf("\nYou have walked %d steps", count);
+    }
+    /* for when have dim function
+    if(count == 5 ){
+        torchDim();
+    }
+    */
+    return count;
+}

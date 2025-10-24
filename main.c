@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
-
+// #include "map.h"
+// #include "menu.h"
+// #include "player.h"
+// #include "torch.h"
 // Defining the Map & Tiles
 
 #define MAP_ROWS 18
@@ -56,6 +59,9 @@ void PlayerFunction();
 void torchInteract();
 char readUserInput();
 bool isTileWalkable(char t);
+void stepCounter();
+
+int stepCount = 0;
 
 int main(){ 
     printMenu();
@@ -154,7 +160,6 @@ bool isTileWalkable(char t){
 // Trent & Xavier
 void movePlayer(char dir)
 {
-    printf("Moving player to %c\n", dir);
     
     switch (dir)
     {
@@ -167,9 +172,11 @@ void movePlayer(char dir)
                 printf("You stepped on a trap and died!\n");
                 //PlayerDeath();
             }
-            player.position_x--;
+        player.position_x--;
+        stepCounter();    
         }
         break;
+
     case 'A':
     case 'a':
         if (isTileWalkable(map[player.position_x][player.position_y - 1]))
@@ -179,9 +186,11 @@ void movePlayer(char dir)
                 printf("You stepped on a trap and died!\n");
                 //PlayerDeath();
             }
-            player.position_y--;
+        player.position_y--;
+        stepCounter();     
         }
         break;
+
     case 'S':
     case 's':
         if (isTileWalkable(map[player.position_x + 1][player.position_y]))
@@ -191,22 +200,35 @@ void movePlayer(char dir)
                 printf("You stepped on a trap and died!\n");
                 //PlayerDeath();
             }
-            player.position_x++;
+        player.position_x++;
+        stepCounter();   
         }
         break;
+
     case 'D':
     case 'd':
         if (isTileWalkable(map[player.position_x][player.position_y + 1]))
-        {
+        {    
             if (map[player.position_x][player.position_y] == 'T')
             {
                 printf("You stepped on a trap and died!\n");
                 //PlayerDeath();
             }
-            player.position_y++;
+        player.position_y++;
+        stepCounter();
         }
         break;
     }
+}
+
+void stepCounter(){
+        stepCount++;
+        printf("You have walked %d steps", stepCount);
+    /* for when have dim function
+    if(count == 5 ){
+        torchDim();
+    }
+    */
 }
 
 // Trent

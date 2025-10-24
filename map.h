@@ -7,10 +7,12 @@
 #define MAP_COLS 18
 
 #define TILE_WALL 'W'
-#define TILE_FLOOR 'F'
-#define TILE_POTION 'P'
+#define TILE_FLOORWHITE 'Z'
+#define TILE_FLOORBLACK 'X'
+#define TILE_TRAP 'T'
+#define TILE_TORCH 'L'
 
 void printMap();
 
 
-#endif MAP_H
+#endif 

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "menu.h"
+#include "map.h"
+#include "player.h"
 
 void printMenu(){
     int option[] = {1,2,3,4};
@@ -20,4 +22,13 @@ void printMenu(){
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
     break;
 }
+}
+
+void startGame() {
+    while (1 == 1) {
+    printMap();
+    char input = readUserInput();
+    movePlayer(input);
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    }
 }

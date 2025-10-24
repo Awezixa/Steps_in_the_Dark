@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <stdbool.h>
 
+int stepCount = 0;
 struct Player {
     int position_x;
     int position_y;
@@ -8,8 +10,11 @@ struct Player {
 
 void PlayerFunction();
 void movePlayer(char dir);
-void player_collect_items(void);
-int player_get_row(void);
-int player_get_col(void);
+void playerCollectItems(void);
+void stepCounter();
+char readUserInput();
+void playerInventory();
+bool isTileWalkable(char t);
 
-#endif PLAYER_H
+
+#endif 

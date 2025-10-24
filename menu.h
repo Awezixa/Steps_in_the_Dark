@@ -5,6 +5,6 @@
 #include <stdlib.h>
 
 void printMenu();
+void startGame();
 
-
-#endif  MENU_H
+#endif  
