@@ -61,8 +61,11 @@ char readUserInput();
 bool isTileWalkable(char t);
 void stepCounter();
 void playerDeath();
+void torchDim();
+void checkInteraction();
 
 int stepCount = 0;
+int torchLevel = 5;
 
 int main(){ 
     printMenu();
@@ -79,30 +82,34 @@ void printMenu() {
     for(int i = 0; i < length; i++){
         printf("🐾 Steps in the Dark 🐾\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
         scanf("%d", &option[i]);
-    if(option[i] == 1) 
-        startGame();
-    else if (option[i] == 2)
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
-    else if (option[i] == 3) 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
-    else if (option[i] == 4) 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
-    else 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
-    break;
-}
+        if(option[i] == 1) 
+            startGame();
+        else if (option[i] == 2)
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+        else if (option[i] == 3) 
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
+        else if (option[i] == 4) 
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
+        else 
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
+        break;
+    }
 }
 
 //Pedro
 void startGame() {
-    while (1 == 1) {
     printMap();
-    char input = readUserInput();
-    movePlayer(input);
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    while (1 == 1) {
+        char input = readUserInput();
+        // Trent
+        if (input == '\n')
+            continue;
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        movePlayer(input);
+        checkInteraction();
+        printMap();
     }
 }
-
 
 // Xavier & Pedro
 void printMap(){
@@ -110,23 +117,20 @@ void printMap(){
     {
         for (int y = 0; y < MAP_COLS; y++)
         {
-            
-            if ((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1))  {
+            if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 0)) {
                 if (map[x][y] == 'X')
-                 printf("🔳 ");
+                    printf("🔳 ");
                 if (map[x][y] == 'Z')
-                  printf("⬜ ");
+                    printf("⬜ ");
                 if (map[x][y] == 'W')
-                 printf("🧱 ");
+                    printf("🧱 ");
                 if (map[x][y] == 'T')
-                {
                     printf(" 🕸️ ");
-                }
-                
-                 
-             }else
-             
-            if (x == player.position_x && y == player.position_y)
+                //Trent. Torch now appears when in the light around the character
+                if (map[x][y]== 'L')
+                    printf("🕯️ ");
+            }
+            else if (x == player.position_x && y == player.position_y)
                 printf("🤠 ");
             else if (map[x][y] == 'X')
                 printf("⬛ ");
@@ -137,22 +141,16 @@ void printMap(){
             else if (map[x][y] == 'T')
                 printf("⬛ ");
             else if (map[x][y]== 'L')
-               printf("🕯️  ");
+                printf("🕯️ ");
             else printf("%c", map[x][y]);
-      
-        
-        
-        
-        
         } 
         printf("\n"); 
     }
-    
 }
 
 // Xavier
 char readUserInput(){
-    char  input;
+    char input;
     scanf("%c", &input);
     return input;
 }
@@ -161,7 +159,6 @@ char readUserInput(){
 bool isTileWalkable(char t){
     return(t != 'W');
 }
-
 
 // Trent & Xavier
 void movePlayer(char dir)
@@ -228,39 +225,57 @@ void movePlayer(char dir)
 }
 
 void stepCounter(){
-        stepCount++;
-        printf("You have walked %d steps", stepCount);
-    /* for when have dim function
-    if(count == 5 ){
+    stepCount++;
+    if( torchLevel > 0 ){
         torchDim();
     }
-    */
 }
 
 // Trent
-void torchInteract()
-{
-    printf("You used the torch!\n");
-} 
+void checkInteraction(){
+    printf("You have walked %d steps\n", stepCount);
+    switch (map[player.position_x][player.position_y]) {
+        case 'X':
+            //X interaction code
+            break;
 
+        case 'Z':
+            //X interaction code
+            break;
+
+        case 'W':
+            //W interaction code. Probably nothing
+            break;
+
+        case 'T':
+            //T interaction code
+            break;
+
+        case 'L':
+            torchInteract();
+            break;
+    }
+    
+
+}
+
+// Trent
+void torchDim(){
+    if (--torchLevel == 0){
+        printf("Your torch had run out of light!\n");
+    }
+}
+
+// Trent
+void torchInteract(){
+    printf("You use the torch!\n");
+    torchLevel = 5;
+}
 
 //Xavier
 void playerDeath(){
     printf("YOU DIED 💀\n");
+    torchLevel = 5;
     player.position_x = 16;
     player.position_y = 1;
-}        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
