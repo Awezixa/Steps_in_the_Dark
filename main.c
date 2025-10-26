@@ -31,16 +31,16 @@ char map[MAP_ROWS][MAP_COLS] = {
     {'W', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'T', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'X', 'T', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
@@ -60,6 +60,7 @@ void torchInteract();
 char readUserInput();
 bool isTileWalkable(char t);
 void stepCounter();
+void playerDeath();
 
 int stepCount = 0;
 
@@ -92,7 +93,7 @@ void printMenu() {
 }
 }
 
-
+//Pedro
 void startGame() {
     while (1 == 1) {
     printMap();
@@ -117,6 +118,11 @@ void printMap(){
                   printf("⬜ ");
                 if (map[x][y] == 'W')
                  printf("🧱 ");
+                if (map[x][y] == 'T')
+                {
+                    printf(" 🕸️ ");
+                }
+                
                  
              }else
              
@@ -169,8 +175,8 @@ void movePlayer(char dir)
         {
             if (map[player.position_x][player.position_y] == 'T')
             {
-                printf("You stepped on a trap and died!\n");
-                //PlayerDeath();
+                playerDeath();
+                break;
             }
         player.position_x--;
         stepCounter();    
@@ -183,8 +189,8 @@ void movePlayer(char dir)
         {
             if (map[player.position_x][player.position_y] == 'T')
             {
-                printf("You stepped on a trap and died!\n");
-                //PlayerDeath();
+                playerDeath();
+                break;
             }
         player.position_y--;
         stepCounter();     
@@ -197,8 +203,8 @@ void movePlayer(char dir)
         {
             if (map[player.position_x][player.position_y] == 'T')
             {
-                printf("You stepped on a trap and died!\n");
-                //PlayerDeath();
+                playerDeath();
+                break;
             }
         player.position_x++;
         stepCounter();   
@@ -211,8 +217,8 @@ void movePlayer(char dir)
         {    
             if (map[player.position_x][player.position_y] == 'T')
             {
-                printf("You stepped on a trap and died!\n");
-                //PlayerDeath();
+                playerDeath();
+                break;
             }
         player.position_y++;
         stepCounter();
@@ -237,7 +243,13 @@ void torchInteract()
     printf("You used the torch!\n");
 } 
 
-        
+
+//Xavier
+void playerDeath(){
+    printf("YOU DIED 💀\n");
+    player.position_x = 16;
+    player.position_y = 1;
+}        
 
 
 

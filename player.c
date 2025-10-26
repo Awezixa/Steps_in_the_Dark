@@ -95,3 +95,10 @@ void stepCounter(){
     */
     return count;
 }
+
+
+
+
+void playerDeath(){
+    
+}

@@ -15,6 +15,7 @@ void stepCounter();
 char readUserInput();
 void playerInventory();
 bool isTileWalkable(char t);
+void playerDeath();
 
 
 #endif 
