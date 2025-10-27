@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include<windows.h>
 // #include "map.h"
 // #include "menu.h"
 // #include "player.h"
 // #include "torch.h"
+
 // Defining the Map & Tiles
 
 #define MAP_ROWS 18
@@ -14,6 +16,7 @@
 #define TILE_FLOORBLACK 'X'
 #define TILE_TRAP 'T'
 #define TILE_TORCH 'L'
+#define TILE_DOOR 'D'
 
 // We'll have the Wall; Two Tiles (to make it a black and white chess pattern) and the trapped plates.
 
@@ -27,15 +30,15 @@ struct Player {
 
 char map[MAP_ROWS][MAP_COLS] = {
     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
-    {'W', 'Z', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'}, 
-    {'W', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'L', 'X', 'Z', 'X', 'Z', 'X', 'L', 'D', 'W'}, 
+    {'W', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'L', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'L', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
@@ -63,9 +66,11 @@ void stepCounter();
 void playerDeath();
 void torchDim();
 void checkInteraction();
+void pauseGame();
+void endLevel();
 
 int stepCount = 0;
-int torchLevel = 5;
+int torchLevel = 15;
 
 int main(){ 
     printMenu();
@@ -104,7 +109,7 @@ void startGame() {
         // Trent
         if (input == '\n')
             continue;
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         movePlayer(input);
         checkInteraction();
         printMap();
@@ -117,33 +122,78 @@ void printMap(){
     {
         for (int y = 0; y < MAP_COLS; y++)
         {
-            if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 0)) {
+            // player defualt vision radius
+            if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x -2 && y == player.position_y) || (x == player.position_x +2 && y == player.position_y) || (x == player.position_x && y == player.position_y-2) || (x == player.position_x && y == player.position_y+2) || (x == player.position_x +1 && y == player.position_y+1) || (x == player.position_x -1 && y == player.position_y+1) || (x == player.position_x +1 && y == player.position_y-1) || (x == player.position_x-1 && y == player.position_y-1)) && (torchLevel > 10)) {
                 if (map[x][y] == 'X')
-                    printf("🔳 ");
+                    printf("🟫 ");
                 if (map[x][y] == 'Z')
-                    printf("⬜ ");
+                    printf("🟫 ");
                 if (map[x][y] == 'W')
                     printf("🧱 ");
                 if (map[x][y] == 'T')
-                    printf(" 🕸️ ");
+                    printf("🕸️  ");
+                if (map[x][y] == 'D')
+                    printf("🪜  ");
+                //Trent. Torch now appears when in the light around the character
+                if (map[x][y]== 'L') {
+                    printf("🕯️  ");
+                
+                }
+            }
+
+            
+            //play vision radius dim
+            else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 5)) {
+                if (map[x][y] == 'X')
+                    printf("🟫 ");
+                if (map[x][y] == 'Z')
+                    printf("🟫 ");
+                if (map[x][y] == 'W')
+                    printf("🧱 ");
+                if (map[x][y] == 'T')
+                    printf("🕸️  ");
+                if (map[x][y] == 'D')
+                    printf("🪜  ");
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L')
-                    printf("🕯️ ");
-            }
-            else if (x == player.position_x && y == player.position_y)
-                printf("🤠 ");
-            else if (map[x][y] == 'X')
-                printf("⬛ ");
-            else if (map[x][y] == 'Z')
-                printf("⬛ ");
-            else if (map[x][y] == 'W')
-                printf("⬛ ");
-            else if (map[x][y] == 'T')
-                printf("⬛ ");
-            else if (map[x][y]== 'L')
-                printf("🕯️ ");
-            else printf("%c", map[x][y]);
-        } 
+                    printf("🕯️  ");
+                    
+        }  //candle/ environmental torch lighting  
+           else if (x == player.position_x && y == player.position_y) 
+                     printf("🤠 "); 
+           else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
+                if (map[x][y] == 'X') 
+                     printf("🟫 ");
+                if (map[x][y] == 'Z')
+                     printf("🟫 ");
+                if (map[x][y] == 'W')
+                      printf("🧱 ");
+                if (map[x][y]== 'L')
+                      printf("🕯️  ");
+                if (map[x][y] == 'D')
+                     printf("🪜  ");
+               
+                }
+                 else if (x == player.position_x && y == player.position_y) 
+                     printf("🤠 ");
+                 else if(map[x][y] == 'X')
+                      printf("⬛ ");
+                 else if (map[x][y] == 'Z')
+                     printf("⬛ ");
+                  else if (map[x][y] == 'W')
+                     printf("⬛ ");
+                  else if (map[x][y] == 'T')
+                      printf("⬛ ");
+                 else if (map[x][y]== 'L')
+                     printf("🕯️  ");
+                else if (map[x][y] == 'D')
+                     printf(" 🪜  ");
+                 else printf("%c", map[x][y]);  
+        }
+        
+       if (torchLevel == 0){
+        playerDeath();}
+
         printf("\n"); 
     }
 }
@@ -170,13 +220,15 @@ void movePlayer(char dir)
     case 'w':
         if (isTileWalkable(map[player.position_x - 1][player.position_y]))
         {
-            if (map[player.position_x][player.position_y] == 'T')
-            {
-                playerDeath();
-                break;
-            }
-        player.position_x--;
-        stepCounter();    
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
+        }
+        if (map[player.position_x][player.position_y] == 'D'){
+            endLevel();
+        }
+            player.position_x--;
+            stepCounter();
+            printf("\n");    
         }
         break;
 
@@ -184,13 +236,15 @@ void movePlayer(char dir)
     case 'a':
         if (isTileWalkable(map[player.position_x][player.position_y - 1]))
         {
-            if (map[player.position_x][player.position_y] == 'T')
-            {
-                playerDeath();
-                break;
-            }
-        player.position_y--;
-        stepCounter();     
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
+        }  
+        if (map[player.position_x][player.position_y] == 'D'){
+            endLevel();
+        }
+            player.position_y--;
+            stepCounter();
+            printf("\n");     
         }
         break;
 
@@ -198,32 +252,37 @@ void movePlayer(char dir)
     case 's':
         if (isTileWalkable(map[player.position_x + 1][player.position_y]))
         {
-            if (map[player.position_x][player.position_y] == 'T')
-            {
-                playerDeath();
-                break;
-            }
-        player.position_x++;
-        stepCounter();   
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
+        }
+        if (map[player.position_x][player.position_y] == 'D'){
+            endLevel();
+        }
+            player.position_x++;
+            stepCounter();
+            printf("\n");   
         }
         break;
 
     case 'D':
     case 'd':
         if (isTileWalkable(map[player.position_x][player.position_y + 1]))
-        {    
-            if (map[player.position_x][player.position_y] == 'T')
-            {
-                playerDeath();
-                break;
-            }
-        player.position_y++;
-        stepCounter();
+        {   
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
+        }
+        if (map[player.position_x][player.position_y] == 'D'){
+            endLevel();
+        }
+            player.position_y++;
+            stepCounter();
+            printf("\n");
         }
         break;
     }
 }
 
+//Xaiver & Trent
 void stepCounter(){
     stepCount++;
     if( torchLevel > 0 ){
@@ -233,7 +292,7 @@ void stepCounter(){
 
 // Trent
 void checkInteraction(){
-    printf("You have walked %d steps\n", stepCount);
+    printf("You have walked %d steps\n\n", stepCount);
     switch (map[player.position_x][player.position_y]) {
         case 'X':
             //X interaction code
@@ -261,21 +320,32 @@ void checkInteraction(){
 
 // Trent
 void torchDim(){
-    if (--torchLevel == 0){
+    if (torchLevel-- == 5){
         printf("Your torch had run out of light!\n");
+    
     }
+        
 }
+
 
 // Trent
 void torchInteract(){
     printf("You use the torch!\n");
-    torchLevel = 5;
+    torchLevel = 15;
 }
 
 //Xavier
 void playerDeath(){
-    printf("YOU DIED 💀\n");
-    torchLevel = 5;
+    printf("\tYOU DIED 💀"); 
+    torchLevel = 15;
+    stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
+}
+
+
+
+void endLevel(){
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion!\n\n\n");
+    printMenu();
 }

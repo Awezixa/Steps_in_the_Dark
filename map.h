@@ -11,6 +11,7 @@
 #define TILE_FLOORBLACK 'X'
 #define TILE_TRAP 'T'
 #define TILE_TORCH 'L'
+#define TILE_BOX 'B'
 
 void printMap();
 

@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include "torch.h"
 
-/*
-void TorchInteract(char ) 
-        printf("The torch is already lit.\n");
+// Trent
+void torchDim(){
+    if (torchLevel-- == 5){
+        printf("Your torch had run out of light!\n");
+    
+    }
+        
+}
 
-        printf("You light the torch. It illuminates your surroundings.\n");
-*/
-
-
+// Trent
+void torchInteract(){
+    printf("You use the torch!\n");
+    torchLevel = 15;
+}

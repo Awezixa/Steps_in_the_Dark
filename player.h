@@ -16,6 +16,8 @@ char readUserInput();
 void playerInventory();
 bool isTileWalkable(char t);
 void playerDeath();
+void playerDeathAnim();
+void checkInteraction();
 
 
 #endif 

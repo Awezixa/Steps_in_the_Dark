@@ -6,5 +6,6 @@
 
 void printMenu();
 void startGame();
+void pauseGame();
 
 #endif  
