@@ -17,6 +17,7 @@
 #define TILE_TRAP 'T'
 #define TILE_TORCH 'L'
 #define TILE_DOOR 'D'
+#define TILE_KEY 'K'
 
 // We'll have the Wall; Two Tiles (to make it a black and white chess pattern) and the trapped plates.
 
@@ -30,7 +31,7 @@ struct Player {
 
 char map[MAP_ROWS][MAP_COLS] = {
     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
-    {'W', 'Z', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'L', 'X', 'Z', 'X', 'Z', 'X', 'L', 'D', 'W'}, 
+    {'W', 'K', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'L', 'X', 'Z', 'X', 'Z', 'X', 'L', 'D', 'W'}, 
     {'W', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'L', 'W'},
     {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
     {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
@@ -90,13 +91,13 @@ void printMenu() {
         if(option[i] == 1) 
             startGame();
         else if (option[i] == 2)
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+            printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
         else if (option[i] == 3) 
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
+            printf("\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
         else if (option[i] == 4) 
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
+            printf("\n\nSee you next time!\n");
         else 
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
+            printf("\n\nInvalid Option\n");
         break;
     }
 }
@@ -172,6 +173,8 @@ void printMap(){
                       printf("🕯️  ");
                 if (map[x][y] == 'D')
                      printf("🪜  ");
+                if (map[x][y] == 'K')
+                     printf("🗝️  ");
                
                 }
                  else if (x == player.position_x && y == player.position_y) 
@@ -347,5 +350,9 @@ void playerDeath(){
 
 void endLevel(){
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion!\n\n\n");
+    torchLevel = 15;
+    stepCount = 0;
+    player.position_x = 16;
+    player.position_y = 1;
     printMenu();
 }
