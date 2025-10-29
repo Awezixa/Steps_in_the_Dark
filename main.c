@@ -91,7 +91,7 @@ void printMenu() {
         if(option[i] == 1) 
             startGame();
         else if (option[i] == 2)
-            printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+            printf("\n\nThe movement controls or the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
         else if (option[i] == 3) 
             printf("\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
         else if (option[i] == 4) 
