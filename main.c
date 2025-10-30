@@ -91,7 +91,7 @@ void printMenu() {
         if(option[i] == 1) 
             startGame();
         else if (option[i] == 2)
-            printf("\n\nThe movement controls or the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+            printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
         else if (option[i] == 3) 
             printf("\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
         else if (option[i] == 4) 
@@ -138,6 +138,8 @@ void printMap(){
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L') {
                     printf("🕯️  ");
+                if (map[x][y] == 'K')
+                     printf("🗝️  ");
                 
                 }
             }
@@ -158,6 +160,8 @@ void printMap(){
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L')
                     printf("🕯️  ");
+                if (map[x][y] == 'K')
+                     printf("🗝️  ");
                     
         }  //candle/ environmental torch lighting  
            else if (x == player.position_x && y == player.position_y) 
@@ -191,6 +195,8 @@ void printMap(){
                      printf("🕯️  ");
                 else if (map[x][y] == 'D')
                      printf(" 🪜  ");
+                else if (map[x][y] == 'K')
+                     printf("🗝️  ");
                  else printf("%c", map[x][y]);  
         }
         
