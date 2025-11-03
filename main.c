@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include<windows.h>
+
 // #include "map.h"
 // #include "menu.h"
 // #include "player.h"
@@ -19,6 +20,9 @@
 #define TILE_DOOR 'D'
 #define TILE_KEY 'K'
 
+bool getKey = false;
+
+
 // We'll have the Wall; Two Tiles (to make it a black and white chess pattern) and the trapped plates.
 
 // Player Structure:
@@ -31,22 +35,22 @@ struct Player {
 
 char map[MAP_ROWS][MAP_COLS] = {
     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
-    {'W', 'K', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'L', 'X', 'Z', 'X', 'Z', 'X', 'L', 'D', 'W'}, 
-    {'W', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'L', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'L', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'T', 'T', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'T', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'K', 'L', 'Z', 'X', 'W', 'X', 'Z', 'L', 'L', 'X', 'Z', 'W', 'Z', 'X', 'L', 'D', 'W'}, 
+    {'W', 'L', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'L', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'Z', 'Z', 'T', 'Z', 'X', 'Z', 'L', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'L', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'L', 'W', 'Z', 'X', 'Z', 'L', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'T', 'T', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'W', 'T', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'W'},
+    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'L', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'Z', 'W'},
     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
 
 };
@@ -70,9 +74,17 @@ void checkInteraction();
 void pauseGame();
 void endLevel();
 void choosePlayerName();
+void collectKey();
+void printInventory();
+void shootProjectile();
+void playerDeathCounter();
+void torchDisplay();
+void levelSelect();
+
 
 int stepCount = 0;
 int torchLevel = 15;
+int deathCounter = 0;
 
 int main(){ 
     printf("\n\n\n\n");
@@ -94,8 +106,11 @@ void printMenu() {
             choosePlayerName();
         else if (option[i] == 2)
             printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+            
         else if (option[i] == 3) 
             printf("\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
+            //add external names, companies if any external content was used
+            
         else if (option[i] == 4) 
             printf("\n\nSee you next time!\n");
         else 
@@ -121,6 +136,8 @@ void startGame() {
     stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
+    getKey = false;
+    map[1][1] = 'K';
     printMap();
     while (1 == 1) {
         char input = readUserInput();
@@ -129,6 +146,7 @@ void startGame() {
             continue;
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         movePlayer(input);
+        collectKey();
         checkInteraction();
         printMap();
     }
@@ -136,6 +154,12 @@ void startGame() {
 
 // Xavier & Pedro
 void printMap(){
+    printf("\n");
+    printf("Death Count: %d", deathCounter);
+    printInventory();
+    printf("\n");
+    torchDisplay();
+    printf("\n\n");
     for (int x = 0; x < MAP_ROWS; x++)
     {
         for (int y = 0; y < MAP_COLS; y++)
@@ -143,20 +167,20 @@ void printMap(){
             // player defualt vision radius
             if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x -2 && y == player.position_y) || (x == player.position_x +2 && y == player.position_y) || (x == player.position_x && y == player.position_y-2) || (x == player.position_x && y == player.position_y+2) || (x == player.position_x +1 && y == player.position_y+1) || (x == player.position_x -1 && y == player.position_y+1) || (x == player.position_x +1 && y == player.position_y-1) || (x == player.position_x-1 && y == player.position_y-1)) && (torchLevel > 10)) {
                 if (map[x][y] == 'X')
-                    printf("🟫 ");
+                    printf("🟫");
                 if (map[x][y] == 'Z')
-                    printf("🟫 ");
+                    printf("🟫");
                 if (map[x][y] == 'W')
-                    printf("🧱 ");
+                    printf("🧱");
                 if (map[x][y] == 'T')
-                    printf("🕸️  ");
+                    printf("🕸️ ");
                 if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                     printf("🗝️ ");
                 if (map[x][y] == 'D')
-                    printf("🪜  ");
+                    printf("🪜 ");
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L') {
-                    printf("🕯️  ");
+                    printf("🕯️ ");
                 
                 
                 }
@@ -166,57 +190,57 @@ void printMap(){
             //play vision radius dim
             else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 5)) {
                 if (map[x][y] == 'X')
-                    printf("🟫 ");
+                    printf("🟫");
                 if (map[x][y] == 'Z')
-                    printf("🟫 ");
+                    printf("🟫");
                 if (map[x][y] == 'W')
-                    printf("🧱 ");
+                    printf("🧱");
                 if (map[x][y] == 'T')
-                    printf("🕸️  ");
+                    printf("🕸️ ");
                 if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                     printf("🗝️ ");
                 if (map[x][y] == 'D')
-                    printf("🪜  ");
+                    printf("🪜 ");
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L')
-                    printf("🕯️  ");
+                    printf("🕯️ ");
                 \
                     
         }  //candle/ environmental torch lighting  
            else if (x == player.position_x && y == player.position_y) 
-                     printf("🤠 "); 
+                     printf("🤠"); 
            else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
                 if (map[x][y] == 'X') 
-                     printf("🟫 ");
+                     printf("🟫");
                 if (map[x][y] == 'Z')
-                     printf("🟫 ");
+                     printf("🟫");
                 if (map[x][y] == 'W')
-                      printf("🧱 ");
+                      printf("🧱");
                 if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                     printf("🗝️ ");
                 if (map[x][y]== 'L')
-                      printf("🕯️  ");
+                      printf("🕯️ ");
                 if (map[x][y] == 'D')
-                     printf("🪜  ");
+                     printf("🪜 ");
                 
                
                 }
                  else if (x == player.position_x && y == player.position_y) 
-                     printf("🤠 ");
+                     printf("🤠");
                  else if(map[x][y] == 'X')
-                      printf("⬛ ");
+                      printf("⬛");
                  else if (map[x][y] == 'Z')
-                     printf("⬛ ");
+                     printf("⬛");
                   else if (map[x][y] == 'W')
-                     printf("⬛ ");
+                     printf("⬛");
                   else if (map[x][y] == 'T')
-                      printf("⬛ ");
+                      printf("⬛");
                  else if (map[x][y]== 'L')
-                     printf("🕯️  ");
+                     printf("🕯️ ");
                 else if (map[x][y] == 'D')
-                     printf(" 🪜  ");
+                     printf(" 🪜 ");
                 else if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                     printf("🗝️ ");
                  else printf("%c", map[x][y]);  
         }
         
@@ -252,7 +276,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if (map[player.position_x][player.position_y] == 'D'){
+        if (map[player.position_x][player.position_y] == 'D' && getKey == true){
             endLevel();
         }
             player.position_x--;
@@ -268,7 +292,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }  
-        if (map[player.position_x][player.position_y] == 'D'){
+        if (map[player.position_x][player.position_y] == 'D' && getKey == true){
             endLevel();
         }
             player.position_y--;
@@ -284,7 +308,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if (map[player.position_x][player.position_y] == 'D'){
+        if (map[player.position_x][player.position_y] == 'D' && getKey == true){
             endLevel();
         }
             player.position_x++;
@@ -300,7 +324,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if (map[player.position_x][player.position_y] == 'D'){
+        if (map[player.position_x][player.position_y] == 'D' && getKey == true){
             endLevel();
         }
             player.position_y++;
@@ -309,9 +333,13 @@ void movePlayer(char dir)
         }
         break;
     //pause menu
-    case '`':
+    case 'P':
+    case 'p':
         pauseGame();
         break;
+    //case 'X':
+     //   shootProjectile();
+     //   break;
     }
 }
 
@@ -325,7 +353,7 @@ void stepCounter(){
 
 // Trent
 void checkInteraction(){
-    printf("You have walked %d steps\n\n", stepCount);
+    printf("You have walked %d steps\n", stepCount);
     switch (map[player.position_x][player.position_y]) {
         case 'X':
             //X interaction code
@@ -363,7 +391,7 @@ void torchDim(){
 
 // Trent
 void torchInteract(){
-    printf("You use the torch!\n");
+    printf("You use the torch!🕯️\n");
     torchLevel = 15;
 }
 
@@ -374,6 +402,9 @@ void playerDeath(){
     stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
+    getKey = false;
+    map[1][1] = 'K';
+    playerDeathCounter();
 }
 
 
@@ -414,5 +445,72 @@ void pauseGame(){
         printMenu();
         break;
     }
+    
+}
+
+void collectKey() {
+    if(map[player.position_x][player.position_y] == 'K') {
+        getKey = true;
+        map[player.position_x][player.position_y] = 'X';
+    }
+}
+
+void printInventory(){
+    printf("\t\tInventory:");
+    if (getKey == true)
+    {
+        printf("🗝️");
+    }
+    
+}
+
+
+
+void playerDeathCounter() {
+    deathCounter++;
+}
+
+void torchDisplay() {
+    printf("\n");
+    printf("Torch Meter: ");
+    if(torchLevel == 15){
+        printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩]");
+    }
+    if(torchLevel == 14){
+        printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛]");
+    }
+    if(torchLevel == 13){
+        printf("[🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛]");
+    }
+    if(torchLevel == 12){
+        printf("[🟩🟩🟩🟩🟩🟩🟩⬛⬛⬛]");
+    }
+    if(torchLevel == 11){
+        printf("[🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛]");
+    }
+    if(torchLevel == 10){
+        printf("[🟨🟨🟨🟨🟨⬛⬛⬛⬛⬛]");
+    }
+    if(torchLevel == 9){
+        printf("[🟨🟨🟨🟨⬛⬛⬛⬛⬛⬛]");
+    }
+    if(torchLevel == 8){
+        printf("[🟨🟨🟨⬛⬛⬛⬛⬛⬛⬛]");
+    }
+    if(torchLevel == 7){
+        printf("[🟨🟨⬛⬛⬛⬛⬛⬛⬛⬛]");
+    }
+    if(torchLevel == 6){
+        printf("[🟥⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
+    }
+    if(torchLevel < 6){
+        printf("[⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
+    }
+    
+}
+
+
+
+void levelSelect(){
     
 }

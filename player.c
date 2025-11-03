@@ -88,11 +88,14 @@ void stepCounter(){
 
 //Xavier
 void playerDeath(){
-    printf("YOU DIED 💀\t"); 
+    printf("\tYOU DIED 💀"); 
     torchLevel = 15;
     stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
+    getKey = false;
+    map[1][1] = 'K';
+    playerDeathCounter();
 }
 
 // Trent
@@ -121,4 +124,9 @@ void checkInteraction(){
     }
     
 
+}
+
+//Pedro
+void playerDeathCounter() {
+    deathCounter++;
 }

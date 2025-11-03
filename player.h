@@ -18,6 +18,7 @@ bool isTileWalkable(char t);
 void playerDeath();
 void playerDeathAnim();
 void checkInteraction();
+void playerDeathCounter();
 
 
 #endif 

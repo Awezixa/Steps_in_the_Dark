@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "torch.h"
 
+int torchLevel = 15;
+
 // Trent
 void torchDim(){
     if (torchLevel-- == 5){

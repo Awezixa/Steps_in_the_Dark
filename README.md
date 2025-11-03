@@ -15,7 +15,7 @@ File naming & vairable declaration convention(s): camel case
 
 # Compile
 
-`gcc -Wall -Wextra -Werror -std=c17 main.c menu.c player.c torch.c -o game && game`
+`gcc -Wall -Wextra -Werror -std=c17 main.c -o main && main`
 
 We need:
 
