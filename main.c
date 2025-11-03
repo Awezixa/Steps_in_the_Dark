@@ -69,11 +69,13 @@ void torchDim();
 void checkInteraction();
 void pauseGame();
 void endLevel();
+void choosePlayerName();
 
 int stepCount = 0;
 int torchLevel = 15;
 
 int main(){ 
+    printf("\n\n\n\n");
     printMenu();
     return 0;
 }
@@ -89,7 +91,7 @@ void printMenu() {
         printf("🐾 Steps in the Dark 🐾\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
         scanf("%d", &option[i]);
         if(option[i] == 1) 
-            startGame();
+            choosePlayerName();
         else if (option[i] == 2)
             printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
         else if (option[i] == 3) 
@@ -102,8 +104,23 @@ void printMenu() {
     }
 }
 
+char playerName[1000];
+
+//Pedro
+void choosePlayerName(){
+    printf("\n\nWhat is the name of your character?\nInsert: ");
+    scanf("%s", playerName);
+    printf("\n\n\n\n");
+    startGame();
+}
+
 //Pedro
 void startGame() {
+    printf("Welcome to the Haunted Manor, %s!\n\n", playerName);
+    torchLevel = 15;
+    stepCount = 0;
+    player.position_x = 16;
+    player.position_y = 1;
     printMap();
     while (1 == 1) {
         char input = readUserInput();
@@ -133,13 +150,14 @@ void printMap(){
                     printf("🧱 ");
                 if (map[x][y] == 'T')
                     printf("🕸️  ");
+                if (map[x][y] == 'K')
+                     printf("🗝️  ");
                 if (map[x][y] == 'D')
                     printf("🪜  ");
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L') {
                     printf("🕯️  ");
-                if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                
                 
                 }
             }
@@ -155,13 +173,14 @@ void printMap(){
                     printf("🧱 ");
                 if (map[x][y] == 'T')
                     printf("🕸️  ");
+                if (map[x][y] == 'K')
+                     printf("🗝️  ");
                 if (map[x][y] == 'D')
                     printf("🪜  ");
                 //Trent. Torch now appears when in the light around the character
                 if (map[x][y]== 'L')
                     printf("🕯️  ");
-                if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                \
                     
         }  //candle/ environmental torch lighting  
            else if (x == player.position_x && y == player.position_y) 
@@ -173,12 +192,13 @@ void printMap(){
                      printf("🟫 ");
                 if (map[x][y] == 'W')
                       printf("🧱 ");
+                if (map[x][y] == 'K')
+                     printf("🗝️  ");
                 if (map[x][y]== 'L')
                       printf("🕯️  ");
                 if (map[x][y] == 'D')
                      printf("🪜  ");
-                if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                
                
                 }
                  else if (x == player.position_x && y == player.position_y) 
@@ -288,6 +308,10 @@ void movePlayer(char dir)
             printf("\n");
         }
         break;
+    //pause menu
+    case '`':
+        pauseGame();
+        break;
     }
 }
 
@@ -353,12 +377,42 @@ void playerDeath(){
 }
 
 
-
+//Pedro
 void endLevel(){
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion!\n\n\n");
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion, %s!\n\n", playerName);
     torchLevel = 15;
     stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
     printMenu();
+}
+
+
+
+
+
+
+
+
+//Xavier & Pedro
+void pauseGame(){
+    int opt;
+    printf("🐾 Steps in the Dark 🐾\n\n1. Continue\n2. Options\n3. Main Menu\n\nInsert Option: ");
+    scanf("%d", &opt);
+    
+    switch (opt)
+    {
+    case 1:
+        printf("\n\n\n");
+        break;
+    case 2:
+        printf("\n\n\n");
+        printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+        break;
+    case 3:
+        printf("\n\n\n");
+        printMenu();
+        break;
+    }
+    
 }
