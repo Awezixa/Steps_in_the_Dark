@@ -130,3 +130,11 @@ void checkInteraction(){
 void playerDeathCounter() {
     deathCounter++;
 }
+
+//Pedro
+void choosePlayerName(){
+    printf("\n\nWhat is the name of your character?\nInsert: ");
+    scanf("%s", playerName);
+    printf("\n\n\n\n");
+    startGame();
+}

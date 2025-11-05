@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 int stepCount = 0;
+
 struct Player {
     int position_x;
     int position_y;
@@ -19,6 +20,7 @@ void playerDeath();
 void playerDeathAnim();
 void checkInteraction();
 void playerDeathCounter();
+void choosePlayerName();
 
 
 #endif 
