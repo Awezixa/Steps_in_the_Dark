@@ -72,10 +72,10 @@ void levelSelect(){
     switch (opt)
     {
     case 1:
-        printmap();
+        printmap(opt);
         break;
     case 2:
-        printMap();
+        printMap(opt);
         break;
     default:
         break;

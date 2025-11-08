@@ -167,3 +167,7 @@ void printMap(){
     }
 }
 
+void printDebugStats() {
+    printf("\n");
+    printf("Is the box being grabbed : %s", box1.beingGrabbed ? "True" : "False");
+}

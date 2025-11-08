@@ -17,6 +17,6 @@
 char map[MAP_ROWS][MAP_COLS];
 
 void printMap();
-
+void printDebugStats();
 
 #endif 

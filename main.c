@@ -27,7 +27,6 @@
 //bool getKey = false;
 
 
-// We'll have the Wall; Two Tiles (to make it a black and white chess pattern) and the trapped plates.
 
 // Player Structure:
 // struct Player {
@@ -46,6 +45,7 @@ struct inventory{
     char name[20];
     int quantity;
 };
+
 // Map and Player Global Variables
 
 // char map[MAP_ROWS][MAP_COLS] = {
@@ -75,31 +75,31 @@ struct inventory{
 struct inventory inventory[3]={};
 // Function Declaration
 
-void printMenu();
-void printMap();
-void movePlayer(char dir);
-void startGame();
-void PlayerFunction();
-void torchInteract();
-char readUserInput();
-bool isTileWalkable(char t);
-void stepCounter();
-void playerDeath();
-void torchDim();
-void checkInteraction();
-void pauseGame();
-void endLevel();
-void choosePlayerName();
-void collectKey();
-void printInventory();
-void shootProjectile();
-void playerDeathCounter();
-void torchDisplay();
-void levelSelect();
-void sanityDisplay();
-void printDebugStats();
-void moveBox();
-void grabBox();
+//void printMenu();
+//void printMap();
+//void movePlayer(char dir);
+//void startGame();
+//void PlayerFunction();
+//void torchInteract();
+// char readUserInput();
+// bool isTileWalkable(char t);
+// void stepCounter();
+// void playerDeath();
+// void torchDim();
+// void checkInteraction();
+// void pauseGame();
+// void endLevel();
+// void choosePlayerName();
+// void collectKey();
+// void printInventory();
+// void shootProjectile();
+// void playerDeathCounter();
+//void torchDisplay();
+//void levelSelect();
+//void sanityDisplay();
+// void printDebugStats();
+//void moveBox();
+//void grabBox();
 
 //int stepCount = 0;
 //int torchLevel = 15;
@@ -514,148 +514,25 @@ void printInventory(){
 }
 
 
+//Death counter moved to player.c
 
-// void playerDeathCounter() {
-//     deathCounter++;
-// }
-
-// void torchDisplay() {
-//     printf("\n");
-//     printf("Torch Meter: ");
-//     if(torchLevel == 15){
-//         printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩]");
-//     }
-//     if(torchLevel == 14){
-//         printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛]");
-//     }
-//     if(torchLevel == 13){
-//         printf("[🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛]");
-//     }
-//     if(torchLevel == 12){
-//         printf("[🟩🟩🟩🟩🟩🟩🟩⬛⬛⬛]");
-//     }
-//     if(torchLevel == 11){
-//         printf("[🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel == 10){
-//         printf("[🟨🟨🟨🟨🟨⬛⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel == 9){
-//         printf("[🟨🟨🟨🟨⬛⬛⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel == 8){
-//         printf("[🟨🟨🟨⬛⬛⬛⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel == 7){
-//         printf("[🟨🟨⬛⬛⬛⬛⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel == 6){
-//         printf("[🟥⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel < 6){
-//         printf("[⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
-//     }
-    
-// }
+//Torch display moved to torch.c
 
 
-//Xavier
-// void levelSelect(){
-//     int opt;
-//     printf("Select a level to play 🔦");
-//     scanf("%d", &opt);
-//     switch (opt)
-//     {
-//     case 1:
-        
-//         break;
-    
-//     default:
-//         break;
-//     }
-// }
+
+//Xavier Level select moved to menu.c
 
 
-//Pedro
-// void sanityDisplay() {
-//     printf("\n");
-//     printf("Sanity Meter: ");
-//     if(torchLevel > 4){
-//         printf("[🧠🧠🧠🧠🧠]");
-//     }
-//     if(torchLevel == 4){
-//         printf("[🧠🧠🧠🧠⬛]");
-//     }
-//     if(torchLevel == 3){
-//         printf("[🧠🧠🧠⬛⬛]");
-//     }
-//     if(torchLevel == 2){
-//         printf("[🧠🧠⬛⬛⬛]");
-//     }
-//     if(torchLevel == 1){
-//         printf("[🧠⬛⬛⬛⬛]");
-//     }
-//     if(torchLevel == 0){
-//         printf("[⬛⬛⬛⬛⬛]");
-//     }
+//Pedro Sanity -> moved to player.c
 
-// }
-
-void printDebugStats() {
-    printf("\n");
-    printf("Is the box being grabbed : %s", box1.beingGrabbed ? "True" : "False");
-}
+//debugstats moved to map.c
 
 
 
 
 
 
+//moveBox moved to box.c
 
-// void moveBox()
-// {
-//     if (!box1.beingGrabbed) return;
 
-//     printf("time to move box\n");
-//     // 0 = left | 1 = up | 2 = right | 3 down
-
-//     if (box1.direction == 1 ) {
-//             box1.position_x= player.position_x + 1;
-//             box1.position_y = player.position_y;
-//     }else if (box1.direction == 3 ) {
-//             box1.position_x = player.position_x - 1;
-//             box1.position_y = player.position_y;
-//     }else if (box1.direction == 0 ) {
-//             box1.position_x = player.position_x;
-//             box1.position_y = player.position_y - 1;
-//     }else {
-//         // is 2 here. everything else failed.
-//                     box1.position_x = player.position_x;
-//             box1.position_y = player.position_y - 1;
-//     }
-
-// }
-
-// void grabBox(){
-//     // We need to check if the player is close to the box.
-//     if (box1.beingGrabbed)
-//         box1.beingGrabbed = false;
-//     else {
-
-//         // 0 = left | 1 = up | 2 = right | 3 down
-//         if (player.position_x + 1 == box1.position_x && player.position_y == box1.position_y) {
-//                 box1.direction = 1;
-//                 box1.beingGrabbed = true;
-//             } else if (player.position_x - 1 == box1.position_x && player.position_y == box1.position_y) {
-//                 box1.direction = 3;
-//                 box1.beingGrabbed = true;
-//             } else if (player.position_y - 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y - 1 == box1.position_y) {
-//                 box1.direction = 0;
-//                 box1.beingGrabbed = true;
-//             } else if (player.position_y + 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_x + 1 == box1.position_y) {
-//                 box1.direction = 2;
-//                 box1.beingGrabbed = true;
-//             }
-//     }
-
-// }
+//Move grabBox  moved to box.c
