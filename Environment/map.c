@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "map.h"
 #include "player.h"
-//#include "torch.h"
+#include "box.h"
+#include "torch.h"
 
 //Level 1
 char map[MAP_ROWS][MAP_COLS] = {
@@ -55,8 +56,11 @@ char map[MAP_ROWS][MAP_COLS] = {
 void printMap(){
     printf("\n");
     printf("Death Count: %d", deathCounter);
-    printf("\n");
     printInventory();
+    printf("\n");
+    torchDisplay();
+    sanityDisplay();
+    printDebugStats();
     printf("\n\n");
     for (int x = 0; x < MAP_ROWS; x++)
     {
@@ -64,21 +68,25 @@ void printMap(){
         {
             // player defualt vision radius
             if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x -2 && y == player.position_y) || (x == player.position_x +2 && y == player.position_y) || (x == player.position_x && y == player.position_y-2) || (x == player.position_x && y == player.position_y+2) || (x == player.position_x +1 && y == player.position_y+1) || (x == player.position_x -1 && y == player.position_y+1) || (x == player.position_x +1 && y == player.position_y-1) || (x == player.position_x-1 && y == player.position_y-1)) && (torchLevel > 10)) {
-                if (map[x][y] == 'X')
-                    printf("🟫 ");
-                if (map[x][y] == 'Z')
-                    printf("🟫 ");
-                if (map[x][y] == 'W')
-                    printf("🧱 ");
-                if (map[x][y] == 'T')
-                    printf("🕸️  ");
-                if (map[x][y] == 'K')
-                     printf("🗝️  ");
-                if (map[x][y] == 'D')
-                    printf("🪜  ");
+                if (x == box1.position_x && y == box1.position_y) 
+                     printf("📦");
+                else if (map[x][y] == 'X')
+                    printf("🟫");
+                else if (map[x][y] == 'Z')
+                    printf("🟫");
+                else if (map[x][y] == 'W')
+                    printf("🧱");
+                else if (map[x][y] == 'T')
+                    printf("🕸️ ");
+                else if (map[x][y] == 'P')
+                    printf("🟪");
+                else if (map[x][y] == 'K')
+                     printf("🗝️ ");
+                else if (map[x][y] == 'D')
+                    printf("🪜 ");
                 //Trent. Torch now appears when in the light around the character
-                if (map[x][y]== 'L') {
-                    printf("🕯️  ");
+                else if (map[x][y]== 'L') {
+                    printf("🕯️ ");
                 
                 
                 }
@@ -87,58 +95,68 @@ void printMap(){
             
             //play vision radius dim
             else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 5)) {
-                if (map[x][y] == 'X')
-                    printf("🟫 ");
-                if (map[x][y] == 'Z')
-                    printf("🟫 ");
-                if (map[x][y] == 'W')
-                    printf("🧱 ");
-                if (map[x][y] == 'T')
-                    printf("🕸️  ");
-                if (map[x][y] == 'K')
-                     printf("🗝️  ");
-                if (map[x][y] == 'D')
-                    printf("🪜  ");
+            if (x == box1.position_x && y == box1.position_y) 
+                     printf("📦"); 
+                else if (map[x][y] == 'X')
+                    printf("🟫");
+                else if (map[x][y] == 'Z')
+                    printf("🟫");
+                else if (map[x][y] == 'W')
+                    printf("🧱");
+                else if (map[x][y] == 'T')
+                    printf("🕸️ ");
+                else if (map[x][y] == 'P')
+                    printf("🟪");
+                else if (map[x][y] == 'K')
+                     printf("🗝️ ");
+                else if (map[x][y] == 'D')
+                    printf("🪜 ");
                 //Trent. Torch now appears when in the light around the character
-                if (map[x][y]== 'L')
-                    printf("🕯️  ");
-                \
-                    
+                else if (map[x][y]== 'L')
+                    printf("🕯️ ");
+                
         }  //candle/ environmental torch lighting  
            else if (x == player.position_x && y == player.position_y) 
-                     printf("🤠 "); 
-           else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
+                     printf("🤠");
+           else if (x == box1.position_x && y == box1.position_y) 
+                     printf("📦"); 
+             else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
                 if (map[x][y] == 'X') 
-                     printf("🟫 ");
+                     printf("🟫");
                 if (map[x][y] == 'Z')
-                     printf("🟫 ");
+                     printf("🟫");
                 if (map[x][y] == 'W')
-                      printf("🧱 ");
+                      printf("🧱");
                 if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                     printf("🗝️ ");
                 if (map[x][y]== 'L')
-                      printf("🕯️  ");
+                      printf("🕯️ ");
                 if (map[x][y] == 'D')
-                     printf("🪜  ");
-                
-               
+                     printf("🪜 ");
+                if (map[x][y] == 'P')
+                    printf("🟪");
                 }
+                //blacking out map
                  else if (x == player.position_x && y == player.position_y) 
-                     printf("🤠 ");
+                     printf("🤠");
+                else if (x == box1.position_x && y == box1.position_y) 
+                     printf("⬛");
                  else if(map[x][y] == 'X')
-                      printf("⬛ ");
+                      printf("⬛");
                  else if (map[x][y] == 'Z')
-                     printf("⬛ ");
+                     printf("⬛");
                   else if (map[x][y] == 'W')
-                     printf("⬛ ");
+                     printf("⬛");
+                    else if (map[x][y] == 'P')
+                    printf("⬛");
                   else if (map[x][y] == 'T')
-                      printf("⬛ ");
+                      printf("⬛");
                  else if (map[x][y]== 'L')
-                     printf("🕯️  ");
+                     printf("🕯️ ");
                 else if (map[x][y] == 'D')
-                     printf(" 🪜  ");
+                     printf(" 🪜 ");
                 else if (map[x][y] == 'K')
-                     printf("🗝️  ");
+                     printf("🗝️ ");
                  else printf("%c", map[x][y]);  
         }
         

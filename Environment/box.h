@@ -7,6 +7,6 @@ struct Box {
     int direction; // 0 = left | 1 = up | 2 = right | 3 down
 };
 
-extern struct Box1;
+extern struct Box box1;
 
 #endif

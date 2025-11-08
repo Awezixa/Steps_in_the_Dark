@@ -7,5 +7,8 @@
 void printMenu();
 void startGame();
 void pauseGame();
+void levelSelect();
+
+
 
 #endif  
