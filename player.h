@@ -18,13 +18,13 @@ void movePlayer(char dir);
 void playerCollectItems(void);
 void stepCounter();
 char readUserInput();
-void playerInventory();
+void printInventory();
 bool isTileWalkable(char t);
 void playerDeath();
-void playerDeathAnim();
 void checkInteraction();
 void playerDeathCounter();
 void choosePlayerName();
+void sanityDisplay();
 
 
 #endif 

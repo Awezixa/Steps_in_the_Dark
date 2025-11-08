@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "menu.h"
-#include "map.h"
 #include "player.h"
 
 //Pedro
@@ -73,9 +72,11 @@ void levelSelect(){
     switch (opt)
     {
     case 1:
-        
+        printmap();
         break;
-    
+    case 2:
+        printMap();
+        break;
     default:
         break;
     }

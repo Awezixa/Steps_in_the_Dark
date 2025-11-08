@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "./player.h"
-#include "./map.h"
+#include "player.h"
+#include "map.h"
+
 
 box1 = {15, 2, false, 0};
 

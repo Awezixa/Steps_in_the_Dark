@@ -1,5 +1,7 @@
 #ifndef BOX_H
 #define BOX_H
+#include <stdbool.h>
+
 struct Box {
     int position_x;
     int position_y;

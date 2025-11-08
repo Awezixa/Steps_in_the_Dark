@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "player.h"
-#include "map.c"
 #include "map.h"
 #include "doorAndKeys.h"
 #include "torch.h"
@@ -139,4 +138,29 @@ void choosePlayerName(){
     scanf("%s", playerName);
     printf("\n\n\n\n");
     startGame();
+}
+
+//Pedro
+void sanityDisplay(){    
+    printf("\n");
+    printf("Sanity Meter: ");
+    if(torchLevel > 4){
+        printf("[🧠🧠🧠🧠🧠]");
+    }
+    if(torchLevel == 4){
+        printf("[🧠🧠🧠🧠⬛]");
+    }
+    if(torchLevel == 3){
+        printf("[🧠🧠🧠⬛⬛]");
+    }
+    if(torchLevel == 2){
+        printf("[🧠🧠⬛⬛⬛]");
+    }
+    if(torchLevel == 1){
+        printf("[🧠⬛⬛⬛⬛]");
+    }
+    if(torchLevel == 0){
+        printf("[⬛⬛⬛⬛⬛]");
+    }
+
 }

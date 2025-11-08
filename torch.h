@@ -12,5 +12,6 @@ int torchLevel;
 
 void torchDim();
 void torchInteract();
+void torchDisplay();
 
 #endif 

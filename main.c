@@ -2,11 +2,11 @@
 #include <stdbool.h>
 #include <windows.h>
 
-#include "./Environment/map.h"
-#include "./Menus/menu.h"
-#include "./Player/player.h"
-#include "./Environment/box.h"
-#include "./Environment/doorAndKeys.h"
+#include "map.h"
+#include "menu.h"
+#include "player.h"
+#include "box.h"
+#include "doorAndKeys.h"
 #include "torch.h"
 
 // Defining the Map & Tiles
@@ -48,27 +48,27 @@ struct inventory{
 };
 // Map and Player Global Variables
 
-char map[MAP_ROWS][MAP_COLS] = {
-    {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
-    {'W', 'K', 'L', 'Z', 'X', 'W', 'X', 'Z', 'L', 'L', 'X', 'Z', 'W', 'Z', 'X', 'L', 'D', 'W'}, 
-    {'W', 'L', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'L', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'Z', 'Z', 'T', 'Z', 'X', 'Z', 'L', 'W', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'L', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'L', 'W', 'Z', 'X', 'Z', 'L', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'P', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'T', 'T', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'W', 'T', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
-    {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'W'},
-    {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'L', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'Z', 'W'},
-    {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
+// char map[MAP_ROWS][MAP_COLS] = {
+//     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
+//     {'W', 'K', 'L', 'Z', 'X', 'W', 'X', 'Z', 'L', 'L', 'X', 'Z', 'W', 'Z', 'X', 'L', 'D', 'W'}, 
+//     {'W', 'L', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'L', 'W'},
+//     {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+//     {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+//     {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'Z', 'Z', 'T', 'Z', 'X', 'Z', 'L', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+//     {'W', 'L', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'L', 'W', 'Z', 'X', 'Z', 'L', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+//     {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'P', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'T', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+//     {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'T', 'T', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'Z', 'X', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'W', 'T', 'X', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'W'},
+//     {'W', 'Z', 'X', 'Z', 'X', 'W', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'W'},
+//     {'W', 'X', 'Z', 'X', 'Z', 'W', 'Z', 'X', 'L', 'L', 'Z', 'X', 'Z', 'X', 'Z', 'L', 'Z', 'W'},
+//     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
 
-};
+// };
 
 //struct Player player = {16, 1};
 //struct Box box1 = {15, 2, false, 0};
@@ -519,44 +519,44 @@ void printInventory(){
 //     deathCounter++;
 // }
 
-void torchDisplay() {
-    printf("\n");
-    printf("Torch Meter: ");
-    if(torchLevel == 15){
-        printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩]");
-    }
-    if(torchLevel == 14){
-        printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛]");
-    }
-    if(torchLevel == 13){
-        printf("[🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛]");
-    }
-    if(torchLevel == 12){
-        printf("[🟩🟩🟩🟩🟩🟩🟩⬛⬛⬛]");
-    }
-    if(torchLevel == 11){
-        printf("[🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛]");
-    }
-    if(torchLevel == 10){
-        printf("[🟨🟨🟨🟨🟨⬛⬛⬛⬛⬛]");
-    }
-    if(torchLevel == 9){
-        printf("[🟨🟨🟨🟨⬛⬛⬛⬛⬛⬛]");
-    }
-    if(torchLevel == 8){
-        printf("[🟨🟨🟨⬛⬛⬛⬛⬛⬛⬛]");
-    }
-    if(torchLevel == 7){
-        printf("[🟨🟨⬛⬛⬛⬛⬛⬛⬛⬛]");
-    }
-    if(torchLevel == 6){
-        printf("[🟥⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
-    }
-    if(torchLevel < 6){
-        printf("[⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
-    }
+// void torchDisplay() {
+//     printf("\n");
+//     printf("Torch Meter: ");
+//     if(torchLevel == 15){
+//         printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩]");
+//     }
+//     if(torchLevel == 14){
+//         printf("[🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛]");
+//     }
+//     if(torchLevel == 13){
+//         printf("[🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛]");
+//     }
+//     if(torchLevel == 12){
+//         printf("[🟩🟩🟩🟩🟩🟩🟩⬛⬛⬛]");
+//     }
+//     if(torchLevel == 11){
+//         printf("[🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel == 10){
+//         printf("[🟨🟨🟨🟨🟨⬛⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel == 9){
+//         printf("[🟨🟨🟨🟨⬛⬛⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel == 8){
+//         printf("[🟨🟨🟨⬛⬛⬛⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel == 7){
+//         printf("[🟨🟨⬛⬛⬛⬛⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel == 6){
+//         printf("[🟥⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel < 6){
+//         printf("[⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
+//     }
     
-}
+// }
 
 
 //Xavier
@@ -577,29 +577,29 @@ void torchDisplay() {
 
 
 //Pedro
-void sanityDisplay() {
-    printf("\n");
-    printf("Sanity Meter: ");
-    if(torchLevel > 4){
-        printf("[🧠🧠🧠🧠🧠]");
-    }
-    if(torchLevel == 4){
-        printf("[🧠🧠🧠🧠⬛]");
-    }
-    if(torchLevel == 3){
-        printf("[🧠🧠🧠⬛⬛]");
-    }
-    if(torchLevel == 2){
-        printf("[🧠🧠⬛⬛⬛]");
-    }
-    if(torchLevel == 1){
-        printf("[🧠⬛⬛⬛⬛]");
-    }
-    if(torchLevel == 0){
-        printf("[⬛⬛⬛⬛⬛]");
-    }
+// void sanityDisplay() {
+//     printf("\n");
+//     printf("Sanity Meter: ");
+//     if(torchLevel > 4){
+//         printf("[🧠🧠🧠🧠🧠]");
+//     }
+//     if(torchLevel == 4){
+//         printf("[🧠🧠🧠🧠⬛]");
+//     }
+//     if(torchLevel == 3){
+//         printf("[🧠🧠🧠⬛⬛]");
+//     }
+//     if(torchLevel == 2){
+//         printf("[🧠🧠⬛⬛⬛]");
+//     }
+//     if(torchLevel == 1){
+//         printf("[🧠⬛⬛⬛⬛]");
+//     }
+//     if(torchLevel == 0){
+//         printf("[⬛⬛⬛⬛⬛]");
+//     }
 
-}
+// }
 
 void printDebugStats() {
     printf("\n");
