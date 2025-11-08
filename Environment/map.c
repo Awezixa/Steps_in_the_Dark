@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "map.h"
 #include "player.h"
-#include "torch.h"
+//#include "torch.h"
 
+//Level 1
 char map[MAP_ROWS][MAP_COLS] = {
     {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
     {'W', 'K', 'L', 'Z', 'X', 'W', 'X', 'Z', 'L', 'L', 'X', 'Z', 'W', 'Z', 'X', 'L', 'D', 'W'}, 

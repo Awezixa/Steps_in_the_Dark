@@ -2,44 +2,45 @@
 #include <stdbool.h>
 #include <windows.h>
 
-// #include "map.h"
-// #include "menu.h"
-// #include "player.h"
-// #include "torch.h"
-// #include "./Environment/box."
+#include "./Environment/map.h"
+#include "./Menus/menu.h"
+#include "./Player/player.h"
+#include "./Environment/box.h"
+#include "./Environment/doorAndKeys.h"
+#include "torch.h"
 
 // Defining the Map & Tiles
 
-#define MAP_ROWS 18
-#define MAP_COLS 18
+// #define MAP_ROWS 18
+// #define MAP_COLS 18
 
-#define TILE_WALL 'W'
-#define TILE_FLOORWHITE 'Z'
-#define TILE_FLOORBLACK 'X'
-#define TILE_TRAP 'T'
-#define TILE_TORCH 'L'
-#define TILE_DOOR 'D'
-#define TILE_KEY 'K'
-#define TILE_PRESSUREPLATE 'P'
+// #define TILE_WALL 'W'
+// #define TILE_FLOORWHITE 'Z'
+// #define TILE_FLOORBLACK 'X'
+// #define TILE_TRAP 'T'
+// #define TILE_TORCH 'L'
+// #define TILE_DOOR 'D'
+// #define TILE_KEY 'K'
+// #define TILE_PRESSUREPLATE 'P'
 
 
-bool getKey = false;
+//bool getKey = false;
 
 
 // We'll have the Wall; Two Tiles (to make it a black and white chess pattern) and the trapped plates.
 
 // Player Structure:
-struct Player {
-    int position_x;
-    int position_y;
-};
+// struct Player {
+//     int position_x;
+//     int position_y;
+// };
 
-struct Box {
-    int position_x;
-    int position_y;
-    bool beingGrabbed;
-    int direction; // 0 = left | 1 = up | 2 = right | 3 down
-};
+// struct Box {
+//     int position_x;
+//     int position_y;
+//     bool beingGrabbed;
+//     int direction; // 0 = left | 1 = up | 2 = right | 3 down
+// };
 
 struct inventory{
     char name[20];
@@ -69,8 +70,8 @@ char map[MAP_ROWS][MAP_COLS] = {
 
 };
 
-struct Player player = {16, 1};
-struct Box box1 = {15, 2, false, 0};
+//struct Player player = {16, 1};
+//struct Box box1 = {15, 2, false, 0};
 struct inventory inventory[3]={};
 // Function Declaration
 
@@ -100,9 +101,9 @@ void printDebugStats();
 void moveBox();
 void grabBox();
 
-int stepCount = 0;
-int torchLevel = 15;
-int deathCounter = 0;
+//int stepCount = 0;
+//int torchLevel = 15;
+// int deathCounter = 0;
 
 int main(){ 
     printf("\n\n\n\n");
@@ -143,7 +144,7 @@ void printMenu() {
     }
 }
 
-char playerName[1000];
+//char playerName[1000];
 
 //Pedro
 void choosePlayerName(){
@@ -610,50 +611,50 @@ void printDebugStats() {
 
 
 
-void moveBox()
-{
-    if (!box1.beingGrabbed) return;
+// void moveBox()
+// {
+//     if (!box1.beingGrabbed) return;
 
-    printf("time to move box\n");
-    // 0 = left | 1 = up | 2 = right | 3 down
+//     printf("time to move box\n");
+//     // 0 = left | 1 = up | 2 = right | 3 down
 
-    if (box1.direction == 1 ) {
-            box1.position_x= player.position_x + 1;
-            box1.position_y = player.position_y;
-    }else if (box1.direction == 3 ) {
-            box1.position_x = player.position_x - 1;
-            box1.position_y = player.position_y;
-    }else if (box1.direction == 0 ) {
-            box1.position_x = player.position_x;
-            box1.position_y = player.position_y - 1;
-    }else {
-        // is 2 here. everything else failed.
-                    box1.position_x = player.position_x;
-            box1.position_y = player.position_y - 1;
-    }
+//     if (box1.direction == 1 ) {
+//             box1.position_x= player.position_x + 1;
+//             box1.position_y = player.position_y;
+//     }else if (box1.direction == 3 ) {
+//             box1.position_x = player.position_x - 1;
+//             box1.position_y = player.position_y;
+//     }else if (box1.direction == 0 ) {
+//             box1.position_x = player.position_x;
+//             box1.position_y = player.position_y - 1;
+//     }else {
+//         // is 2 here. everything else failed.
+//                     box1.position_x = player.position_x;
+//             box1.position_y = player.position_y - 1;
+//     }
 
-}
+// }
 
-void grabBox(){
-    // We need to check if the player is close to the box.
-    if (box1.beingGrabbed)
-        box1.beingGrabbed = false;
-    else {
+// void grabBox(){
+//     // We need to check if the player is close to the box.
+//     if (box1.beingGrabbed)
+//         box1.beingGrabbed = false;
+//     else {
 
-        // 0 = left | 1 = up | 2 = right | 3 down
-        if (player.position_x + 1 == box1.position_x && player.position_y == box1.position_y) {
-                box1.direction = 1;
-                box1.beingGrabbed = true;
-            } else if (player.position_x - 1 == box1.position_x && player.position_y == box1.position_y) {
-                box1.direction = 3;
-                box1.beingGrabbed = true;
-            } else if (player.position_y - 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y - 1 == box1.position_y) {
-                box1.direction = 0;
-                box1.beingGrabbed = true;
-            } else if (player.position_y + 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_x + 1 == box1.position_y) {
-                box1.direction = 2;
-                box1.beingGrabbed = true;
-            }
-    }
+//         // 0 = left | 1 = up | 2 = right | 3 down
+//         if (player.position_x + 1 == box1.position_x && player.position_y == box1.position_y) {
+//                 box1.direction = 1;
+//                 box1.beingGrabbed = true;
+//             } else if (player.position_x - 1 == box1.position_x && player.position_y == box1.position_y) {
+//                 box1.direction = 3;
+//                 box1.beingGrabbed = true;
+//             } else if (player.position_y - 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y - 1 == box1.position_y) {
+//                 box1.direction = 0;
+//                 box1.beingGrabbed = true;
+//             } else if (player.position_y + 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_x + 1 == box1.position_y) {
+//                 box1.direction = 2;
+//                 box1.beingGrabbed = true;
+//             }
+//     }
 
-}
+// }

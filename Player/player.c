@@ -2,10 +2,12 @@
 #include "player.h"
 #include "map.c"
 #include "map.h"
+#include "doorAndKeys.h"
+#include "torch.h"
 
 
 
-struct  Player player = {16, 1};
+struct Player player = {16, 1};
 
 
 // Trent & Xavier
