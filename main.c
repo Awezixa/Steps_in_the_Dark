@@ -472,37 +472,11 @@ int main(){
 //     printMenu();
 // }
 
+//Pause menu moved to menu.c
 
-//Xavier & Pedro
-// void pauseGame(){
-//     int opt;
-//     printf("🐾 Steps in the Dark 🐾\n\n1. Continue\n2. Options\n3. Main Menu\n\nInsert Option: ");
-//     scanf("%d", &opt);
-    
-//     switch (opt)
-//     {
-//     case 1:
-//         printf("\n\n\n");
-//         break;
-//     case 2:
-//         printf("\n\n\n");
-//         printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
-//         break;
-//     case 3:
-//         printf("\n\n\n");
-//         printMenu();
-//         break;
-//     }
-    
-// }
 
-// void collectKey() {
-//     if(map[player.position_x][player.position_y] == 'K') {
-//         getKey = true;
-//         map[player.position_x][player.position_y] = 'X';
- 
-//     }
-// }
+//Collect key moved to doorsAndKeys.c
+
 
 void printInventory(){
     printf("\t\tInventory:");
