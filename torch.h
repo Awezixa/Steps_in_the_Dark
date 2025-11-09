@@ -8,7 +8,7 @@
 #define TORCH_SYMBOL 'L'
 #define TORCH_LIGHT_RADIUS 2
 
-int torchLevel;
+extern int torchLevel;
 
 void torchDim();
 void torchInteract();

@@ -8,9 +8,12 @@ struct Box {
     bool beingGrabbed;
     int direction; // 0 = left | 1 = up | 2 = right | 3 down
 };
+
+extern struct Box box1;
+
 void moveBox();
 void grabBox();
 
-extern struct Box box1;
+
 
 #endif

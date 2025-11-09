@@ -2,6 +2,8 @@
 #include "menu.h"
 #include "player.h"
 #include "torch.h"
+#include "map.h"
+#include "doorAndKeys.h"
 
 //Pedro
 void printMenu() {
@@ -75,19 +77,19 @@ void endLevel(){
 
 
 //Xavier 
-void levelSelect(){
-    int opt;
-    printf("Select a level to play 🔦");
-    scanf("%d", &opt);
-    switch (opt)
-    {
-    case 1:
-        printmap(opt);
-        break;
-    case 2:
-        printMap(opt);
-        break;
-    default:
-        break;
-    }
-}
+// void levelSelect(){
+//     int opt;
+//     printf("Select a level to play 🔦");
+//     scanf("%d", &opt);
+//     switch (opt)
+//     {
+//     case 1:
+//         printmap(opt);
+//         break;
+//     case 2:
+//         printMap(opt);
+//         break;
+//     default:
+//         break;
+//     }
+// }

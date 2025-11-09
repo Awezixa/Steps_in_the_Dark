@@ -14,7 +14,7 @@
 #define TILE_DOOR 'D'
 #define TILE_KEY 'K'
 
-char map[MAP_ROWS][MAP_COLS];
+extern char map[MAP_ROWS][MAP_COLS];
 
 void printMap();
 void printDebugStats();

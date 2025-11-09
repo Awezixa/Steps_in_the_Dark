@@ -73,37 +73,9 @@
 //struct Player player = {16, 1};
 //struct Box box1 = {15, 2, false, 0};
 // struct inventory inventory[3]={};
-// Function Declaration
 
-//void printMenu();
-//void printMap();
-//void movePlayer(char dir);
-//void startGame();
-//void PlayerFunction();
-//void torchInteract();
-// char readUserInput();
-// bool isTileWalkable(char t);
-// void stepCounter();
-// void playerDeath();
-// void torchDim();
-// void checkInteraction();
-// void pauseGame();
-// void endLevel();
-// void choosePlayerName();
-// void collectKey();
-// void printInventory();
-// void shootProjectile();
-// void playerDeathCounter();
-//void torchDisplay();
-//void levelSelect();
-//void sanityDisplay();
-// void printDebugStats();
-//void moveBox();
-//void grabBox();
 
-//int stepCount = 0;
-//int torchLevel = 15;
-// int deathCounter = 0;
+
 
 int main(){ 
     printf("\n\n\n\n");

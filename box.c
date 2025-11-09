@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include "player.h"
 #include "map.h"
+#include "box.h"
 
+struct Box box1 = {15, 2, false, 0};
 
-box1 = {15, 2, false, 0};
 
 void moveBox()
 {

@@ -3,8 +3,11 @@
 #include "map.h"
 #include "doorAndKeys.h"
 #include "torch.h"
+#include "menu.h"
 
-
+int stepCount = 0;
+int deathCounter = 0;
+char playerName[1000];
 
 struct Player player = {16, 1};
 struct inventory inventory[3]={};

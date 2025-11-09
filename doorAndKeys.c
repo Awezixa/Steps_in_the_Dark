@@ -3,7 +3,7 @@
 #include "map.h"
 #include "player.h"
 
-extern bool getKey = false;
+bool getKey = false;
 
 void collectKey() {
     if(map[player.position_x][player.position_y] == 'K') {
@@ -11,13 +11,4 @@ void collectKey() {
         map[player.position_x][player.position_y] = 'X';
  
     }
-}
-
-void printInventory(){
-    printf("\t\tInventory:");
-    if (getKey == true)
-    {
-        printf("🗝️");
-    }
-    
 }
