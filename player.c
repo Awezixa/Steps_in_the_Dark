@@ -26,7 +26,7 @@ void movePlayer(char dir)
             playerDeath();
         }
             player.position_x--;
-            stepCounter();    
+            stepCounter();
         }
         break;
 
@@ -109,8 +109,8 @@ void checkInteraction(){
             //X interaction code
             break;
 
-        case 'Z':
-            //X interaction code
+        case 'K':
+            collectKey();
             break;
 
         case 'W':
