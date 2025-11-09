@@ -41,10 +41,10 @@
 //     int direction; // 0 = left | 1 = up | 2 = right | 3 down
 // };
 
-struct inventory{
-    char name[20];
-    int quantity;
-};
+// struct inventory{
+//     char name[20];
+//     int quantity;
+// };
 
 // Map and Player Global Variables
 
@@ -72,7 +72,7 @@ struct inventory{
 
 //struct Player player = {16, 1};
 //struct Box box1 = {15, 2, false, 0};
-struct inventory inventory[3]={};
+// struct inventory inventory[3]={};
 // Function Declaration
 
 //void printMenu();
@@ -120,372 +120,47 @@ int main(){
 
 // function initialization
 
-//Pedro
-// void printMenu() {
-//     int option[] = {1,2,3,4};
-//     int length = sizeof(option) / sizeof(option[0]);
-
-//     for(int i = 0; i < length; i++){
-//         printf("🐾 Steps in the Dark 🐾\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
-//         scanf("%d", &option[i]);
-//         if(option[i] == 1) 
-//             choosePlayerName();
-//         else if (option[i] == 2)
-//             printf("\n\nThe movement controls for the player are:\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
-            
-//         else if (option[i] == 3) 
-//             printf("\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n ©Three Rand Stuidios. Academic Property of IADE\n");
-//             //add external names, companies if any external content was used
-            
-//         else if (option[i] == 4) 
-//             printf("\n\nSee you next time!\n");
-//         else 
-//             printf("\n\nInvalid Option\n");
-//         break;
-//     }
-// }
-
-//char playerName[1000];
-
-//Pedro
-// void choosePlayerName(){
-//     printf("\n\nWhat is the name of your character?\nInsert: ");
-//     scanf("%s", playerName);
-//     printf("\n\n\n\n");
-//     startGame();
-// }
-
-//Pedro
-// void startGame() {
-//     printf("Welcome to the Haunted Manor, %s!\n\n", playerName);
-//     torchLevel = 15;
-//     stepCount = 0;
-//     player.position_x = 16;
-//     player.position_y = 1;
-//     getKey = false;
-//     map[1][1] = 'K';
-//     deathCounter = 0;
-//     printMap();
-//     while (1 == 1) {
-//         char input = readUserInput();
-//         // Trent
-//         if (input == '\n')
-//             continue;
-//         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-//         movePlayer(input);
-//         collectKey();
-//         moveBox();
-//         checkInteraction();
-//         printMap();
-//     }
-// }
-
-// Xavier & Pedro
-// void printMap(){
-//     printf("\n");
-//     printf("Death Count: %d", deathCounter);
-//     printInventory();
-//     printf("\n");
-//     torchDisplay();
-//     sanityDisplay();
-//     printDebugStats();
-//     printf("\n\n");
-//     for (int x = 0; x < MAP_ROWS; x++)
-//     {
-//         for (int y = 0; y < MAP_COLS; y++)
-//         {
-//             // player defualt vision radius
-//             if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x -2 && y == player.position_y) || (x == player.position_x +2 && y == player.position_y) || (x == player.position_x && y == player.position_y-2) || (x == player.position_x && y == player.position_y+2) || (x == player.position_x +1 && y == player.position_y+1) || (x == player.position_x -1 && y == player.position_y+1) || (x == player.position_x +1 && y == player.position_y-1) || (x == player.position_x-1 && y == player.position_y-1)) && (torchLevel > 10)) {
-//                 if (x == box1.position_x && y == box1.position_y) 
-//                      printf("📦");
-//                 else if (map[x][y] == 'X')
-//                     printf("🟫");
-//                 else if (map[x][y] == 'Z')
-//                     printf("🟫");
-//                 else if (map[x][y] == 'W')
-//                     printf("🧱");
-//                 else if (map[x][y] == 'T')
-//                     printf("🕸️ ");
-//                 else if (map[x][y] == 'P')
-//                     printf("🟪");
-//                 else if (map[x][y] == 'K')
-//                      printf("🗝️ ");
-//                 else if (map[x][y] == 'D')
-//                     printf("🪜 ");
-//                 //Trent. Torch now appears when in the light around the character
-//                 else if (map[x][y]== 'L') {
-//                     printf("🕯️ ");
-                
-                
-//                 }
-//             }
-
-            
-//             //play vision radius dim
-//             else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 5)) {
-//             if (x == box1.position_x && y == box1.position_y) 
-//                      printf("📦"); 
-//                 else if (map[x][y] == 'X')
-//                     printf("🟫");
-//                 else if (map[x][y] == 'Z')
-//                     printf("🟫");
-//                 else if (map[x][y] == 'W')
-//                     printf("🧱");
-//                 else if (map[x][y] == 'T')
-//                     printf("🕸️ ");
-//                 else if (map[x][y] == 'P')
-//                     printf("🟪");
-//                 else if (map[x][y] == 'K')
-//                      printf("🗝️ ");
-//                 else if (map[x][y] == 'D')
-//                     printf("🪜 ");
-//                 //Trent. Torch now appears when in the light around the character
-//                 else if (map[x][y]== 'L')
-//                     printf("🕯️ ");
-                
-//         }  //candle/ environmental torch lighting  
-//            else if (x == player.position_x && y == player.position_y) 
-//                      printf("🤠");
-//            else if (x == box1.position_x && y == box1.position_y) 
-//                      printf("📦"); 
-//              else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
-//                 if (map[x][y] == 'X') 
-//                      printf("🟫");
-//                 if (map[x][y] == 'Z')
-//                      printf("🟫");
-//                 if (map[x][y] == 'W')
-//                       printf("🧱");
-//                 if (map[x][y] == 'K')
-//                      printf("🗝️ ");
-//                 if (map[x][y]== 'L')
-//                       printf("🕯️ ");
-//                 if (map[x][y] == 'D')
-//                      printf("🪜 ");
-//                 if (map[x][y] == 'P')
-//                     printf("🟪");
-//                 }
-//                 //blacking out map
-//                  else if (x == player.position_x && y == player.position_y) 
-//                      printf("🤠");
-//                 else if (x == box1.position_x && y == box1.position_y) 
-//                      printf("⬛");
-//                  else if(map[x][y] == 'X')
-//                       printf("⬛");
-//                  else if (map[x][y] == 'Z')
-//                      printf("⬛");
-//                   else if (map[x][y] == 'W')
-//                      printf("⬛");
-//                     else if (map[x][y] == 'P')
-//                     printf("⬛");
-//                   else if (map[x][y] == 'T')
-//                       printf("⬛");
-//                  else if (map[x][y]== 'L')
-//                      printf("🕯️ ");
-//                 else if (map[x][y] == 'D')
-//                      printf(" 🪜 ");
-//                 else if (map[x][y] == 'K')
-//                      printf("🗝️ ");
-//                  else printf("%c", map[x][y]);  
-//         }
-        
-//        if (torchLevel == 0){
-//         playerDeath();}
-
-//         printf("\n"); 
-//     }
-// }
+//Print menu moved to menu.c
 
 
 
-// Xavier
-// char readUserInput(){
-//     char input;
-//     scanf("%c", &input);
-//     return input;
-// }
+//choose player name moved to player.c
 
-// Xavier & Trent
-// bool isTileWalkable(char t){
-//     return(t != 'W' && map[box1.position_x][box1.position_y]);
-// }
+//startgame moved to menu.c
 
-// Trent & Xavier
-// void movePlayer(char dir)
-// {
-    
-//     switch (dir)
-//     {
-//     case 'W':
-//     case 'w':
-//         if (isTileWalkable(map[player.position_x - 1][player.position_y]))
-//         {
-//         if (map[player.position_x][player.position_y] == 'T'){
-//             playerDeath();
-//         }
-//         if (map[player.position_x][player.position_y] == 'D' && getKey == true){
-//             endLevel();
-//         }
-        
-//             player.position_x--;
-//             stepCounter();
-//             printf("\n");    
-//         }
-//         break;
+//print map moved to map.c
 
-//     case 'A':
-//     case 'a':
-//         if (isTileWalkable(map[player.position_x][player.position_y - 1]))
-//         {
-//         if (map[player.position_x][player.position_y] == 'T'){
-//             playerDeath();
-//         }  
-//         if (map[player.position_x][player.position_y] == 'D' && getKey == true){
-//             endLevel();
-//         }
-//             player.position_y--;
-//             stepCounter();
-//             printf("\n");     
-//         }
-//         break;
 
-//     case 'S':
-//     case 's':
-//         if (isTileWalkable(map[player.position_x + 1][player.position_y]))
-//         {
-//         if (map[player.position_x][player.position_y] == 'T'){
-//             playerDeath();
-//         }
-//         if (map[player.position_x][player.position_y] == 'D' && getKey == true){
-//             endLevel();
-//         }
-//             player.position_x++;
-//             stepCounter();
-//             printf("\n");   
-//         }
-//         break;
 
-//     case 'D':
-//     case 'd':
-//         if (isTileWalkable(map[player.position_x][player.position_y + 1]))
-//         {  
-//         if (map[player.position_x][player.position_y] == 'T'){
-//             playerDeath();
-//         }
-//         if (map[player.position_x][player.position_y] == 'D' && getKey == true){
-//             endLevel();
-//         }
-//             player.position_y++;
-//             stepCounter();
-//             printf("\n");
-//         }
-//         break;
-//     //pause menu
-//     case 'P':
-//     case 'p':
-//         pauseGame();
-//         break;
-//     //case 'X':
-//      //   shootProjectile();
-//      //   break;
-//     case 'E':
-//     case 'e':
-//         grabBox();
-    
-//     }
-// }
+//read user input in player.c
 
-//Xaiver & Trent
-// void stepCounter(){
-//     stepCount++;
-//     if( torchLevel > 0 ){
-//         torchDim();
-//     }
-// }
+//is tile walkable in player.c
 
-// Trent
-// void checkInteraction(){
-//     printf("You have walked %d steps\n", stepCount);
-//     switch (map[player.position_x][player.position_y]) {
-//         case 'X':
-//             //X interaction code
-//             break;
+//player movement in player.c
 
-//         case 'Z':
-//             //X interaction code
-//             break;
+//step counter moved to player.c
 
-//         case 'W':
-//             //W interaction code. Probably nothing
-//             break;
-
-//         case 'T':
-//             //T interaction code
-//             break;
-
-//         case 'L':
-//             torchInteract();
-//             break;
-//     }
+//check interaction in player.c
     
 
-// }
-
-// Trent
-// void torchDim(){
-//     if (torchLevel-- == 5){
-//         printf("Your torch had run out of light!\n");
-    
-//     }
-        
-// }
+//Torch dim moved to torch.c
 
 
-// Trent
-// void torchInteract(){
-//     printf("You use the torch!🕯️\n");
-//     torchLevel = 15;
-// }
+//torch interact moved to torch.c
 
-//Xavier
-// reset box values
-// void playerDeath(){
-//     printf("\tYOU DIED 💀"); 
-//     torchLevel = 15;
-//     stepCount = 0;
-//     player.position_x = 16;
-//     player.position_y = 1;
-//     getKey = false;
-//     map[1][1] = 'K';
-//     playerDeathCounter();
-//     // box1.position_x = 15;
-//     // box1.position_y = 2;
-// }
+//Player death moved to player.c
 
 
-//Pedro
-// void endLevel(){
-//     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion, %s!\n\n", playerName);
-//     torchLevel = 15;
-//     stepCount = 0;
-//     player.position_x = 16;
-//     player.position_y = 1;
-//     printMenu();
-// }
+//Pedro. End level moved to menu.c
+
 
 //Pause menu moved to menu.c
 
 
 //Collect key moved to doorsAndKeys.c
 
+//Print inventory moved to player.c
 
-void printInventory(){
-    printf("\t\tInventory:");
-    if (getKey == true)
-    {
-        printf("🗝️");
-    }
-    
-}
 
 
 //Death counter moved to player.c

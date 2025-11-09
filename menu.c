@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "menu.h"
 #include "player.h"
+#include "torch.h"
 
 //Pedro
 void printMenu() {
@@ -62,6 +63,15 @@ void pauseGame(){
     }
     
 }
+
+void endLevel(){
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion, %s!\n\n", playerName);
+    torchLevel = 15;
+    stepCount = 0;
+    player.position_x = 16;
+    player.position_y = 1;
+    printMenu();
+ }
 
 
 //Xavier 

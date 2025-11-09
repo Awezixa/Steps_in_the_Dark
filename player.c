@@ -7,7 +7,7 @@
 
 
 struct Player player = {16, 1};
-
+struct inventory inventory[3]={};
 
 // Trent & Xavier
 void movePlayer(char dir)
@@ -86,7 +86,6 @@ void stepCounter(){
 }
 
 
-
 //Xavier
 void playerDeath(){
     printf("\tYOU DIED 💀"); 
@@ -163,4 +162,14 @@ void sanityDisplay(){
         printf("[⬛⬛⬛⬛⬛]");
     }
 
+}
+
+//Pedro
+void printInventory(){
+    printf("\t\tInventory:");
+    if (getKey == true)
+    {
+        printf("🗝️");
+    }
+    
 }

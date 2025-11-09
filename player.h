@@ -11,6 +11,12 @@ struct Player {
     int position_y;
 };
 
+struct inventory{
+    char name[20];
+    int quantity;
+};
+
+extern struct inventory inventory[3];
 extern struct Player player;
 
 void PlayerFunction();
@@ -25,6 +31,7 @@ void checkInteraction();
 void playerDeathCounter();
 void choosePlayerName();
 void sanityDisplay();
+void printInventory();
 
 
 #endif 
