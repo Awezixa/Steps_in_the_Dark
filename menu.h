@@ -2,13 +2,19 @@
 #define MENU_H
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdbool.h>
 
+extern bool isLevelFour;
+extern bool isLevelThree;
+extern bool isLevelTwo;
+extern bool isLevelOne;
 
 void printMenu();
 void startGame();
 void pauseGame();
 void levelSelect();
+void endLevel();
+
 
 
 

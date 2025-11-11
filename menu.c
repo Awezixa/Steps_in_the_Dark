@@ -4,6 +4,7 @@
 #include "torch.h"
 #include "map.h"
 #include "doorAndKeys.h"
+#include "box.h"
 
 //Pedro
 void printMenu() {
@@ -11,10 +12,15 @@ void printMenu() {
     int length = sizeof(option) / sizeof(option[0]);
 
     for(int i = 0; i < length; i++){
-        printf("🐾 Steps in the Dark 🐾\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
+        printf(".▄▄ · ▄▄▄▄▄▄▄▄ . ▄▄▄·.▄▄ ·     ▪   ▐ ▄     ▄▄▄▄▄ ▄ .▄▄▄▄ .    ·▄▄▄▄   ▄▄▄· ▄▄▄  ▄ •▄ ");
+        printf("\n▐█ ▀. •██  ▀▄.▀·▐█ ▄█▐█ ▀.     ██ •█▌▐█    •██  ██▪▐█▀▄.▀·    ██▪ ██ ▐█ ▀█ ▀▄ █·█▌▄▌▪");
+        printf("\n▄▀▀▀█▄ ▐█.▪▐▀▀▪▄ ██▀·▄▀▀▀█▄    ▐█·▐█▐▐▌     ▐█.▪██▀▐█▐▀▀▪▄    ▐█· ▐█▌▄█▀▀█ ▐▀▀▄ ▐▀▀▄·");
+        printf("\n▐█▄▪▐█ ▐█▌·▐█▄▄▌▐█▪·•▐█▄▪▐█    ▐█▌██▐█▌     ▐█▌·██▌▐▀▐█▄▄▌    ██. ██ ▐█ ▪▐▌▐█•█▌▐█.█▌");
+        printf("\n ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀");
+        printf("\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
         scanf("%d", &option[i]);
         if(option[i] == 1) 
-            startGame();
+            choosePlayerName();
         else if (option[i] == 2)
             printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
         else if (option[i] == 3) 
@@ -30,7 +36,8 @@ void printMenu() {
 
 //Pedro
 void startGame() {
-    printMap();
+
+    levelSelect();
     while (1 == 1) {
         char input = readUserInput();
         // Trent
@@ -38,6 +45,7 @@ void startGame() {
             continue;
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         movePlayer(input);
+        moveBox();
         checkInteraction();
         printMap();
     }
@@ -46,7 +54,7 @@ void startGame() {
 //Xavier and Pedro
 void pauseGame(){
     int opt;
-    printf("🐾 Steps in the Dark 🐾\n\n1. Continue\n2. Options\n3. Main Menu\n\nInsert Option: ");
+    printf("🐾 Steps in the Dark 🐾\n\n1. Continue\n2. Options\n3. Main Menu\n4. Level Select\n\nInsert Option: ");
     scanf("%d", &opt);
     
     switch (opt)
@@ -62,34 +70,80 @@ void pauseGame(){
         printf("\n\n\n");
         printMenu();
         break;
+    case 4:
+        printf("\n\n\n");
+        levelSelect();
     }
     
 }
 
 void endLevel(){
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion, %s!\n\n", playerName);
-    torchLevel = 15;
+        torchLevel = 15;
     stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
+    getKey = false;
+    if(isLevelOne == true){
+    map[1][1] = 'K';
+    box1.position_x = 8;
+    box1.position_y = 10;}
+    else if(isLevelTwo == true){
+    map[1][1] = 'K';
+    box1.position_x = 8;
+    box1.position_y = 10;}
+    if(isLevelThree == true){
+    map[1][1] = 'K';
+    box1.position_x = 8;
+    box1.position_y = 10;}
+    if(isLevelFour == true){
+    map[8][9] = 'K';
+    box1.position_x = 3;
+    box1.position_y = 2;}    
+    box1.beingGrabbed = false;
     printMenu();
  }
 
 
 //Xavier 
-// void levelSelect(){
-//     int opt;
-//     printf("Select a level to play 🔦");
-//     scanf("%d", &opt);
-//     switch (opt)
-//     {
-//     case 1:
-//         printmap(opt);
-//         break;
-//     case 2:
-//         printMap(opt);
-//         break;
-//     default:
-//         break;
-//     }
-// }
+void levelSelect(){
+    int opt;
+    printf("Select a level to play 🔦");
+    printf("\n\n");
+    printf("1. Level 1\t2.  Level 2\t3. Level 3\t4. Level 4");
+    printf("\n\n");
+    scanf("%d", &opt);
+     
+    switch (opt)
+    {
+    case 0:
+        printMenu();
+        break;
+    case 1:
+        loadMap("map1.txt");
+        isLevelOne = true;
+        printMap();
+        break;
+    case 2:
+        loadMap("map2.txt");
+        isLevelTwo = true;
+        printMap();
+        break;
+    case 3:
+        loadMap("map3.txt");
+        isLevelThree = true;
+        printMap();
+        break;
+    case 4:
+        loadMap("map4.txt");
+        isLevelFour = true;
+        map[8][8] = 'K';
+        box1.position_x = 3;
+        box1.position_y = 2;
+        printMap();
+        break;
+    default:
+        printf("No level selected");
+        break;
+    }
+}

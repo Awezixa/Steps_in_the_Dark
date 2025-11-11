@@ -13,6 +13,8 @@ extern struct Box box1;
 
 void moveBox();
 void grabBox();
+void pressurePlate();
+void plateActivated();
 
 
 

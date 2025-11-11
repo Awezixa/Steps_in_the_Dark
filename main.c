@@ -8,6 +8,7 @@
 #include "box.h"
 #include "doorAndKeys.h"
 #include "torch.h"
+#include "cheats.h"
 
 // Defining the Map & Tiles
 

@@ -15,7 +15,7 @@ File naming & vairable declaration convention(s): camel case
 
 # Compile
 
-`gcc -Wall -Wextra -Werror -std=c17 main.c -o main && main`
+`gcc -Wall -Wextra -Werror -std=c17 box.c doorAndKeys.c main.c map.c menu.c player.c cheats.c torch.c -o StepsintheDark && StepsintheDark`
 
 We need:
 

@@ -4,10 +4,17 @@
 #include "doorAndKeys.h"
 #include "torch.h"
 #include "menu.h"
+#include "box.h"
+#include "cheats.h"
 
 int stepCount = 0;
 int deathCounter = 0;
 char playerName[1000];
+bool fullBrightOn = false;
+bool isLevelOne = false;
+bool isLevelTwo = false;
+bool isLevelThree = false;
+bool isLevelFour = false;
 
 struct Player player = {16, 1};
 struct inventory inventory[3]={};
@@ -20,52 +27,148 @@ void movePlayer(char dir)
     {
     case 'W':
     case 'w':
-        if (isTileWalkable(map[player.position_x - 1][player.position_y]))
+        if( box1.beingGrabbed == true) {
+        if (isTileWalkable(map[player.position_x - 1][player.position_y]) && isTileWalkable(map[box1.position_x-1][box1.position_y]))
         {
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
+        }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
         }
             player.position_x--;
             stepCounter();
         }
+    }
+        else if( box1.beingGrabbed == false) {
+            if (isTileWalkable(map[player.position_x - 1][player.position_y]))
+        {
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
+        }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
+            player.position_x--;
+            stepCounter();
+        }}
         break;
 
     case 'A':
     case 'a':
-        if (isTileWalkable(map[player.position_x][player.position_y - 1]))
+         if( box1.beingGrabbed == true) {
+        if (isTileWalkable(map[player.position_x][player.position_y - 1]) && isTileWalkable(map[box1.position_x][box1.position_y-1]))
         {
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }  
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
             player.position_y--;
             stepCounter();     
-        }
-        break;
-
-    case 'S':
-    case 's':
-        if (isTileWalkable(map[player.position_x + 1][player.position_y]))
+        }}
+         else if( box1.beingGrabbed == false) {
+            if (isTileWalkable(map[player.position_x][player.position_y-1]))
         {
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
+            player.position_y--;
+            stepCounter();
+        }}
+        break;
+
+    case 'S':
+    case 's':
+     if( box1.beingGrabbed == true) {
+        if (isTileWalkable(map[player.position_x + 1][player.position_y]) && isTileWalkable(map[box1.position_x+1][box1.position_y]))
+        {
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
+        }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
             player.position_x++;
             stepCounter();   
+        }}
+        else if( box1.beingGrabbed == false) {
+            if (isTileWalkable(map[player.position_x+1][player.position_y]))
+        {
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
         }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
+            player.position_x++;
+            stepCounter();
+        }}
         break;
 
     case 'D':
     case 'd':
-        if (isTileWalkable(map[player.position_x][player.position_y + 1]))
+     if( box1.beingGrabbed == true) {
+        if (isTileWalkable(map[player.position_x][player.position_y + 1]) && isTileWalkable(map[box1.position_x][box1.position_y+1]))
         {   
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
             player.position_y++;
             stepCounter();
+        }}
+          else if( box1.beingGrabbed == false) {
+             if (isTileWalkable(map[player.position_x][player.position_y+1]))
+        {
+        if (map[player.position_x][player.position_y] == 'T'){
+            playerDeath();
         }
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+            endLevel();
+        }
+            player.position_y++;
+            stepCounter();
+        }}
         break;
+    case 'P':
+    case 'p':
+        pauseGame();
+        break;
+    case 'E':
+    case 'e':
+        grabBox();
+        break;
+
+        //cheats
+        //activate full brigtness cheat
+    case 'F':
+    case 'f':
+        fullBrightOn = true;
+        break;
+        
+        //deactivate full brightness cheat 
+    case 'G':
+    case 'g':
+        fullBrightOn = false;
+        break;
+        //give key
+    case 'K':
+    case 'k':
+        getKey = true;
+        break;
+        //walk through any terrain
+    case 'C':
+    case 'c':
+        cheats = true; 
     }
+    
 }
 
 //Xavier
@@ -77,10 +180,11 @@ char readUserInput(){
 
 //Xavier & Trent
 bool isTileWalkable(char t){
-    return(t != 'W');
+    return(t != 'W' && t != 'H');
 }
 
-//Xaiver & Trent
+
+//Xaiver & Trent 
 void stepCounter(){
     stepCount++;
     if( torchLevel > 0 ){
@@ -97,7 +201,23 @@ void playerDeath(){
     player.position_x = 16;
     player.position_y = 1;
     getKey = false;
+    if(isLevelOne == true){
     map[1][1] = 'K';
+    box1.position_x = 8;
+    box1.position_y = 10;}
+    else if(isLevelTwo == true){
+    map[1][1] = 'K';
+    box1.position_x = 8;
+    box1.position_y = 10;}
+    if(isLevelThree == true){
+    map[1][1] = 'K';
+    box1.position_x = 8;
+    box1.position_y = 10;}
+    if(isLevelFour == true){
+    map[8][8] = 'K';
+    box1.position_x = 3;
+    box1.position_y = 2;}    
+    box1.beingGrabbed = false;
     playerDeathCounter();
 }
 

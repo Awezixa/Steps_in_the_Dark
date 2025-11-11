@@ -13,10 +13,18 @@
 #define TILE_TORCH 'L'
 #define TILE_DOOR 'D'
 #define TILE_KEY 'K'
+#define TILE_PRESSUREPLATE 'P'
+#define TILE_LOCKEDDOOR 'H'
+
 
 extern char map[MAP_ROWS][MAP_COLS];
 
+extern bool fullBrightOn;
+
 void printMap();
 void printDebugStats();
+void cheatFullBright();
+void trapPlate();
+void loadMap();
 
 #endif 
