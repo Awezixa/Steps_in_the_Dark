@@ -17,7 +17,7 @@ bool isLevelThree = false;
 bool isLevelFour = false;
 
 struct Player player = {16, 1};
-struct inventory inventory[3]={};
+struct inventoryItems inventory[3]={};
 
 // Trent & Xavier
 void movePlayer(char dir)
@@ -145,7 +145,14 @@ void movePlayer(char dir)
     case 'e':
         grabBox();
         break;
-
+    case 'I':
+    case 'i':
+        openInventory();
+        break;
+    case 'U':
+    case 'u':
+        closeInventory();
+        break;
         //cheats
         //activate full brigtness cheat
     case 'F':
@@ -290,8 +297,14 @@ void sanityDisplay(){
 //Pedro
 void printInventory(){
     printf("\t\tInventory:");
+    for (int i = 0; i < 3; i++)
+    {
+        printf("", inventory[i]);
+    }
+    
     if (getKey == true)
     {
+
         printf("🗝️");
     }
     
