@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "box.h"
 #include "cheats.h"
+#include "projectile.h"
 
 int stepCount = 0;
 int deathCounter = 0;
@@ -17,7 +18,6 @@ bool isLevelThree = false;
 bool isLevelFour = false;
 
 struct Player player = {16, 1};
-struct inventoryItems inventory[3]={};
 
 // Trent & Xavier
 void movePlayer(char dir)
@@ -145,13 +145,13 @@ void movePlayer(char dir)
     case 'e':
         grabBox();
         break;
-    case 'I':
-    case 'i':
-        openInventory();
+    case 'T':
+    case 't':
+        throwProjectile();
         break;
     case 'U':
     case 'u':
-        closeInventory();
+        collectProjectile();
         break;
         //cheats
         //activate full brigtness cheat
@@ -173,7 +173,13 @@ void movePlayer(char dir)
         //walk through any terrain
     case 'C':
     case 'c':
-        cheats = true; 
+        cheats = true;
+        break;
+    case 'J':
+    case 'j':
+        //give projectile
+        WIP.collected = true;
+        break;
     }
     
 }
@@ -297,15 +303,17 @@ void sanityDisplay(){
 //Pedro
 void printInventory(){
     printf("\t\tInventory:");
-    for (int i = 0; i < 3; i++)
-    {
-        printf("", inventory[i]);
-    }
-    
+
     if (getKey == true)
     {
-
         printf("🗝️");
+    }
+
+    if (WIP.collected == true)
+    {
+        printf("💣");
     }
     
 }
+
+
