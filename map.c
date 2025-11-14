@@ -120,6 +120,8 @@ void printMap(){
                      printf("🤠");
                 else if (x == box1.position_x && y == box1.position_y) 
                      printf("⬛");
+                else if (x == WIP.position_x && y == WIP.position_y) 
+                     printf("⬛"); 
                  else if(map[x][y] == 'X')
                       printf("⬛");
                  else if (map[x][y] == 'Z')
@@ -157,6 +159,8 @@ else if(fullBrightOn == true){
                      printf("🤠");
                 else if (x == box1.position_x && y == box1.position_y) 
                      printf("📦"); 
+                else if (x == WIP.position_x && y == WIP.position_y) 
+                     printf("💣"); 
                 else if (map[x][y] == 'X')
                     printf("🟫");
                 else if (map[x][y] == 'Z')
