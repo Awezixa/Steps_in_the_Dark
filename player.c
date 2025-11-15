@@ -311,7 +311,7 @@ void printInventory(){
 
     if (WIP.collected == true)
     {
-        printf("💣");
+        printf(" 💣");
     }
     
 }
