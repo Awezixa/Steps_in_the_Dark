@@ -12,7 +12,7 @@ struct Player {
 };
 
 
-extern struct inventoryItems inventory[3];
+
 extern struct Player player;
 
 void PlayerFunction();

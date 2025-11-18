@@ -145,14 +145,14 @@ void movePlayer(char dir)
     case 'e':
         grabBox();
         break;
-    case 'T':
-    case 't':
-        throwProjectile();
-        break;
-    case 'U':
-    case 'u':
-        collectProjectile();
-        break;
+    //case 'T':
+    //case 't':
+    //    throwProjectile();
+    //    break;
+    //case 'U':
+    //case 'u':
+    //    collectProjectile();
+     //   break;
         //cheats
         //activate full brigtness cheat
     case 'F':
@@ -175,11 +175,11 @@ void movePlayer(char dir)
     case 'c':
         cheats = true;
         break;
-    case 'J':
-    case 'j':
+  //  case 'J':
+  //  case 'j':
         //give projectile
-        WIP.collected = true;
-        break;
+      //  WIP.collected = true;
+   //     break;
     }
     
 }
@@ -309,10 +309,10 @@ void printInventory(){
         printf("🗝️");
     }
 
-    if (WIP.collected == true)
-    {
-        printf("💣");
-    }
+    //if (WIP.collected == true)
+    //{
+   //     printf("💣");
+   // }
     
 }
 
