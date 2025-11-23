@@ -16,7 +16,7 @@ extern struct projectile WIP;
 
 void throwProjectile();
 void collectProjectile();
-void printProjRadius();
+void WIPDisplay();
 
 
 

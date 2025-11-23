@@ -12,25 +12,6 @@
 
 // Defining the Map & Tiles
 
-// Player Structure:
-// struct Player {
-//     int position_x;
-//     int position_y;
-// };
-
-// struct Box {
-//     int position_x;
-//     int position_y;
-//     bool beingGrabbed;
-//     int direction; // 0 = left | 1 = up | 2 = right | 3 down
-// };
-
-// struct inventory{
-//     char name[20];
-//     int quantity;
-// };
-
-
 
 //struct Player player = {16, 1};
 //struct Box box1 = {15, 2, false, 0};

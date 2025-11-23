@@ -101,7 +101,7 @@ void endLevel(){
     box1.position_x = 3;
     box1.position_y = 2;}    
     box1.beingGrabbed = false;
-    printMenu();
+    levelSelect();
  }
 
 
