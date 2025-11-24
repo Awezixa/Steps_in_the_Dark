@@ -54,7 +54,7 @@ void printMap(){
                 else if (map[x][y] == 'K')
                      printf("🗝️ ");
                 else if (map[x][y] == 'D')
-                    printf("🪜 ");
+                    printf("🪜");
                 //Trent. Torch now appears when in the light around the character
                 else if (map[x][y]== 'L') {
                     printf("🕯️ ");
@@ -139,9 +139,9 @@ void printMap(){
                  else if (map[x][y]== 'L')
                      printf("🕯️ ");
                 else if (map[x][y] == 'D')
-                     printf(" 🪜 ");
+                     printf("🪜 ");
                 else if (map[x][y] == 'K')
-                     printf("🗝️ ");
+                     printf("🗝️");
                  else printf("%c", map[x][y]);
                  
         // Projectile max radius
