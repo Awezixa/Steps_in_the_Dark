@@ -144,14 +144,11 @@ void movePlayer(char dir)
     case 'E':
     case 'e':
         grabBox();
+       // collectProjectile();
         break;
     case 'T':
     case 't':
        throwProjectile();
-       break;
-    case 'U':
-    case 'u':
-       collectProjectile();
        break;
         //cheats
         //activate full brigtness cheat

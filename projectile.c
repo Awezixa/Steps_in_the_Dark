@@ -25,7 +25,6 @@ void collectProjectile(){
 
         // 0 = left | 1 = up | 2 = right | 3 down
         if (player.position_x + 1 == WIP.position_x && player.position_y == WIP.position_y) {
-               
                     WIP.direction = 1;
                     WIP.collected = true;
                     map[WIP.position_x][WIP.position_y] = 'Z';

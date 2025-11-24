@@ -24,7 +24,7 @@ void printMap(){
     torchDisplay();
     sanityDisplay();
     printf("\n");
-    WIPDisplay();
+    //WIPDisplay();
     pressurePlate();
     printDebugStats();
     printf("\n\n");
@@ -122,8 +122,8 @@ void printMap(){
                      printf("🤠");
                 else if (x == box1.position_x && y == box1.position_y) 
                      printf("⬛");
-               else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
-                    printf("⬛"); 
+            //    else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
+            //         printf("⬛"); 
                  else if(map[x][y] == 'X')
                       printf("⬛");
                  else if (map[x][y] == 'Z')
@@ -145,28 +145,50 @@ void printMap(){
                  else printf("%c", map[x][y]);
                  
         // Projectile max radius
-                if (((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x -1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x -2 && y == WIP.position_y) || (x == WIP.position_x +2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y-2) || (x == WIP.position_x && y == WIP.position_y+2) || (x == WIP.position_x +1 && y == WIP.position_y+1) || (x == WIP.position_x -1 && y == WIP.position_y+1) || (x == WIP.position_x +1 && y == WIP.position_y-1) || (x == WIP.position_x-1 && y == WIP.position_y-1)) && (WIP.projectileLevel > 10)) {
-                if (x == box1.position_x && y == box1.position_y) 
-                     printf("📦");
-                else if (map[x][y] == 'X')
-                    printf("🟧");
-                else if (map[x][y] == 'Z')
-                    printf("🟧");
-                else if (map[x][y] == 'W')
-                    printf("🧱");
-                else if (map[x][y] == 'T')
-                    printf("🕸️ ");
-                else if (map[x][y] == 'P')
-                    printf("🟪");
-                else if (map[x][y] == 'H')
-                    printf("🔒");
-                else if (map[x][y] == 'K')
-                     printf("🗝️ ");
-                else if (map[x][y] == 'D')
-                    printf("🪜 ");
-                }  
-        }
-        
+                // if (((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x -1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x -2 && y == WIP.position_y) || (x == WIP.position_x +2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y-2) || (x == WIP.position_x && y == WIP.position_y+2) || (x == WIP.position_x +1 && y == WIP.position_y+1) || (x == WIP.position_x -1 && y == WIP.position_y+1) || (x == WIP.position_x +1 && y == WIP.position_y-1) || (x == WIP.position_x-1 && y == WIP.position_y-1)) && (WIP.projectileLevel > 10)) {
+                // if (x == box1.position_x && y == box1.position_y) 
+                //      printf("📦");
+                // else if (map[x][y] == 'X')
+                //     printf("🟧");
+                // else if (map[x][y] == 'Z')
+                //     printf("🟧");
+                // else if (map[x][y] == 'W')
+                //     printf("🧱");
+                // else if (map[x][y] == 'T')
+                //     printf("🕸️ ");
+                // else if (map[x][y] == 'P')
+                //     printf("🟪");
+                // else if (map[x][y] == 'H')
+                //     printf("🔒");
+                // else if (map[x][y] == 'K')
+                //      printf("🗝️ ");
+                // else if (map[x][y] == 'D')
+                //     printf("🪜 ");
+                // }
+        //Projectile dim radius
+        //  if (((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x -1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1)) && (WIP.projectileLevel > 5)) {
+        //     if (x == box1.position_x && y == box1.position_y) 
+        //              printf("📦");
+        //    if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
+        //             printf("💣"); 
+        //         else if (map[x][y] == 'X')
+        //             printf("🟫");
+        //         else if (map[x][y] == 'Z')
+        //             printf("🟫");
+        //         else if (map[x][y] == 'W')
+        //             printf("🧱");
+        //         else if (map[x][y] == 'T')
+        //             printf("🕸️ ");
+        //         else if (map[x][y] == 'P')
+        //             printf("🟪");
+        //         else if (map[x][y] == 'H')
+        //             printf("🔒");
+        //         else if (map[x][y] == 'K')
+        //              printf("🗝️ ");
+        //         else if (map[x][y] == 'D')
+        //             printf("🪜 ");  
+        // }
+    }
        if (torchLevel == 0){
         playerDeath();}
 
