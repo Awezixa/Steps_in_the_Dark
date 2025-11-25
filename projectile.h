@@ -13,10 +13,12 @@ struct projectile
 };
 
 extern struct projectile WIP;
+extern bool thrown;
 
 void throwProjectile();
 void collectProjectile();
 void WIPDisplay();
+void projDim();
 
 
 

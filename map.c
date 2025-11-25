@@ -24,7 +24,13 @@ void printMap(){
     torchDisplay();
     sanityDisplay();
     printf("\n");
-    //WIPDisplay();
+    if (thrown == true)
+    {
+        WIPDisplay();
+    }
+    else{
+        printf("\n");
+    }   
     pressurePlate();
     printDebugStats();
     printf("\n\n");
@@ -37,7 +43,7 @@ void printMap(){
             if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x -2 && y == player.position_y) || (x == player.position_x +2 && y == player.position_y) || (x == player.position_x && y == player.position_y-2) || (x == player.position_x && y == player.position_y+2) || (x == player.position_x +1 && y == player.position_y+1) || (x == player.position_x -1 && y == player.position_y+1) || (x == player.position_x +1 && y == player.position_y-1) || (x == player.position_x-1 && y == player.position_y-1)) && (torchLevel > 10)) {
                 if (x == box1.position_x && y == box1.position_y) 
                      printf("📦");
-               if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
+                else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
                     printf("💣");
                 else if (map[x][y] == 'X')
                     printf("🟧");
@@ -68,7 +74,7 @@ void printMap(){
             else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x -1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 5)) {
             if (x == box1.position_x && y == box1.position_y) 
                      printf("📦");
-           if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
+                else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
                     printf("💣"); 
                 else if (map[x][y] == 'X')
                     printf("🟫");
@@ -89,105 +95,95 @@ void printMap(){
                 //Trent. Torch now appears when in the light around the character
                 else if (map[x][y]== 'L')
                     printf("🕯️ ");
-                
-        }  //candle/ environmental torch lighting  
-           else if (x == player.position_x && y == player.position_y) 
-                     printf("🤠");
-           else if (x == box1.position_x && y == box1.position_y) 
-                     printf("📦");
-           else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
-                    printf("💣"); 
-             else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
-                if (map[x][y] == 'X') 
-                     printf("🟫");
-                if (map[x][y] == 'Z')
-                     printf("🟫");
-                if (map[x][y] == 'W')
-                      printf("🧱");
-                if (map[x][y] == 'T')
+            // PROJECTILE bright radius
+                if (thrown == true && ((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x - 1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x + 1 && y == WIP.position_y + 1) || (x == WIP.position_x - 1 && y == WIP.position_y + 1) || (x == WIP.position_x + 1 && y == WIP.position_y - 1) || (x == WIP.position_x - 1 && y == WIP.position_y - 1) || (x == WIP.position_x + 2 && y == WIP.position_y) || (x == WIP.position_x - 2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 2) || (x == WIP.position_x && y == WIP.position_y - 2)) && WIP.projectileLevel > 10)
+                    {
+                        if (x == box1.position_x && y == box1.position_y)
+                            printf("📦");
+                        else if (map[x][y] == 'X')
+                            printf("🟧");
+                        else if (map[x][y] == 'W')
+                            printf("🧱");
+                        else if (map[x][y] == 'T')
+                            printf("🕸️ ");
+                        else if (map[x][y] == 'K')
+                            printf("🗝️ ");
+                        else
+                            printf("🟧");
+                    }
+
+                    // PROJECTILE dim radius
+                    if (thrown == true && ((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x - 1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1)) && WIP.projectileLevel > 5)
+                    {
+                        if (x == WIP.position_x && y == WIP.position_y && WIP.collected == true)
+                            printf("💣");
+                        else if (map[x][y] == 'X')
+                            printf("🟫");
+                        else if (map[x][y] == 'W')
+                            printf("🧱");
+                        else
+                            printf("🟫");
+                    }
+
+        }  
+        //candle/ environmental torch lighting  
+        else if (x == player.position_x && y == player.position_y) 
+                printf("🤠");
+        else if (x == box1.position_x && y == box1.position_y) 
+                printf("📦");
+        else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
+                printf("💣"); 
+        else if ((map[x][y]== 'L') || (x > 0 && map[x-1][y] == 'L') || (x < MAP_ROWS - 1 && map[x+1][y] == 'L') || (y > 0 && map[x][y-1] == 'L') || (y < MAP_COLS - 1 && map[x][y+1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') ||(x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L')) {
+            if (map[x][y] == 'X') 
+                    printf("🟫");
+            if (map[x][y] == 'Z')
+                    printf("🟫");
+            if (map[x][y] == 'W')
+                    printf("🧱");
+            if (map[x][y] == 'T')
                     printf("🕸️ ");
-                if (map[x][y] == 'K')
+            if (map[x][y] == 'K')
                      printf("🗝️ ");
-                if (map[x][y] == 'H')
+            if (map[x][y] == 'H')
                     printf("🔒");
-                if (map[x][y]== 'L')
+            if (map[x][y]== 'L')
                       printf("🕯️ ");
-                if (map[x][y] == 'D')
-                     printf("🪜 ");
-                if (map[x][y] == 'P')
+            if (map[x][y] == 'D')
+                    printf("🪜 ");
+            if (map[x][y] == 'P')
                     printf("🟪");
-                }
-                //blacking out map
-                 else if (x == player.position_x && y == player.position_y) 
-                     printf("🤠");
-                else if (x == box1.position_x && y == box1.position_y) 
-                     printf("⬛");
-            //    else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
-            //         printf("⬛"); 
-                 else if(map[x][y] == 'X')
-                      printf("⬛");
-                 else if (map[x][y] == 'Z')
-                     printf("⬛");
-                  else if (map[x][y] == 'W')
-                     printf("⬛");
-                    else if (map[x][y] == 'H')
-                    printf("⬛");
-                    else if (map[x][y] == 'P')
-                    printf("⬛");
-                  else if (map[x][y] == 'T')
-                      printf("⬛");
-                 else if (map[x][y]== 'L')
-                     printf("🕯️ ");
-                else if (map[x][y] == 'D')
-                     printf("🪜 ");
-                else if (map[x][y] == 'K')
-                     printf("🗝️");
-                 else printf("%c", map[x][y]);
+            }
+
+            
+            
+
+            //blacking out map
+            else if (x == player.position_x && y == player.position_y) 
+                printf("🤠");
+            else if (x == box1.position_x && y == box1.position_y) 
+                printf("⬛");
+            else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
+                printf("⬛"); 
+            else if(map[x][y] == 'X')
+                printf("⬛");
+            else if (map[x][y] == 'Z')
+                printf("⬛");
+            else if (map[x][y] == 'W')
+                printf("⬛");
+            else if (map[x][y] == 'H')
+                printf("⬛");
+            else if (map[x][y] == 'P')
+                printf("⬛");
+            else if (map[x][y] == 'T')
+                printf("⬛");
+            else if (map[x][y]== 'L')
+                printf("🕯️ ");
+            else if (map[x][y] == 'D')
+                printf("🪜 ");
+            else if (map[x][y] == 'K')
+                printf("🗝️");
+            else printf("%c", map[x][y]);
                  
-        // Projectile max radius
-                // if (((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x -1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x -2 && y == WIP.position_y) || (x == WIP.position_x +2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y-2) || (x == WIP.position_x && y == WIP.position_y+2) || (x == WIP.position_x +1 && y == WIP.position_y+1) || (x == WIP.position_x -1 && y == WIP.position_y+1) || (x == WIP.position_x +1 && y == WIP.position_y-1) || (x == WIP.position_x-1 && y == WIP.position_y-1)) && (WIP.projectileLevel > 10)) {
-                // if (x == box1.position_x && y == box1.position_y) 
-                //      printf("📦");
-                // else if (map[x][y] == 'X')
-                //     printf("🟧");
-                // else if (map[x][y] == 'Z')
-                //     printf("🟧");
-                // else if (map[x][y] == 'W')
-                //     printf("🧱");
-                // else if (map[x][y] == 'T')
-                //     printf("🕸️ ");
-                // else if (map[x][y] == 'P')
-                //     printf("🟪");
-                // else if (map[x][y] == 'H')
-                //     printf("🔒");
-                // else if (map[x][y] == 'K')
-                //      printf("🗝️ ");
-                // else if (map[x][y] == 'D')
-                //     printf("🪜 ");
-                // }
-        //Projectile dim radius
-        //  if (((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x -1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1)) && (WIP.projectileLevel > 5)) {
-        //     if (x == box1.position_x && y == box1.position_y) 
-        //              printf("📦");
-        //    if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
-        //             printf("💣"); 
-        //         else if (map[x][y] == 'X')
-        //             printf("🟫");
-        //         else if (map[x][y] == 'Z')
-        //             printf("🟫");
-        //         else if (map[x][y] == 'W')
-        //             printf("🧱");
-        //         else if (map[x][y] == 'T')
-        //             printf("🕸️ ");
-        //         else if (map[x][y] == 'P')
-        //             printf("🟪");
-        //         else if (map[x][y] == 'H')
-        //             printf("🔒");
-        //         else if (map[x][y] == 'K')
-        //              printf("🗝️ ");
-        //         else if (map[x][y] == 'D')
-        //             printf("🪜 ");  
-        // }
     }
        if (torchLevel == 0){
         playerDeath();}
@@ -202,9 +198,9 @@ else if(fullBrightOn == true){
         for (int y = 0; y < MAP_COLS; y++)
         {
             if (x == player.position_x && y == player.position_y) 
-                     printf("🤠");
+                    printf("🤠");
                 else if (x == box1.position_x && y == box1.position_y) 
-                     printf("📦"); 
+                    printf("📦"); 
                else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false) 
                     printf("💣"); 
                 else if (map[x][y] == 'X')
@@ -237,7 +233,7 @@ else if(fullBrightOn == true){
     printf("\n");
     printCheats();
     printf("\n\n");
-    }
+}
 
 
 

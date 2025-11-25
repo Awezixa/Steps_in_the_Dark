@@ -17,18 +17,4 @@ File naming & vairable declaration convention(s): camel case
 
 `gcc -Wall -Wextra -Werror -std=c17 box.c doorAndKeys.c main.c map.c menu.c player.c cheats.c torch.c projectile.c -o StepsintheDark && StepsintheDark`
 
-We need:
-
-1 - Menu
-
-2 - Player
-    2.1 - Player Movement
-    2.2 - Player Death
-
-3 - Torch
-    3.1 - Torch Brightness
-    3.2 - Torch Dimming
-
-4 - Map
-    4.1 - Trapped Plates
-    4.2 - Key & Door
+# Game features

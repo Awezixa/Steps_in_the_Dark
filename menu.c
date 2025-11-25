@@ -5,6 +5,7 @@
 #include "map.h"
 #include "doorAndKeys.h"
 #include "box.h"
+#include "projectile.h"
 
 //Pedro
 void printMenu() {
@@ -21,12 +22,20 @@ void printMenu() {
         scanf("%d", &option[i]);
         if(option[i] == 1) 
             choosePlayerName();
-        else if (option[i] == 2)
+
+        if (option[i] == 2){
             printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
-        else if (option[i] == 3) 
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby.\n\n");
-        else if (option[i] == 4) 
+            printMenu();
+        }
+            
+        if (option[i] == 3){
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby. Property of IADE\n\n");
+            printMenu();
+        } 
+            
+        if (option[i] == 4){
             printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
+        } 
         else 
             printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
         break;
@@ -79,28 +88,33 @@ void pauseGame(){
 
 void endLevel(){
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion, %s!\n\n", playerName);
-        torchLevel = 15;
+    torchLevel = 15;
     stepCount = 0;
     player.position_x = 16;
     player.position_y = 1;
-    getKey = false;
+    
     if(isLevelOne == true){
-    map[1][1] = 'K';
-    box1.position_x = 8;
-    box1.position_y = 10;}
-    else if(isLevelTwo == true){
-    map[1][1] = 'K';
-    box1.position_x = 8;
-    box1.position_y = 10;}
+        box1.position_x = 8;
+        box1.position_y = 10;
+    }
+        
+    if(isLevelTwo == true){
+        box1.position_x = 8;
+        box1.position_y = 10;
+    }
+    
     if(isLevelThree == true){
-    map[1][1] = 'K';
-    box1.position_x = 8;
-    box1.position_y = 10;}
+        box1.position_x = 8;
+        box1.position_y = 10;
+    }
+
     if(isLevelFour == true){
-    map[8][9] = 'K';
-    box1.position_x = 3;
-    box1.position_y = 2;}    
+        box1.position_x = 3;
+        box1.position_y = 2;
+    }    
     box1.beingGrabbed = false;
+    getKey = false;
+    thrown = false;
     levelSelect();
  }
 
@@ -137,7 +151,6 @@ void levelSelect(){
     case 4:
         loadMap("map4.txt");
         isLevelFour = true;
-        map[8][8] = 'K';
         box1.position_x = 3;
         box1.position_y = 2;
         printMap();

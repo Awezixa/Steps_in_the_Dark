@@ -144,11 +144,18 @@ void movePlayer(char dir)
     case 'E':
     case 'e':
         grabBox();
-       // collectProjectile();
+        collectProjectile();
         break;
     case 'T':
     case 't':
-       throwProjectile();
+        if (WIP.collected == true)
+        {
+            throwProjectile();
+        }
+        else{
+            printf("You dont have the projectile.");
+        }
+       
        break;
         //cheats
         //activate full brigtness cheat
@@ -167,7 +174,6 @@ void movePlayer(char dir)
     case 'k':
         getKey = true;
         break;
-        //walk through any terrain
     case 'C':
     case 'c':
         cheats = true;
@@ -199,6 +205,7 @@ void stepCounter(){
     stepCount++;
     if( torchLevel > 0 ){
         torchDim();
+        projDim();
     }
 }
 
@@ -211,22 +218,25 @@ void playerDeath(){
     player.position_x = 16;
     player.position_y = 1;
     getKey = false;
+
     if(isLevelOne == true){
-    map[1][1] = 'K';
     box1.position_x = 8;
-    box1.position_y = 10;}
-    else if(isLevelTwo == true){
-    map[1][1] = 'K';
+    box1.position_y = 10;
+    }
+
+    if(isLevelTwo == true){
     box1.position_x = 8;
-    box1.position_y = 10;}
+    box1.position_y = 10;
+    }
+
     if(isLevelThree == true){
-    map[1][1] = 'K';
-    box1.position_x = 8;
-    box1.position_y = 10;}
+        box1.position_x = 8;
+        box1.position_y = 10;
+    }
     if(isLevelFour == true){
-    map[8][8] = 'K';
-    box1.position_x = 3;
-    box1.position_y = 2;}    
+        box1.position_x = 3;
+        box1.position_y = 2;
+    }    
     box1.beingGrabbed = false;
     playerDeathCounter();
 }
