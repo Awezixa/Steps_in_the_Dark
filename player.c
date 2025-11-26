@@ -33,7 +33,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x--;
@@ -46,7 +46,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x--;
@@ -62,7 +62,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }  
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y--;
@@ -74,7 +74,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y--;
@@ -90,7 +90,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x++;
@@ -102,7 +102,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x++;
@@ -130,7 +130,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y++;
@@ -213,11 +213,7 @@ void stepCounter(){
 //Xavier
 void playerDeath(){
     printf("\tYOU DIED 💀"); 
-    torchLevel = 15;
-    stepCount = 0;
-    player.position_x = 16;
-    player.position_y = 1;
-    getKey = false;
+    resetPlayer();
 
     if(isLevelOne == true){
     box1.position_x = 8;
@@ -322,4 +318,12 @@ void printInventory(){
     
 }
 
-
+//Xavier
+void resetPlayer(){
+    player.position_x = 16;
+    player.position_y = 1;
+    stepCount = 0;
+    torchLevel = 15;
+    getKey = false;
+    WIP.collected = false;
+}

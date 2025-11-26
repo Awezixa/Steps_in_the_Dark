@@ -55,39 +55,74 @@ void collectProjectile(){
 //Xavier
 void throwProjectile(){
     // 0 = left | 1 = up | 2 = right | 3 down
+    //when throwing the flashbomb throws in direction was picked up
     switch (WIP.direction)
     {
     case 0:
         thrown = true;
+        WIP.collected = false;
         WIP.position_x = player.position_x;
         WIP.position_y = player.position_y;
-        WIP.position_x = WIP.position_x;
-        WIP.position_y = WIP.position_y - 3;
-        WIP.collected = false;
+
+        if (isTileWalkable(WIP.position_x) && isTileWalkable(WIP.position_y - 1) && isTileWalkable(player.position_x) && isTileWalkable(player.position_y-1))
+        {
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y - 3;
+        }
+        else{
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y - 2;
+        }
         break;
     case 1:
         thrown = true;
-        WIP.position_x = player.position_x + 3;
-        WIP.position_y = player.position_y;
-        WIP.position_x = WIP.position_x + 3;
-        WIP.position_y = WIP.position_y;
         WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x + 1) && isTileWalkable(WIP.position_y)&& isTileWalkable(player.position_x + 1) && isTileWalkable(player.position_y))
+        {
+            WIP.position_x = WIP.position_x + 3;
+            WIP.position_y = WIP.position_y;
+        }
+        else{
+            WIP.position_x = WIP.position_x + 2;
+            WIP.position_y = WIP.position_y;
+        }
         break;
+
     case 2:
         thrown = true;
-        WIP.position_x = player.position_x;
-        WIP.position_y = player.position_y + 3;
-        WIP.position_x = WIP.position_x;
-        WIP.position_y = WIP.position_y + 3;
         WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x) && isTileWalkable(WIP.position_y + 1)&& isTileWalkable(player.position_x) && isTileWalkable(player.position_y+1))
+        {
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y + 3;
+        }
+        else{
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y + 2;
+        }
         break;
+
     case 3:
         thrown = true;
-        WIP.position_x = player.position_x - 3;
-        WIP.position_y = player.position_y;
-        WIP.position_x = WIP.position_x - 3;
-        WIP.position_y = WIP.position_y;
         WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x - 1) && isTileWalkable(WIP.position_y) && isTileWalkable(player.position_x-1) && isTileWalkable(player.position_y-1))
+        {
+            WIP.position_x = WIP.position_x -3;
+            WIP.position_y = WIP.position_y;
+        }
+        else{
+            WIP.position_x = WIP.position_x - 2;
+            WIP.position_y = WIP.position_y;
+        }
         break;
     
     default:

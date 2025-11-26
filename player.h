@@ -28,6 +28,7 @@ void playerDeathCounter();
 void choosePlayerName();
 void sanityDisplay();
 void printInventory();
+void resetPlayer();
 
 
 

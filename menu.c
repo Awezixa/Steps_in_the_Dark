@@ -136,16 +136,19 @@ void levelSelect(){
     case 1:
         loadMap("map1.txt");
         isLevelOne = true;
+        resetPlayer();
         printMap();
         break;
     case 2:
         loadMap("map2.txt");
         isLevelTwo = true;
+        resetPlayer();
         printMap();
         break;
     case 3:
         loadMap("map3.txt");
         isLevelThree = true;
+        resetPlayer();
         printMap();
         break;
     case 4:
@@ -153,10 +156,12 @@ void levelSelect(){
         isLevelFour = true;
         box1.position_x = 3;
         box1.position_y = 2;
+        resetPlayer();
         printMap();
         break;
     default:
-        printf("No level selected");
+        printf("No level selected\n\n");
+        levelSelect();
         break;
     }
 }

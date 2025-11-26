@@ -60,7 +60,7 @@ void printMap(){
                 else if (map[x][y] == 'K')
                      printf("🗝️ ");
                 else if (map[x][y] == 'D')
-                    printf("🪜");
+                    printf("🪜 ");
                 //Trent. Torch now appears when in the light around the character
                 else if (map[x][y]== 'L') {
                     printf("🕯️ ");
@@ -95,8 +95,9 @@ void printMap(){
                 //Trent. Torch now appears when in the light around the character
                 else if (map[x][y]== 'L')
                     printf("🕯️ ");
+
             // PROJECTILE bright radius
-                if (thrown == true && ((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x - 1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x + 1 && y == WIP.position_y + 1) || (x == WIP.position_x - 1 && y == WIP.position_y + 1) || (x == WIP.position_x + 1 && y == WIP.position_y - 1) || (x == WIP.position_x - 1 && y == WIP.position_y - 1) || (x == WIP.position_x + 2 && y == WIP.position_y) || (x == WIP.position_x - 2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 2) || (x == WIP.position_x && y == WIP.position_y - 2)) && WIP.projectileLevel > 10)
+            if (thrown == true && ((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x - 1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x + 1 && y == WIP.position_y + 1) || (x == WIP.position_x - 1 && y == WIP.position_y + 1) || (x == WIP.position_x + 1 && y == WIP.position_y - 1) || (x == WIP.position_x - 1 && y == WIP.position_y - 1) || (x == WIP.position_x + 2 && y == WIP.position_y) || (x == WIP.position_x - 2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 2) || (x == WIP.position_x && y == WIP.position_y - 2)) && WIP.projectileLevel > 10)
                     {
                         if (x == box1.position_x && y == box1.position_y)
                             printf("📦");
@@ -112,7 +113,7 @@ void printMap(){
                             printf("🟧");
                     }
 
-                    // PROJECTILE dim radius
+                //     // PROJECTILE dim radius
                     if (thrown == true && ((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x - 1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1)) && WIP.projectileLevel > 5)
                     {
                         if (x == WIP.position_x && y == WIP.position_y && WIP.collected == true)
@@ -154,8 +155,6 @@ void printMap(){
                     printf("🟪");
             }
 
-            
-            
 
             //blacking out map
             else if (x == player.position_x && y == player.position_y) 
@@ -243,13 +242,16 @@ void printDebugStats() {
     printf("Is the box being grabbed: %s", box1.beingGrabbed ? "✅" : "❌");
 }
 
- void trapPlate(){
+
+
+
+void trapPlate(){
     if (map[box1.position_x][box1.position_y] == 'T'){
         printf("You have triggered a trap! Game Over.\n");
         deathCounter++;
         printMenu();
      }
- }
+}
 
 
 
