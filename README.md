@@ -13,6 +13,7 @@ File naming & vairable declaration convention(s): camel case
                         int stepCounter = 0;
 
 
+
 # Compile
 
 `gcc -Wall -Wextra -Werror -std=c17 box.c doorAndKeys.c main.c map.c menu.c player.c cheats.c torch.c projectile.c -o StepsintheDark && StepsintheDark`
@@ -22,3 +23,5 @@ File naming & vairable declaration convention(s): camel case
 - Throwable projectile with dynamic lighting (Throwable is thrown in direction in which was picked up)
 - Pressure plate system
 - Box grabing and moving mechanics
+
+**_NOTE:_**  game.c is the transition to actual game with SLD 3 library
