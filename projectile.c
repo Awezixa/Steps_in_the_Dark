@@ -173,10 +173,20 @@ void WIPDisplay() {
 }
 
 void projDim(){
+    if (!thrown) return;
+
     WIP.projectileLevel--;
+    printf("///////////////////// %d proj level", WIP.projectileLevel);
     if (WIP.projectileLevel == 0)
     {
         printf("Projectile ran out\n");
+        WIP.collected = false;
+        thrown = false;
+
+        WIP.position_x = -1;
+        WIP.position_y = -1;
+
+
     }
      
 }
