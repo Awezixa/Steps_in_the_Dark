@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "stdbool.h": "c"
+        "*.embeddedhtml": "html",
+        "stdbool.h": "c",
+        "windows.h": "c",
+        "box.h": "c"
     }
 }
