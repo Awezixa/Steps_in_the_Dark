@@ -33,7 +33,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x--;
@@ -46,7 +46,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x--;
@@ -62,7 +62,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }  
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y--;
@@ -74,7 +74,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y--;
@@ -90,7 +90,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x++;
@@ -102,7 +102,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_x++;
@@ -130,7 +130,7 @@ void movePlayer(char dir)
         if (map[player.position_x][player.position_y] == 'T'){
             playerDeath();
         }
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y++;
@@ -144,14 +144,18 @@ void movePlayer(char dir)
     case 'E':
     case 'e':
         grabBox();
+        collectProjectile();
         break;
     case 'T':
     case 't':
-       throwProjectile();
-       break;
-    case 'U':
-    case 'u':
-       collectProjectile();
+        if (WIP.collected == true)
+        {
+            throwProjectile();
+        }
+        else{
+            printf("You dont have the projectile.");
+        }
+       
        break;
         //cheats
         //activate full brigtness cheat
@@ -170,7 +174,6 @@ void movePlayer(char dir)
     case 'k':
         getKey = true;
         break;
-        //walk through any terrain
     case 'C':
     case 'c':
         cheats = true;
@@ -200,8 +203,10 @@ bool isTileWalkable(char t){
 //Xaiver & Trent 
 void stepCounter(){
     stepCount++;
+    projDim();
     if( torchLevel > 0 ){
         torchDim();
+
     }
 }
 
@@ -209,27 +214,26 @@ void stepCounter(){
 //Xavier
 void playerDeath(){
     printf("\tYOU DIED 💀"); 
-    torchLevel = 15;
-    stepCount = 0;
-    player.position_x = 16;
-    player.position_y = 1;
-    getKey = false;
+    resetPlayer();
+
     if(isLevelOne == true){
-    map[1][1] = 'K';
     box1.position_x = 8;
-    box1.position_y = 10;}
-    else if(isLevelTwo == true){
-    map[1][1] = 'K';
+    box1.position_y = 10;
+    }
+
+    if(isLevelTwo == true){
     box1.position_x = 8;
-    box1.position_y = 10;}
+    box1.position_y = 10;
+    }
+
     if(isLevelThree == true){
-    map[1][1] = 'K';
-    box1.position_x = 8;
-    box1.position_y = 10;}
+        box1.position_x = 8;
+        box1.position_y = 10;
+    }
     if(isLevelFour == true){
-    map[8][8] = 'K';
-    box1.position_x = 3;
-    box1.position_y = 2;}    
+        box1.position_x = 3;
+        box1.position_y = 2;
+    }    
     box1.beingGrabbed = false;
     playerDeathCounter();
 }
@@ -315,4 +319,12 @@ void printInventory(){
     
 }
 
-
+//Xavier
+void resetPlayer(){
+    player.position_x = 16;
+    player.position_y = 1;
+    stepCount = 0;
+    torchLevel = 15;
+    getKey = false;
+    WIP.collected = false;
+}

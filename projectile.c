@@ -6,7 +6,7 @@
 #include "map.h"
 
 struct projectile WIP = {6, 10, false, 0, 15};
-
+bool thrown = false;
 /*
 features:
 
@@ -25,21 +25,22 @@ void collectProjectile(){
 
         // 0 = left | 1 = up | 2 = right | 3 down
         if (player.position_x + 1 == WIP.position_x && player.position_y == WIP.position_y) {
-               
                     WIP.direction = 1;
                     WIP.collected = true;
                     map[WIP.position_x][WIP.position_y] = 'Z';
-            } else if (player.position_x - 1 == WIP.position_x && player.position_y == WIP.position_y) {
+            } 
+            else if (player.position_x - 1 == WIP.position_x && player.position_y == WIP.position_y) {
                
                     WIP.direction = 3;
                     WIP.collected = true;
                     map[WIP.position_x][WIP.position_y] = 'Z';   
-            } else if (player.position_y - 1 < MAP_ROWS && player.position_x == WIP.position_x && player.position_y - 1 == WIP.position_y) {
-              
+            } 
+            else if (player.position_y - 1 < MAP_ROWS && player.position_x == WIP.position_x && player.position_y - 1 == WIP.position_y) {
                     WIP.direction = 0;
                     WIP.collected = true;
                     map[WIP.position_x][WIP.position_y] = 'Z';
-            } else if (player.position_y + 1 < MAP_ROWS && player.position_x == WIP.position_x && player.position_y + 1 == WIP.position_y) {
+            } 
+            else if (player.position_y + 1 < MAP_ROWS && player.position_x == WIP.position_x && player.position_y + 1 == WIP.position_y) {
                 WIP.direction = 2;
                 WIP.collected = true;
                 map[WIP.position_x][WIP.position_y] = 'Z';
@@ -54,29 +55,79 @@ void collectProjectile(){
 //Xavier
 void throwProjectile(){
     // 0 = left | 1 = up | 2 = right | 3 down
-    if (WIP.collected == true)
+    //when throwing the flashbomb throws in direction was picked up
+    switch (WIP.direction)
     {
-        printf("\n\n");
-    }
-    if (WIP.direction == 1 ) {
-            WIP.position_x = player.position_x + 3;
-            WIP.position_y = player.position_y;
-            WIP.collected = false;
-    }else if (WIP.direction == 3 ) {
-            WIP.position_x = player.position_x - 3;
-            WIP.position_y = player.position_y;
-            WIP.collected = false;
-    }else if (WIP.direction == 0 ) {
-       
-            WIP.position_x = player.position_x;
-            WIP.position_y = player.position_y - 3;
-            WIP.collected = false;
-    }else {
-        // is 2 here. everything else failed.
-            WIP.position_x = player.position_x;
-            WIP.position_y = player.position_y + 3;
-            WIP.collected = false;
-    }
+    case 0:
+        thrown = true;
+        WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x) && isTileWalkable(WIP.position_y - 1) && isTileWalkable(player.position_x) && isTileWalkable(player.position_y-1))
+        {
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y - 3;
+        }
+        else{
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y - 2;
+        }
+        break;
+    case 1:
+        thrown = true;
+        WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x + 1) && isTileWalkable(WIP.position_y)&& isTileWalkable(player.position_x + 1) && isTileWalkable(player.position_y))
+        {
+            WIP.position_x = WIP.position_x + 3;
+            WIP.position_y = WIP.position_y;
+        }
+        else{
+            WIP.position_x = WIP.position_x + 2;
+            WIP.position_y = WIP.position_y;
+        }
+        break;
+
+    case 2:
+        thrown = true;
+        WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x) && isTileWalkable(WIP.position_y + 1)&& isTileWalkable(player.position_x) && isTileWalkable(player.position_y+1))
+        {
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y + 3;
+        }
+        else{
+            WIP.position_x = WIP.position_x;
+            WIP.position_y = WIP.position_y + 2;
+        }
+        break;
+
+    case 3:
+        thrown = true;
+        WIP.collected = false;
+        WIP.position_x = player.position_x;
+        WIP.position_y = player.position_y;
+
+        if (isTileWalkable(WIP.position_x - 1) && isTileWalkable(WIP.position_y) && isTileWalkable(player.position_x-1) && isTileWalkable(player.position_y-1))
+        {
+            WIP.position_x = WIP.position_x -3;
+            WIP.position_y = WIP.position_y;
+        }
+        else{
+            WIP.position_x = WIP.position_x - 2;
+            WIP.position_y = WIP.position_y;
+        }
+        break;
+    
+    default:
+        break;
+}
 }
 
 
@@ -119,4 +170,23 @@ void WIPDisplay() {
         printf("[⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛]");
     }
     
+}
+
+void projDim(){
+    if (!thrown) return;
+
+    WIP.projectileLevel--;
+    printf("///////////////////// %d proj level", WIP.projectileLevel);
+    if (WIP.projectileLevel == 0)
+    {
+        printf("Projectile ran out\n");
+        WIP.collected = false;
+        thrown = false;
+
+        WIP.position_x = -1;
+        WIP.position_y = -1;
+
+
+    }
+     
 }

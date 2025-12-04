@@ -24,6 +24,7 @@ endif
 
 # ---------------- pkg-config (SDL3) ----------------
 SDL_PKG  := sdl3 sdl3-image
+
 ifeq ($(UNAME_S),Darwin)
     PKGCONF := pkg-config
 else ifdef IS_MSYS2
@@ -50,7 +51,7 @@ DBG := -g -O0 -fno-omit-frame-pointer
 REL := -O2 -DNDEBUG
 
 # Project structure
-SRC := $(wildcard *.c)
+SRC := $(wildcard *.c) $(shell find src -name '*.c')
 OBJ := $(SRC:.c=.o)
 DEP := $(OBJ:.o=.d)
 BIN := app
