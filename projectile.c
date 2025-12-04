@@ -185,8 +185,6 @@ void projDim(){
 
         WIP.position_x = -1;
         WIP.position_y = -1;
-
-
-    }
      
+    }
 }

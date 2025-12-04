@@ -204,9 +204,9 @@ bool isTileWalkable(char t){
 void stepCounter(){
     stepCount++;
     projDim();
-    if( torchLevel > 0 ){
+    if( torchLevel > 0 )
+    {
         torchDim();
-
     }
 }
 
