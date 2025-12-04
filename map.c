@@ -8,6 +8,8 @@
 #include "projectile.h"
 #include "doorAndKeys.h"
 
+
+
 char map[MAP_ROWS][MAP_COLS];
 
 // Xavier & Pedro
