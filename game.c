@@ -54,7 +54,14 @@ int main(void){
     keyTexture = sdl_load_texture(renderer, "Assets/STIDKey.png");
     boxTexture = sdl_load_texture(renderer, "Assets/STIDBox.png");
 
-
+    //Game loop
+    int running = 1;
+    const Uint32 FRAME_MS = 16; // ~60 FPS
+    while (running)
+    {
+        //main game code
+    }
+    
 
 
     return 0;
