@@ -22,11 +22,11 @@
 
 
 
-int main(){ 
-    printf("\n\n\n\n");
-    printMenu();
-    return 0;
-}
+// int main(){ 
+//     printf("\n\n\n\n");
+//     printMenu();
+//     return 0;
+// }
 
 
 

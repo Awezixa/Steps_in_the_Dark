@@ -20,25 +20,25 @@ void printMenu() {
         printf("\n ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀");
         printf("\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
         scanf("%d", &option[i]);
-        if(option[i] == 1) 
-            choosePlayerName();
+    //     if(option[i] == 1) 
+    //         // choosePlayerName();
 
-        if (option[i] == 2){
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
-            printMenu();
-        }
+    //     if (option[i] == 2){
+    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+    //         printMenu();
+    //     }
             
-        if (option[i] == 3){
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby. Property of IADE\n\n");
-            printMenu();
-        } 
+    //     if (option[i] == 3){
+    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby. Property of IADE\n\n");
+    //         printMenu();
+    //     } 
             
-        if (option[i] == 4){
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
-        } 
-        else 
-            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
-        break;
+    //     if (option[i] == 4){
+    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
+    //     } 
+    //     else 
+    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
+    //     break;
     }
 }
 
