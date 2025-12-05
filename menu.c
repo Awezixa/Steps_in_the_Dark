@@ -20,25 +20,25 @@ void printMenu() {
         printf("\n ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀");
         printf("\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ");
         scanf("%d", &option[i]);
-    //     if(option[i] == 1) 
-    //         // choosePlayerName();
+        if(option[i] == 1) 
+            choosePlayerName();
 
-    //     if (option[i] == 2){
-    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
-    //         printMenu();
-    //     }
+        if (option[i] == 2){
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nW - Up\nA - Left\nS - Down\nD - Right\n\n");
+            printMenu();
+        }
             
-    //     if (option[i] == 3){
-    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby. Property of IADE\n\n");
-    //         printMenu();
-    //     } 
+        if (option[i] == 3){
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis game was developed by Xavier Dos Santos, Pedro Alao and Trent Kirby. Property of IADE\n\n");
+            printMenu();
+        } 
             
-    //     if (option[i] == 4){
-    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
-    //     } 
-    //     else 
-    //         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
-    //     break;
+        if (option[i] == 4){
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSee you next time!\n");
+        } 
+        else 
+            printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvalid Option\n");
+        break;
     }
 }
 
@@ -87,7 +87,7 @@ void pauseGame(){
 }
 
 void endLevel(){
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Mansion, %s!\n\n", playerName);
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou've escaped from the Haunted Castle, %s!\n\n", playerName);
     torchLevel = 15;
     stepCount = 0;
     player.position_x = 16;
@@ -134,25 +134,25 @@ void levelSelect(){
         printMenu();
         break;
     case 1:
-        loadMap("map1.txt");
+        loadMap("Environment/Maps/map1.txt");
         isLevelOne = true;
         resetPlayer();
         printMap();
         break;
     case 2:
-        loadMap("map2.txt");
+        loadMap("Environment/Maps/map2.txt");
         isLevelTwo = true;
         resetPlayer();
         printMap();
         break;
     case 3:
-        loadMap("map3.txt");
+        loadMap("Environment/Maps/map3.txt");
         isLevelThree = true;
         resetPlayer();
         printMap();
         break;
     case 4:
-        loadMap("map4.txt");
+        loadMap("Environment/Maps/map4.txt");
         isLevelFour = true;
         box1.position_x = 3;
         box1.position_y = 2;

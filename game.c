@@ -64,7 +64,6 @@ int main(void)
     {
         Uint32 frame_start = SDL_GetTicks();
 
-
         // Capture Events
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -75,22 +74,42 @@ int main(void)
             }
             if (event.type == SDL_EVENT_KEY_DOWN)
             {
-                if ( event.key.key == SDLK_SPACE)
+                if (event.key.key == SDLK_SPACE)
                 {
                     setGameState(MAIN_MENU);
                 }
             }
 
-            // if (gameState() == MAIN_MENU && event.key.key == SDLK_1)
-            // {
-            // }
+            if (gameState() == MAIN_MENU)
+            {
+                //play
+                if (event.key.key == SDLK_1)
+                    setGameState(INGAME);
+                //options
+                if (event.key.key == SDLK_2)
+                    
+                //credits
+                if (event.key.key == SDLK_3)
+
+                //exit
+                if (event.key.key == SDLK_4){
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+                    SDL_RenderClear(renderer);
+                    showText(renderer, 300, 150, "See you next Time!", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+                    SDL_RenderPresent(renderer);
+                    running = 0;
+                }
+                    
+            }
         }
 
         if (gameState() == INITIAL_STATE)
             renderInitialScreen();
         else if (gameState() == MAIN_MENU)
             renderMainMenu();
-
+        // if (gameState() == FINISHED)
+            // renderGameFinished();
+        
         Uint32 elapsed = SDL_GetTicks() - frame_start;
         if (elapsed < FRAME_MS)
             SDL_Delay(FRAME_MS - elapsed);
@@ -117,13 +136,12 @@ void renderMainMenu()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
     showText(renderer, 100, 300,
-             ".▄▄ · ▄▄▄▄▄▄▄▄ . ▄▄▄·.▄▄ ·     ▪   ▐ ▄     ▄▄▄▄▄ ▄ .▄▄▄▄ .    ·▄▄▄▄   ▄▄▄· ▄▄▄  ▄ •▄ "
-             "▐█ ▀. •██  ▀▄.▀·▐█ ▄█▐█ ▀.     ██ •█▌▐█    •██  ██▪▐█▀▄.▀·    ██▪ ██ ▐█ ▀█ ▀▄ █·█▌▄▌▪"
-             "▄▀▀▀█▄ ▐█.▪▐▀▀▪▄ ██▀·▄▀▀▀█▄    ▐█·▐█▐▐▌     ▐█.▪██▀▐█▐▀▀▪▄    ▐█· ▐█▌▄█▀▀█ ▐▀▀▄ ▐▀▀▄·"
-             "▐█▄▪▐█ ▐█▌·▐█▄▄▌▐█▪·•▐█▄▪▐█    ▐█▌██▐█▌     ▐█▌·██▌▐▀▐█▄▄▌    ██. ██ ▐█ ▪▐▌▐█•█▌▐█.█▌"
-             " ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀"
-             "\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ",
+             //  ".▄▄ · ▄▄▄▄▄▄▄▄ . ▄▄▄·.▄▄ ·     ▪   ▐ ▄     ▄▄▄▄▄ ▄ .▄▄▄▄ .    ·▄▄▄▄   ▄▄▄· ▄▄▄  ▄ •▄ "
+             //  "▐█ ▀. •██  ▀▄.▀·▐█ ▄█▐█ ▀.     ██ •█▌▐█    •██  ██▪▐█▀▄.▀·    ██▪ ██ ▐█ ▀█ ▀▄ █·█▌▄▌▪"
+             //  "▄▀▀▀█▄ ▐█.▪▐▀▀▪▄ ██▀·▄▀▀▀█▄    ▐█·▐█▐▐▌     ▐█.▪██▀▐█▐▀▀▪▄    ▐█· ▐█▌▄█▀▀█ ▐▀▀▄ ▐▀▀▄·"
+             //  "▐█▄▪▐█ ▐█▌·▐█▄▄▌▐█▪·•▐█▄▪▐█    ▐█▌██▐█▌     ▐█▌·██▌▐▀▐█▄▄▌    ██. ██ ▐█ ▪▐▌▐█•█▌▐█.█▌"
+             //  " ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀"
+             "1. Start Game || 2. Controls || 3. Credits || 4. Exit Select Option: ",
              (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
-
 }

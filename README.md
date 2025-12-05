@@ -18,6 +18,9 @@ File naming & vairable declaration convention(s): camel case
 
 `gcc -Wall -Wextra -Werror -std=c17 box.c doorAndKeys.c main.c map.c menu.c player.c cheats.c torch.c projectile.c -o StepsintheDark && StepsintheDark`
 
+Run the .exe use `make run` command in the cmd. This calls the and build the visuals of the game
+
+
 # Game features
 - Dynamic lighting
 - Throwable projectile with dynamic lighting (Throwable is thrown in direction in which was picked up)

@@ -176,7 +176,6 @@ void projDim(){
     if (!thrown) return;
 
     WIP.projectileLevel--;
-    printf("///////////////////// %d proj level", WIP.projectileLevel);
     if (WIP.projectileLevel == 0)
     {
         printf("Projectile ran out\n");
