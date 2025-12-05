@@ -64,40 +64,27 @@ int main(void)
     {
         Uint32 frame_start = SDL_GetTicks();
 
+
         // Capture Events
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_EVENT_QUIT)
+            {
                 running = 0;
-
+            }
             if (event.type == SDL_EVENT_KEY_DOWN)
             {
-                if (gameState() == MAIN_MENU && event.key.key == SDLK_SPACE)
+                if ( event.key.key == SDLK_SPACE)
+                {
                     setGameState(MAIN_MENU);
+                }
             }
+
+            // if (gameState() == MAIN_MENU && event.key.key == SDLK_1)
+            // {
+            // }
         }
-
-        // Capture Events
-        // SDL_Event event;
-        // while (SDL_PollEvent(&event))
-        // {
-        //     if (event.type == SDL_EVENT_QUIT)
-        //     {
-        //         running = 0;
-        //     }
-        //     if (event.type == SDL_EVENT_KEY_DOWN)
-        //     {
-        //         if ( event.key.key == SDLK_SPACE)
-        //         {
-        //             setGameState(MAIN_MENU);
-        //         }
-        //     }
-
-        //     // if (gameState() == MAIN_MENU && event.key.key == SDLK_1)
-        //     // {
-        //     // }
-        // }
 
         if (gameState() == INITIAL_STATE)
             renderInitialScreen();
@@ -127,12 +114,16 @@ void renderInitialScreen(void)
 
 void renderMainMenu()
 {
-    showText(renderer, 0, 0,
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+    showText(renderer, 100, 300,
              ".▄▄ · ▄▄▄▄▄▄▄▄ . ▄▄▄·.▄▄ ·     ▪   ▐ ▄     ▄▄▄▄▄ ▄ .▄▄▄▄ .    ·▄▄▄▄   ▄▄▄· ▄▄▄  ▄ •▄ "
-             "\n▐█ ▀. •██  ▀▄.▀·▐█ ▄█▐█ ▀.     ██ •█▌▐█    •██  ██▪▐█▀▄.▀·    ██▪ ██ ▐█ ▀█ ▀▄ █·█▌▄▌▪"
-             "\n▄▀▀▀█▄ ▐█.▪▐▀▀▪▄ ██▀·▄▀▀▀█▄    ▐█·▐█▐▐▌     ▐█.▪██▀▐█▐▀▀▪▄    ▐█· ▐█▌▄█▀▀█ ▐▀▀▄ ▐▀▀▄·"
-             "\n▐█▄▪▐█ ▐█▌·▐█▄▄▌▐█▪·•▐█▄▪▐█    ▐█▌██▐█▌     ▐█▌·██▌▐▀▐█▄▄▌    ██. ██ ▐█ ▪▐▌▐█•█▌▐█.█▌"
-             "\n ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀"
+             "▐█ ▀. •██  ▀▄.▀·▐█ ▄█▐█ ▀.     ██ •█▌▐█    •██  ██▪▐█▀▄.▀·    ██▪ ██ ▐█ ▀█ ▀▄ █·█▌▄▌▪"
+             "▄▀▀▀█▄ ▐█.▪▐▀▀▪▄ ██▀·▄▀▀▀█▄    ▐█·▐█▐▐▌     ▐█.▪██▀▐█▐▀▀▪▄    ▐█· ▐█▌▄█▀▀█ ▐▀▀▄ ▐▀▀▄·"
+             "▐█▄▪▐█ ▐█▌·▐█▄▄▌▐█▪·•▐█▄▪▐█    ▐█▌██▐█▌     ▐█▌·██▌▐▀▐█▄▄▌    ██. ██ ▐█ ▪▐▌▐█•█▌▐█.█▌"
+             " ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀"
              "\n\n1. Start Game\n2. Controls\n3. Credits\n4. Exit\n\nSelect Option: ",
              (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+    SDL_RenderPresent(renderer);
+
 }
