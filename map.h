@@ -7,8 +7,7 @@
 #define MAP_COLS 18
 
 #define TILE_WALL 'W'
-#define TILE_FLOORWHITE 'Z'
-#define TILE_FLOORBLACK 'X'
+#define TILE_FLOOR 'Z'
 #define TILE_TRAP 'T'
 #define TILE_TORCH 'L'
 #define TILE_DOOR 'D'
@@ -26,5 +25,10 @@ void printDebugStats();
 void cheatFullBright();
 void trapPlate();
 void loadMap();
+bool map_in_bounds(int row, int col);
+char map_get_tile(int row, int col);
+
+
+
 
 #endif 

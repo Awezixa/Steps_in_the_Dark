@@ -285,3 +285,20 @@ void loadMap(const char *filename)
     }
     fclose(file);
 }
+
+
+
+
+
+bool map_in_bounds(int row, int col)
+{
+    return row >= 0 && row < MAP_ROWS && col >= 0 && col < MAP_COLS;
+}
+
+
+char map_get_tile(int row, int col)
+{
+    if (!map_in_bounds(row, col))
+        return TILE_WALL;
+    return map[row][col];
+}

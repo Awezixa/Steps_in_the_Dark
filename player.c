@@ -327,4 +327,16 @@ void resetPlayer(){
     torchLevel = 15;
     getKey = false;
     WIP.collected = false;
+    WIP.projectileLevel = 15;
+}
+
+
+int player_get_row(void)
+{
+    return player.position_x;
+}
+
+int player_get_col(void)
+{
+    return player.position_y;
 }

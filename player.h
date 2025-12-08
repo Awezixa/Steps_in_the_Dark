@@ -31,5 +31,8 @@ void printInventory();
 void resetPlayer();
 
 
+int player_get_row(void);
+int player_get_col(void);
+
 
 #endif 
