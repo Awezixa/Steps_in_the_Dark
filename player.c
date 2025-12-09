@@ -5,7 +5,7 @@
 #include "torch.h"
 #include "menu.h"
 #include "box.h"
-#include ".\Cheats/cheats.h"
+#include "cheats.h"
 #include "projectile.h"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>

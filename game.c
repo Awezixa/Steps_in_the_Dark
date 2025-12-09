@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include "sdl_utils.h"
+#include "utils/sdl_utils.h"
 #include "map.h"
 #include "player.h"
 #include "box.h"
-#include "Cheats/cheats.h"
+#include "cheats.h"
 #include "doorAndKeys.h"
 #include "menu.h"
 #include "projectile.h"
