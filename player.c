@@ -30,9 +30,7 @@ void movePlayer(char dir)
         if( box1.beingGrabbed == true) {
         if (isTileWalkable(map[player.position_x - 1][player.position_y]) && isTileWalkable(map[box1.position_x-1][box1.position_y]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+        
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -43,9 +41,7 @@ void movePlayer(char dir)
         else if( box1.beingGrabbed == false) {
             if (isTileWalkable(map[player.position_x - 1][player.position_y]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+       
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -59,9 +55,7 @@ void movePlayer(char dir)
          if( box1.beingGrabbed == true) {
         if (isTileWalkable(map[player.position_x][player.position_y - 1]) && isTileWalkable(map[box1.position_x][box1.position_y-1]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }  
+        
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -71,9 +65,7 @@ void movePlayer(char dir)
          else if( box1.beingGrabbed == false) {
             if (isTileWalkable(map[player.position_x][player.position_y-1]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+        
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -87,9 +79,7 @@ void movePlayer(char dir)
      if( box1.beingGrabbed == true) {
         if (isTileWalkable(map[player.position_x + 1][player.position_y]) && isTileWalkable(map[box1.position_x+1][box1.position_y]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+        
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -99,9 +89,7 @@ void movePlayer(char dir)
         else if( box1.beingGrabbed == false) {
             if (isTileWalkable(map[player.position_x+1][player.position_y]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+       
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -115,9 +103,7 @@ void movePlayer(char dir)
      if( box1.beingGrabbed == true) {
         if (isTileWalkable(map[player.position_x][player.position_y + 1]) && isTileWalkable(map[box1.position_x][box1.position_y+1]))
         {   
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+       
         if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
             endLevel();
         }
@@ -127,9 +113,7 @@ void movePlayer(char dir)
           else if( box1.beingGrabbed == false) {
              if (isTileWalkable(map[player.position_x][player.position_y+1]))
         {
-        if (map[player.position_x][player.position_y] == 'T'){
-            playerDeath();
-        }
+      
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
@@ -187,6 +171,8 @@ void movePlayer(char dir)
     
 }
 
+
+
 //Xavier
 char readUserInput(){
     char  input;
@@ -242,20 +228,18 @@ void playerDeath(){
 void checkInteraction(){
     printf("You have walked %d steps\n", stepCount);
     switch (map[player.position_x][player.position_y]) {
-        case 'X':
-            //X interaction code
+        case 'T':
+            playerDeath();
             break;
 
         case 'K':
             collectKey();
             break;
 
-        case 'W':
-            //W interaction code. Probably nothing
-            break;
-
-        case 'T':
-            //T interaction code
+        case 'D':
+            if (getKey == true){
+                endLevel();
+            }
             break;
 
         case 'L':

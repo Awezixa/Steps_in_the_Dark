@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include "sdl_utils.h"
+#include "Utils/sdl_utils.h"
 #include "map.h"
 #include "player.h"
 #include "box.h"
@@ -41,6 +41,8 @@ static SDL_Texture *environmentalTorchTexture = NULL;
 static SDL_Texture *mistTexture = NULL;
 static SDL_Texture *blockedDoorTexture = NULL;
 static SDL_Texture *torchTexture = NULL;
+static SDL_Texture *bgTexture = NULL;
+static SDL_Texture *logoTexture = NULL;
 
 // functions to render things
 void renderGame(void);
@@ -52,8 +54,11 @@ void renderLevelSelect(void);
 void renderCredits(void);
 void renderOptions(void);
 
+// Other variables
+int opSelected = 0;
 int main(void)
 {
+
     // Initialize SDL Systems.
     window = sdl_initialize_window(APP_NAME, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT);
     renderer = sdl_initialize_renderer(window);
@@ -70,8 +75,9 @@ int main(void)
     mistTexture = sdl_load_texture(renderer, "Assets/mist.png");
     doorTexture = sdl_load_texture(renderer, "Assets/STIDExitDoor.png");
     blockedDoorTexture = sdl_load_texture(renderer, "Assets/STIDBlockedDoor.png");
-    torchTexture = sdl_load_texture(renderer, "Assets/gametorchpixel.png");
-
+    torchTexture = sdl_load_texture(renderer, "Assets/tiletorchpixel.png");
+    bgTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    logoTexture = sdl_load_texture(renderer, "Assets/logoprototype.png");
     // Game loop
     int running = 1;
     const Uint32 FRAME_MS = 16; // ~60 FPS
@@ -89,17 +95,36 @@ int main(void)
             }
             if (event.type == SDL_EVENT_KEY_DOWN)
             {
-                if (event.key.key == SDLK_SPACE)
+                if (gameState() == INITIAL_STATE && event.key.key == SDLK_SPACE)
                 {
                     setGameState(MAIN_MENU);
                 }
-            }
+                if (gameState() == MAIN_MENU)
+                {
+                    // play
+                    if (opSelected == 1 && event.key.key == SDLK_SPACE)
+                    {
+                        setGameState(LEVEL_SELECT);
+                        renderLevelSelect();
+                    }
+                    // options
+                    else if (opSelected == 2 && event.key.key == SDLK_SPACE)
+                    {
+                        
+                    }
+                    // credits
+                    else if (opSelected == 3 && event.key.key == SDLK_SPACE)
+                    {
 
-            if (gameState() == MAIN_MENU)
-            {
-                // play
-                if (event.key.key == SDLK_1)
-                    renderLevelSelect();
+                    }
+                    // exit
+                    else if (opSelected == 4 && event.key.key == SDLK_SPACE)
+                    {
+                        running = 0;
+                    }
+                }
+                if (gameState() == LEVEL_SELECT)
+                {
                     if (event.key.key == SDLK_1)
                     {
                         setGameState(INGAME);
@@ -128,41 +153,46 @@ int main(void)
                         SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
-                // options
-                if (event.key.key == SDLK_2)
+                }
+                
+            }
 
-                // credits
-                if (event.key.key == SDLK_3)
+            
 
-                // exit
-                if (event.key.key == SDLK_4)
-                    {
-                        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-                        SDL_RenderClear(renderer);
-                        showText(renderer, 300, 150, "See you next Time!", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
-                        SDL_RenderPresent(renderer);
-                        running = 0;
-                    }
+            // Menu movement
+            if (event.type == SDL_EVENT_KEY_DOWN && (event.key.key == SDLK_UP || event.key.key == SDLK_W))
+            {
+                opSelected--;
+                if (opSelected < 0)
+                    opSelected = 3;
+            }
+
+            if (event.type == SDL_EVENT_KEY_DOWN && (event.key.key == SDLK_DOWN || event.key.key == SDLK_S))
+            {
+                opSelected++;
+                if (opSelected > 3)
+                    opSelected = 0;
+            }
+
+            if (gameState() == INGAME)
+            {
+                // Player movement
+                if (event.type == SDL_EVENT_KEY_DOWN)
+                {
+                    if (event.key.key == SDLK_W)
+                        movePlayer('W');
+                    if (event.key.key == SDLK_A)
+                        movePlayer('A');
+                    if (event.key.key == SDLK_S)
+                        movePlayer('S');
+                    if (event.key.key == SDLK_D)
+                        movePlayer('D');
+                    if (event.key.key == SDLK_P)
+                        renderPauseScreen();
+                }
+                checkInteraction();
             }
         }
-
-        // Player movement
-        if (gameState() == INGAME)
-        {
-            if (event.key.key == SDLK_W)
-                movePlayer('W');
-            if (event.key.key == SDLK_A)
-                movePlayer('A');
-            if (event.key.key == SDLK_S)
-                movePlayer('S');
-            if (event.key.key == SDLK_D)
-                movePlayer('D');
-        }
-
-
-
-
-
 
         if (gameState() == INITIAL_STATE)
             renderInitialScreen();
@@ -185,29 +215,58 @@ int main(void)
     return 0;
 }
 
+
+
+
+
+
+//functions
+
 void renderInitialScreen(void)
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    showText(renderer, 300, 150, "Press SpaceBar to Start!", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+    SDL_FRect logoRect = {200, 100, 591, 198};
+    SDL_RenderTexture(renderer, logoTexture, NULL, &logoRect);
+
+    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 25)) / 2), 475, "<< PRESS SPACE TO START>>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
 
-
-
-void renderMainMenu()
+void renderMainMenu(void)
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
-    showText(renderer, 100, 300,
-             //  ".▄▄ · ▄▄▄▄▄▄▄▄ . ▄▄▄·.▄▄ ·     ▪   ▐ ▄     ▄▄▄▄▄ ▄ .▄▄▄▄ .    ·▄▄▄▄   ▄▄▄· ▄▄▄  ▄ •▄ "
-             //  "▐█ ▀. •██  ▀▄.▀·▐█ ▄█▐█ ▀.     ██ •█▌▐█    •██  ██▪▐█▀▄.▀·    ██▪ ██ ▐█ ▀█ ▀▄ █·█▌▄▌▪"
-             //  "▄▀▀▀█▄ ▐█.▪▐▀▀▪▄ ██▀·▄▀▀▀█▄    ▐█·▐█▐▐▌     ▐█.▪██▀▐█▐▀▀▪▄    ▐█· ▐█▌▄█▀▀█ ▐▀▀▄ ▐▀▀▄·"
-             //  "▐█▄▪▐█ ▐█▌·▐█▄▄▌▐█▪·•▐█▄▪▐█    ▐█▌██▐█▌     ▐█▌·██▌▐▀▐█▄▄▌    ██. ██ ▐█ ▪▐▌▐█•█▌▐█.█▌"
-             //  " ▀▀▀▀  ▀▀▀  ▀▀▀ .▀    ▀▀▀▀     ▀▀▀▀▀ █▪     ▀▀▀ ▀▀▀ · ▀▀▀     ▀▀▀▀▀•  ▀  ▀ .▀  ▀·▀  ▀"
-             "1. Start Game || 2. Controls || 3. Credits || 4. Exit Select Option: ",
-             (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    SDL_FRect logoRect = {200, 100, 591, 198};
+    SDL_RenderTexture(renderer, bgTexture, NULL, &logoRect);
+
+    // Show Start Game Option
+    if (opSelected == 0)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "-> START GAME", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "   START GAME", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    // Show Select Level Option
+    if (opSelected == 1)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "-> SELECT LEVEL", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "   SELECT LEVEL", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    // Show Options Option
+    if (opSelected == 2)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "-> OPTIONS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "   OPTIONS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    // Show Exit Option
+    if (opSelected == 3)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 200, "-> EXIT", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 200, "   EXIT", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 34)) / 2), 475, "<< PRESS SPACE TO SELECT OPTION >>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
 
@@ -219,7 +278,6 @@ void renderLevelSelect(void)
     showText(renderer, 300, 150, "1. Level 1    2. Level 2      3. Level 3      4. Level 4", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
-
 
 void renderMap()
 {
@@ -237,44 +295,46 @@ void renderMap()
             {
                 SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
             }
-            if(map_get_tile(x, y) == TILE_DOOR){
-                
+            if (map_get_tile(x, y) == TILE_DOOR)
+            {
+
                 SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
             }
-            if(map_get_tile(x, y) == TILE_TRAP){
-                
+            if (map_get_tile(x, y) == TILE_TRAP)
+            {
+
                 SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
             }
-            if(map_get_tile(x, y) == TILE_PRESSUREPLATE){
-                
+            if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+            {
+
                 SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
             }
-            if(map_get_tile(x, y) == TILE_LOCKEDDOOR){
-                
+            if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+            {
+
                 SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
             }
-            if(map_get_tile(x, y) == TILE_KEY){
-                
+            if (map_get_tile(x, y) == TILE_KEY)
+            {
+
                 SDL_RenderTexture(renderer, keyTexture, NULL, &dst_rect);
             }
-            if(map_get_tile(x, y) == TILE_TORCH){
-                
+            if (map_get_tile(x, y) == TILE_TORCH)
+            {
+
                 SDL_RenderTexture(renderer, torchTexture, NULL, &dst_rect);
             }
         }
     }
 }
 
-
-
-
 void renderPlayer()
 {
     // Render the wizard at the player's position
-    SDL_FRect explorer_rect= {TEXTURE_WIDTH * player_get_col(), TEXTURE_WIDTH * player_get_row(), TEXTURE_WIDTH, TEXTURE_HEIGHT};
+    SDL_FRect explorer_rect = {TEXTURE_WIDTH * player_get_col(), TEXTURE_WIDTH * player_get_row(), TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_RenderTexture(renderer, playerTexture, NULL, &explorer_rect);
 }
-
 
 void renderGame(void)
 {
@@ -291,4 +351,37 @@ void renderGame(void)
     SDL_RenderDebugTextFormat(renderer, (float)((APP_WIDTH - (charsize * 46)) / 2), APP_HEIGHT - charsize, "(This program has been running for %" SDL_PRIu64 " seconds.)", SDL_GetTicks() / 1000);
 
     SDL_RenderPresent(renderer); /* put it all on the screen! */
+}
+
+void renderPauseScreen(void)
+{
+    setGameState(PAUSED);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+
+    if (opSelected == 0)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "-> CONTINUE", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "   CONTINUE", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    // Show Select Level Option
+    if (opSelected == 1)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "-> LEVEL SELECT", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "   LEVEL SELECT", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    // Show Options Option
+    if (opSelected == 2)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "-> OPTIONS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "   OPTIONS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    // Show Exit Option
+    if (opSelected == 3)
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 200, "-> EXIT", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+    else
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 200, "   EXIT", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+
+    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 34)) / 2), 475, "<< PRESS SPACE TO SELECT OPTION >>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+    SDL_RenderPresent(renderer);
 }

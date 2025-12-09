@@ -302,3 +302,15 @@ char map_get_tile(int row, int col)
         return TILE_WALL;
     return map[row][col];
 }
+
+
+char map_handlechar(char c, int x, int y)
+{
+    if (c == 'B')
+    {
+        //create_potion(x, y);
+        return 'F';
+    }
+
+    return c;
+}

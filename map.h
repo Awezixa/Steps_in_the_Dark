@@ -27,7 +27,7 @@ void trapPlate();
 void loadMap();
 bool map_in_bounds(int row, int col);
 char map_get_tile(int row, int col);
-
+char map_handlechar(char c, int x, int y);
 
 
 

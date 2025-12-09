@@ -6,6 +6,7 @@
 typedef enum {
     INITIAL_STATE,
     MAIN_MENU,
+    LEVEL_SELECT,
     INGAME,
     FINISHED,
     PAUSED
