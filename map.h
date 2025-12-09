@@ -14,6 +14,7 @@
 #define TILE_KEY 'K'
 #define TILE_PRESSUREPLATE 'P'
 #define TILE_LOCKEDDOOR 'H'
+#define TILE_MIST 'M'
 
 
 extern char map[MAP_ROWS][MAP_COLS];

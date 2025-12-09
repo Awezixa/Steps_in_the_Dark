@@ -5,8 +5,10 @@
 #include "torch.h"
 #include "menu.h"
 #include "box.h"
-#include "cheats.h"
+#include ".\Cheats/cheats.h"
 #include "projectile.h"
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 int stepCount = 0;
 int deathCounter = 0;
@@ -199,7 +201,7 @@ void stepCounter(){
 
 //Xavier
 void playerDeath(){
-    printf("\tYOU DIED 💀"); 
+    
     resetPlayer();
 
     if(isLevelOne == true){

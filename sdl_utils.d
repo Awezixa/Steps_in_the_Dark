@@ -1,2 +1,2 @@
-utils/sdl_utils.o: utils/sdl_utils.c utils/sdl_utils.h
-utils/sdl_utils.h:
+sdl_utils.o: sdl_utils.c sdl_utils.h
+sdl_utils.h:

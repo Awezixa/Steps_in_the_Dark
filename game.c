@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include "Utils/sdl_utils.h"
+#include "sdl_utils.h"
 #include "map.h"
 #include "player.h"
 #include "box.h"
-#include "cheats.h"
+#include "Cheats/cheats.h"
 #include "doorAndKeys.h"
 #include "menu.h"
 #include "projectile.h"
@@ -53,9 +53,11 @@ void renderPauseScreen(void);
 void renderLevelSelect(void);
 void renderCredits(void);
 void renderOptions(void);
+void renderTiles(void);
 
 // Other variables
-int opSelected = 0;
+int opSelected = -1;
+
 int main(void)
 {
 
@@ -93,32 +95,30 @@ int main(void)
             {
                 running = 0;
             }
-            if (event.type == SDL_EVENT_KEY_DOWN)
+            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_SPACE)
             {
-                if (gameState() == INITIAL_STATE && event.key.key == SDLK_SPACE)
+                if (gameState() == INITIAL_STATE)
                 {
                     setGameState(MAIN_MENU);
                 }
                 if (gameState() == MAIN_MENU)
                 {
                     // play
-                    if (opSelected == 1 && event.key.key == SDLK_SPACE)
+                    if (opSelected == 0)
                     {
                         setGameState(LEVEL_SELECT);
                         renderLevelSelect();
                     }
                     // options
-                    else if (opSelected == 2 && event.key.key == SDLK_SPACE)
+                    else if (opSelected == 1)
                     {
-                        
                     }
                     // credits
-                    else if (opSelected == 3 && event.key.key == SDLK_SPACE)
+                    else if (opSelected == 2)
                     {
-
                     }
                     // exit
-                    else if (opSelected == 4 && event.key.key == SDLK_SPACE)
+                    else if (opSelected == 3)
                     {
                         running = 0;
                     }
@@ -154,10 +154,7 @@ int main(void)
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
                 }
-                
             }
-
-            
 
             // Menu movement
             if (event.type == SDL_EVENT_KEY_DOWN && (event.key.key == SDLK_UP || event.key.key == SDLK_W))
@@ -190,7 +187,11 @@ int main(void)
                     if (event.key.key == SDLK_P)
                         renderPauseScreen();
                 }
-                checkInteraction();
+                // checkInteraction();
+                // if (map[player.position_x][player.position_y] == 'T'){
+                //     playerTexture = sdl_load_texture(renderer, "Assets/gamewoodtilebroken.png");
+
+                // }
             }
         }
 
@@ -215,12 +216,7 @@ int main(void)
     return 0;
 }
 
-
-
-
-
-
-//functions
+// functions
 
 void renderInitialScreen(void)
 {
@@ -244,21 +240,21 @@ void renderMainMenu(void)
 
     // Show Start Game Option
     if (opSelected == 0)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "-> START GAME", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "-> PLAY", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "   START GAME", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "   PLAY", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
     // Show Select Level Option
     if (opSelected == 1)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "-> SELECT LEVEL", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "-> OPTIONS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "   SELECT LEVEL", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "   OPTIONS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
     // Show Options Option
     if (opSelected == 2)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "-> OPTIONS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "-> CREDITS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "   OPTIONS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "   CREDITS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
     // Show Exit Option
     if (opSelected == 3)
@@ -285,6 +281,7 @@ void renderMap()
     {
         for (int y = 0; y < MAP_COLS; y++)
         {
+
             SDL_FRect dst_rect = {TEXTURE_WIDTH * y, TEXTURE_HEIGHT * x, TEXTURE_WIDTH, TEXTURE_HEIGHT};
 
             if (map_get_tile(x, y) == TILE_FLOOR)
@@ -324,6 +321,11 @@ void renderMap()
             {
 
                 SDL_RenderTexture(renderer, torchTexture, NULL, &dst_rect);
+            }
+            if (map_get_tile(x, y) == TILE_MIST)
+            {
+
+                SDL_RenderTexture(renderer, bgTexture, NULL, &dst_rect);
             }
         }
     }
@@ -385,3 +387,4 @@ void renderPauseScreen(void)
     showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 34)) / 2), 475, "<< PRESS SPACE TO SELECT OPTION >>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
+

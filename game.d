@@ -1,10 +1,10 @@
-game.o: game.c Utils/sdl_utils.h map.h player.h box.h cheats.h \
+game.o: game.c sdl_utils.h map.h player.h box.h Cheats/cheats.h \
  doorAndKeys.h menu.h projectile.h torch.h gamestate.h
-Utils/sdl_utils.h:
+sdl_utils.h:
 map.h:
 player.h:
 box.h:
-cheats.h:
+Cheats/cheats.h:
 doorAndKeys.h:
 menu.h:
 projectile.h:

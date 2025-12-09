@@ -4,7 +4,7 @@
 #include "box.h"
 #include "torch.h"
 #include "menu.h"
-#include "cheats.h"
+#include "Cheats/cheats.h"
 #include "projectile.h"
 #include "doorAndKeys.h"
 
