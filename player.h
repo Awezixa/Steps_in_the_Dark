@@ -32,6 +32,8 @@ void sanityDisplay();
 void printInventory();
 void resetPlayer();
 void playerSoundInitialization();
+void player_print_stats(void);
+
 
 
 

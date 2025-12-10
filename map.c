@@ -8,6 +8,7 @@
 #include "projectile.h"
 #include "doorAndKeys.h"
 
+
 char map[MAP_ROWS][MAP_COLS];
 
 // Xavier & Pedro
@@ -111,7 +112,11 @@ void printMap()
                 }
 
                 // play vision radius dim
-                else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel > 5))
+                else if (((x == player.position_x + 1 && y == player.position_y)
+            || (x == player.position_x - 1 && y == player.position_y)
+            || (x == player.position_x && y == player.position_y + 1)
+            || (x == player.position_x && y == player.position_y - 1))
+            && (torchLevel > 5))
                 {
                     if (x == box1.position_x && y == box1.position_y)
                         printf("📦");
@@ -145,7 +150,15 @@ void printMap()
                     printf("📦");
                 else if (x == WIP.position_x && y == WIP.position_y && WIP.collected == false)
                     printf("💣");
-                else if ((map[x][y] == 'L') || (x > 0 && map[x - 1][y] == 'L') || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L') || (y > 0 && map[x][y - 1] == 'L') || (y < MAP_COLS - 1 && map[x][y + 1] == 'L') || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L') || (x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L') || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L'))
+                else if ((map[x][y] == 'L')
+                || (x > 0 && map[x - 1][y] == 'L')
+            || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L')
+            || (y > 0 && map[x][y - 1] == 'L')
+            || (y < MAP_COLS - 1 && map[x][y + 1] == 'L')
+            || (x > 0 && y > 0 && map[x - 1][y - 1] == 'L')
+            || (x > 0 && y < MAP_COLS - 1 && map[x - 1][y + 1] == 'L') 
+            || (x < MAP_ROWS - 1 && y > 0 && map[x + 1][y - 1] == 'L')
+            || (x < MAP_ROWS - 1 && y < MAP_COLS - 1 && map[x + 1][y + 1] == 'L'))
                 {
                     if (map[x][y] == 'X')
                         printf("🟫");
@@ -299,7 +312,25 @@ void loadMap(const char *filename)
 }
 
 
+char readMap(const char *filename){
+    FILE *file = fopen(filename, "r");
 
+    if (file == NULL)
+    {
+        printf("Failed to open map file");
+    }
+
+    for (int row = 0; row < MAP_ROWS; row++)
+    {
+        for (int col = 0; col < MAP_COLS; col++)
+        {
+            int ch = fgetc(file);
+            return ch;
+        }
+    }
+    
+    fclose(file);
+}
 
 
 bool map_in_bounds(int row, int col)

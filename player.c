@@ -23,7 +23,6 @@ bool isLevelFour = false;
 static Sound deathSound;
 static Sound torchInteractSound;
 static Sound getKeySound;
-static Sound blockedDoorUnlocked;
 
 
 struct Player player = {16, 1, false};

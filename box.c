@@ -75,6 +75,9 @@ void pressurePlate(){
         printf("The Locked Doors have been Unlocked!");
         plateActivated();
     }
+    else{
+        
+    }
 }
 
 void plateActivated(){
@@ -85,4 +88,14 @@ void plateActivated(){
             }
     }
 }
+}
+
+int box_get_row(void)
+{
+    return box1.position_x;
+}
+
+int box_get_col(void)
+{
+    return box1.position_y;
 }
