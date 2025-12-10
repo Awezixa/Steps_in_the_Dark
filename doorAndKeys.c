@@ -9,7 +9,7 @@ bool getKey = false;
 void collectKey() {
     if(map[player.position_x][player.position_y] == 'K') {
         getKey = true;
-        map[player.position_x][player.position_y] = 'X';
+        map[player.position_x][player.position_y] = 'Z';
  
     }
 }

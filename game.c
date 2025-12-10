@@ -44,6 +44,9 @@ static SDL_Texture *torchTexture = NULL;
 static SDL_Texture *bgTexture = NULL;
 static SDL_Texture *logoTexture = NULL;
 
+static Sound menuMusic;
+static Sound playerWalk;
+
 // functions to render things
 void renderGame(void);
 void renderMainMenu(void);
@@ -54,6 +57,8 @@ void renderLevelSelect(void);
 void renderCredits(void);
 void renderOptions(void);
 void renderTiles(void);
+void renderPlayerVision(void);
+void turnMist(void);
 
 // Other variables
 int opSelected = -1;
@@ -80,6 +85,12 @@ int main(void)
     torchTexture = sdl_load_texture(renderer, "Assets/tiletorchpixel.png");
     bgTexture = sdl_load_texture(renderer, "Assets/mist.png");
     logoTexture = sdl_load_texture(renderer, "Assets/logoprototype.png");
+    
+    // Sound Initialization
+    init_sound("Assets/Sounds/MenuMusic.wav", &menuMusic);
+    init_sound("Assets/Sounds/PlayerWalk.wav", &playerWalk);
+    init_sound("Assets/Sounds/blockedDoorUnlocked.wav", &blockedDoorUnlocked);
+
     // Game loop
     int running = 1;
     const Uint32 FRAME_MS = 16; // ~60 FPS
@@ -95,19 +106,24 @@ int main(void)
             {
                 running = 0;
             }
-            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_SPACE)
+            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_SPACE || event.key.key == SDLK_KP_ENTER)
             {
                 if (gameState() == INITIAL_STATE)
                 {
                     setGameState(MAIN_MENU);
+                    playSound(&menuMusic);
                 }
                 if (gameState() == MAIN_MENU)
                 {
                     // play
                     if (opSelected == 0)
                     {
-                        setGameState(LEVEL_SELECT);
-                        renderLevelSelect();
+                        // setGameState(LEVEL_SELECT);
+                        playerSoundInitialization();
+                        setGameState(INGAME);
+                        loadMap("Maps/map1.txt");
+                        SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                        SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
                     // options
                     else if (opSelected == 1)
@@ -125,28 +141,28 @@ int main(void)
                 }
                 if (gameState() == LEVEL_SELECT)
                 {
-                    if (event.key.key == SDLK_1)
+                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_1)
                     {
                         setGameState(INGAME);
                         loadMap("Environment/Maps/map1.txt");
                         SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
-                    if (event.key.key == SDLK_2)
+                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_2)
                     {
                         setGameState(INGAME);
                         loadMap("Environment/Maps/map2.txt");
                         SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
-                    if (event.key.key == SDLK_3)
+                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_3)
                     {
                         setGameState(INGAME);
                         loadMap("Environment/Maps/map3.txt");
                         SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
-                    if (event.key.key == SDLK_4)
+                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_4)
                     {
                         setGameState(INGAME);
                         loadMap("Environment/Maps/map4.txt");
@@ -178,29 +194,67 @@ int main(void)
                 {
                     if (event.key.key == SDLK_W)
                         movePlayer('W');
+                        playSound(&playerWalk);
                     if (event.key.key == SDLK_A)
                         movePlayer('A');
+                        playSound(&playerWalk);
                     if (event.key.key == SDLK_S)
                         movePlayer('S');
+                        playSound(&playerWalk);
                     if (event.key.key == SDLK_D)
                         movePlayer('D');
+                        playSound(&playerWalk);
                     if (event.key.key == SDLK_P)
-                        renderPauseScreen();
+                    {
+                        setGameState(PAUSED);
+                    }
                 }
-                // checkInteraction();
+
+                checkInteraction();
                 // if (map[player.position_x][player.position_y] == 'T'){
                 //     playerTexture = sdl_load_texture(renderer, "Assets/gamewoodtilebroken.png");
 
                 // }
+                // Temporary Sound Fix
             }
         }
-
         if (gameState() == INITIAL_STATE)
             renderInitialScreen();
         if (gameState() == MAIN_MENU)
             renderMainMenu();
+        if (gameState() == LEVEL_SELECT)
+        {
+            renderLevelSelect();
+        }
         if (gameState() == INGAME)
             renderGame();
+        if (gameState() == PAUSED)
+        {
+            renderPauseScreen();
+            //continue
+            if (opSelected == 0)
+            {
+                setGameState(INGAME);
+                loadMap("Maps/map1.txt");
+                SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+            }
+            // level select
+            else if (opSelected == 1)
+            {
+                renderLevelSelect();
+            }
+            // credits
+            else if (opSelected == 2)
+            {
+            }
+            // exit
+            else if (opSelected == 3)
+            {
+                running = 0;
+            }
+        }
+
         // if (gameState() == FINISHED)
         // renderGameFinished();
 
@@ -357,7 +411,6 @@ void renderGame(void)
 
 void renderPauseScreen(void)
 {
-    setGameState(PAUSED);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
@@ -388,3 +441,38 @@ void renderPauseScreen(void)
     SDL_RenderPresent(renderer);
 }
 
+void renderPlayerVision(){
+    for (int x = 0; x < MAP_ROWS; x++)
+        {
+            for (int y = 0; y < MAP_COLS; y++)
+            {
+                if(!((x == player.position_x + 1 && y == player.position_y)
+                || (x == player.position_x - 1 && y == player.position_y)
+                || (x == player.position_x && y == player.position_y + 1)
+                || (x == player.position_x && y == player.position_y - 1)
+                || (x == player.position_x - 2 && y == player.position_y)
+                || (x == player.position_x + 2 && y == player.position_y)
+                || (x == player.position_x && y == player.position_y - 2)
+                || (x == player.position_x && y == player.position_y + 2)
+                || (x == player.position_x + 1 && y == player.position_y + 1)
+                || (x == player.position_x - 1 && y == player.position_y + 1)
+                || (x == player.position_x + 1 && y == player.position_y - 1)
+                || (x == player.position_x - 1 && y == player.position_y - 1)) 
+                && (torchLevel > 10)){
+                    turnMist();
+                }
+}   
+        }
+        }
+
+void turnMist(){
+    floorTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    wallTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    keyTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    trapTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    pressurePlateTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    mistTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    doorTexture = sdl_load_texture(renderer, "Assets/mist.png");
+    blockedDoorTexture = sdl_load_texture(renderer, "Assets/mist.png");
+
+}

@@ -9,6 +9,7 @@
 #include "projectile.h"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include "Utils/sdl_utils.h" 
 
 int stepCount = 0;
 int deathCounter = 0;
@@ -19,7 +20,22 @@ bool isLevelTwo = false;
 bool isLevelThree = false;
 bool isLevelFour = false;
 
-struct Player player = {16, 1};
+static Sound deathSound;
+static Sound torchInteractSound;
+static Sound getKeySound;
+static Sound blockedDoorUnlocked;
+
+
+struct Player player = {16, 1, false};
+
+//Sound Initialization
+void playerSoundInitialization(){
+ init_sound("Assets/Sounds/DeathSound.wav", &deathSound);
+ init_sound("Assets/Sounds/TorchInteract.wav", &torchInteractSound);
+ init_sound("Assets/Sounds/GetKeySound.wav", &getKeySound);
+ 
+}
+
 
 // Trent & Xavier
 void movePlayer(char dir)
@@ -36,6 +52,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+            
             player.position_x--;
             stepCounter();
         }
@@ -47,6 +64,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+            
             player.position_x--;
             stepCounter();
         }}
@@ -61,6 +79,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+            
             player.position_y--;
             stepCounter();     
         }}
@@ -71,6 +90,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+        
             player.position_y--;
             stepCounter();
         }}
@@ -201,8 +221,9 @@ void stepCounter(){
 
 //Xavier
 void playerDeath(){
-    
+    playSound(&deathSound);
     resetPlayer();
+
 
     if(isLevelOne == true){
     box1.position_x = 8;
@@ -224,6 +245,7 @@ void playerDeath(){
     }    
     box1.beingGrabbed = false;
     playerDeathCounter();
+    
 }
 
 // Trent
@@ -236,6 +258,7 @@ void checkInteraction(){
 
         case 'K':
             collectKey();
+            playSound(&getKeySound);
             break;
 
         case 'D':
@@ -246,6 +269,7 @@ void checkInteraction(){
 
         case 'L':
             torchInteract();
+            playSound(&torchInteractSound);
             break;
     }
     
@@ -307,6 +331,7 @@ void printInventory(){
 
 //Xavier
 void resetPlayer(){
+ 
     player.position_x = 16;
     player.position_y = 1;
     stepCount = 0;

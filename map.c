@@ -69,7 +69,19 @@ void printMap()
                 }
 
                 // player defualt vision radius
-                if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x - 2 && y == player.position_y) || (x == player.position_x + 2 && y == player.position_y) || (x == player.position_x && y == player.position_y - 2) || (x == player.position_x && y == player.position_y + 2) || (x == player.position_x + 1 && y == player.position_y + 1) || (x == player.position_x - 1 && y == player.position_y + 1) || (x == player.position_x + 1 && y == player.position_y - 1) || (x == player.position_x - 1 && y == player.position_y - 1)) && (torchLevel > 10))
+                if (((x == player.position_x + 1 && y == player.position_y)
+                || (x == player.position_x - 1 && y == player.position_y)
+                || (x == player.position_x && y == player.position_y + 1)
+                || (x == player.position_x && y == player.position_y - 1)
+                || (x == player.position_x - 2 && y == player.position_y)
+                || (x == player.position_x + 2 && y == player.position_y)
+                || (x == player.position_x && y == player.position_y - 2)
+                || (x == player.position_x && y == player.position_y + 2)
+                || (x == player.position_x + 1 && y == player.position_y + 1)
+                || (x == player.position_x - 1 && y == player.position_y + 1)
+                || (x == player.position_x + 1 && y == player.position_y - 1)
+                || (x == player.position_x - 1 && y == player.position_y - 1)) 
+                && (torchLevel > 10))
                 {
                     if (x == box1.position_x && y == box1.position_y)
                         printf("📦");

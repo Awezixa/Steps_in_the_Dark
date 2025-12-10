@@ -6,9 +6,11 @@ extern int stepCount;
 extern int deathCounter;
 extern char playerName[1000];
 
+
 struct Player {
     int position_x;
     int position_y;
+    bool isDead;
 };
 
 
@@ -29,10 +31,13 @@ void choosePlayerName();
 void sanityDisplay();
 void printInventory();
 void resetPlayer();
+void playerSoundInitialization();
+
 
 
 int player_get_row(void);
 int player_get_col(void);
+
 
 
 #endif 
