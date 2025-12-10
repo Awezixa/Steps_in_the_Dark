@@ -29,7 +29,8 @@ void loadMap();
 bool map_in_bounds(int row, int col);
 char map_get_tile(int row, int col);
 char map_handlechar(char c, int x, int y);
-char readMap();
+bool maxRadius(int x, int y);
+bool minRadius(int x, int y);
 
 
 #endif 

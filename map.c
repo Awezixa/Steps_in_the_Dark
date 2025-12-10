@@ -357,3 +357,27 @@ char map_handlechar(char c, int x, int y)
 
     return c;
 }
+
+ bool maxRadius(int x, int y){
+    return
+        (x == player.position_x + 1 && y == player.position_y) ||
+        (x == player.position_x - 1 && y == player.position_y) ||
+        (x == player.position_x && y == player.position_y + 1) ||
+        (x == player.position_x && y == player.position_y - 1) ||
+        (x == player.position_x + 1 && y == player.position_y + 1) ||
+        (x == player.position_x - 1 && y == player.position_y + 1) ||
+        (x == player.position_x + 1 && y == player.position_y - 1) ||
+        (x == player.position_x - 1 && y == player.position_y - 1) ||
+        (x == player.position_x + 2 && y == player.position_y) ||
+        (x == player.position_x - 2 && y == player.position_y) ||
+        (x == player.position_x && y == player.position_y + 2) ||
+        (x == player.position_x && y == player.position_y - 2);
+}
+
+bool minRadius(int x, int y){
+    return
+        (x == player.position_x + 1 && y == player.position_y) ||
+        (x == player.position_x - 1 && y == player.position_y) ||
+        (x == player.position_x && y == player.position_y + 1) ||
+        (x == player.position_x && y == player.position_y - 1);
+}
