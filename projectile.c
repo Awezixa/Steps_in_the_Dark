@@ -187,3 +187,10 @@ void projDim(){
      
     }
 }
+
+int proj_get_row(void){
+    return WIP.position_x;
+}
+int proj_get_col(void){
+    return WIP.position_y;
+}

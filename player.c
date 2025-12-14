@@ -208,13 +208,14 @@ bool isTileWalkable(char t){
 
 
 //Xaiver & Trent 
-void stepCounter(){
-    stepCount++;
+int stepCounter(void){
+    stepCount+=1;
     projDim();
     if( torchLevel > 0 )
     {
         torchDim();
     }
+    return stepCount;
 }
 
 

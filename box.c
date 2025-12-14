@@ -4,90 +4,92 @@
 #include "box.h"
 #include "menu.h"
 
-
 struct Box box1 = {8, 10, false, 0};
-
 
 void moveBox()
 {
-    if (!box1.beingGrabbed) return;
+    if (!box1.beingGrabbed)
+        return;
 
-    
     // 0 = left | 1 = up | 2 = right | 3 down
- 
-    if (box1.direction == 1 ) {
-          
-            box1.position_x= player.position_x + 1;
-            box1.position_y = player.position_y;
-    }else if (box1.direction == 3 ) {
-           
-            box1.position_x = player.position_x - 1;
-            box1.position_y = player.position_y;
-    }else if (box1.direction == 0 ) {
-       
-            box1.position_x = player.position_x;
-            box1.position_y = player.position_y - 1;
-    }else {
-        // is 2 here. everything else failed.
-       
-            box1.position_x = player.position_x;
-            box1.position_y = player.position_y + 1;
-    }
 
+    if (box1.direction == 1)
+    {
+
+        box1.position_x = player.position_x + 1;
+        box1.position_y = player.position_y;
+    }
+    else if (box1.direction == 3)
+    {
+
+        box1.position_x = player.position_x - 1;
+        box1.position_y = player.position_y;
+    }
+    else if (box1.direction == 0)
+    {
+
+        box1.position_x = player.position_x;
+        box1.position_y = player.position_y - 1;
+    }
+    else
+    {
+        // is 2 here. everything else failed.
+
+        box1.position_x = player.position_x;
+        box1.position_y = player.position_y + 1;
+    }
 }
 
-void grabBox(){
+void grabBox()
+{
     // We need to check if the player is close to the box.
     if (box1.beingGrabbed)
         box1.beingGrabbed = false;
-    else {
-
-        // 0 = left | 1 = up | 2 = right | 3 down
-        if (player.position_x + 1 == box1.position_x && player.position_y == box1.position_y) {
-               
-                    box1.direction = 1;
-                    box1.beingGrabbed = true;
-                
-            } else if (player.position_x - 1 == box1.position_x && player.position_y == box1.position_y) {
-               
-                    box1.direction = 3;
-                    box1.beingGrabbed = true;
-                
-            } else if (player.position_y - 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y - 1 == box1.position_y) {
-              
-                    box1.direction = 0;
-                    box1.beingGrabbed = true;
-                
-            } else if (player.position_y + 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y + 1 == box1.position_y) {
-               
-
-                box1.direction = 2;
-                box1.beingGrabbed = true;
-                
-            }
+    // 0 = left | 1 = up | 2 = right | 3 down
+    if (player.position_x + 1 == box1.position_x && player.position_y == box1.position_y)
+    {
+        box1.direction = 1;
+        box1.beingGrabbed = true;
     }
-
+    else if (player.position_x - 1 == box1.position_x && player.position_y == box1.position_y)
+    {
+        box1.direction = 3;
+        box1.beingGrabbed = true;
+    }
+    else if (player.position_y - 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y - 1 == box1.position_y)
+    {
+        box1.direction = 0;
+        box1.beingGrabbed = true;
+    }
+    else if (player.position_y + 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y + 1 == box1.position_y)
+    {
+        box1.direction = 2;
+        box1.beingGrabbed = true;
+    }
 }
 
 
-void pressurePlate(){
-    if (map[box1.position_x][box1.position_y] == 'P'){
+void pressurePlate()
+{
+    if (map[box1.position_x][box1.position_y] == 'P')
+    {
         printf("The Locked Doors have been Unlocked!");
         plateActivated();
     }
-    else{
-        
-    }
 }
 
-void plateActivated(){
-    for (int x = 0; x < MAP_ROWS; x++){
-        for (int y = 0; y < MAP_COLS; y++){
-            if (map[x][y] == 'H'){
+void plateActivated()
+{
+    for (int x = 0; x < MAP_ROWS; x++)
+    {
+        for (int y = 0; y < MAP_COLS; y++)
+        {
+            if (map[x][y] == 'H')
+            {
                 (map[x][y] = 'Z');
             }
+        }
     }
-}
 }
 
 int box_get_row(void)

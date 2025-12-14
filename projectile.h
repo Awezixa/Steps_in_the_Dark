@@ -19,7 +19,8 @@ void throwProjectile();
 void collectProjectile();
 void WIPDisplay();
 void projDim();
-
+int proj_get_row(void);
+int proj_get_col(void);
 
 
 

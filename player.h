@@ -20,7 +20,7 @@ extern struct Player player;
 void PlayerFunction();
 void movePlayer(char dir);
 void playerCollectItems(void);
-void stepCounter();
+int stepCounter(void);
 char readUserInput();
 void printInventory();
 bool isTileWalkable(char t);
