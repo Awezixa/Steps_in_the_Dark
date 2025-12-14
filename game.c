@@ -87,7 +87,7 @@ int main(void)
     torchTexture = sdl_load_texture(renderer, "Assets/tiletorchpixel.png");
     bgTexture = sdl_load_texture(renderer, "Assets/mist.png");
     logoTexture = sdl_load_texture(renderer, "Assets/logoprototype.png");
-    projTexture = sdl_load_texture(renderer, "Assets/gametorchleft.png");
+    projTexture = sdl_load_texture(renderer, "Assets/STIDFlashBombTile.png");
 
     // Sound Initialization
     init_sound("Assets/Sounds/MenuMusic.wav", &menuMusic);
@@ -124,7 +124,7 @@ int main(void)
                         playerSoundInitialization();
                         setGameState(INGAME);
                         stopSound(&menuMusic);
-                        loadMap("Maps/map4.txt");
+                        loadMap("Maps/map1.txt");
                         SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
