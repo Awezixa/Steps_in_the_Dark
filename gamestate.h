@@ -8,6 +8,8 @@ typedef enum {
     MAIN_MENU,
     LEVEL_SELECT,
     INGAME,
+    CREDITS,
+    OPTIONS,
     FINISHED,
     PAUSED
 } GameState;

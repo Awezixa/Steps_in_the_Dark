@@ -280,6 +280,11 @@ void trapPlate()
 // Xavier with Cesar's help
 void loadMap(const char *filename)
 {
+    // char extension[] = '.txt';
+    // char levelTens[3];
+    // sprintf(levelTens, "%d", levelSelect);
+    // char filename[32];
+    // sprintf(filename, "Maps/map%s%s", levelTens, extension);
 
     FILE *file = fopen(filename, "r");
 

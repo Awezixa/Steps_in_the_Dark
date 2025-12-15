@@ -7,6 +7,7 @@
 #include "box.h"
 #include "projectile.h"
 #include "Utils/sdl_utils.h"
+#include "gamestate.h"
 
 
 
@@ -119,7 +120,7 @@ void endLevel(){
     box1.beingGrabbed = false;
     getKey = false;
     thrown = false;
-    levelSelect();
+    setGameState(LEVEL_SELECT);
  }
 
 

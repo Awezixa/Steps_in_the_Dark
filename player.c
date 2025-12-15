@@ -19,7 +19,6 @@ bool isLevelOne = false;
 bool isLevelTwo = false;
 bool isLevelThree = false;
 bool isLevelFour = false;
-
 static Sound deathSound;
 static Sound torchInteractSound;
 static Sound getKeySound;
@@ -149,7 +148,7 @@ void movePlayer(char dir)
     case 'E':
     case 'e':
         grabBox();
-        collectProjectile();
+    
         break;
     case 'T':
     case 't':
@@ -225,11 +224,7 @@ void playerDeath(){
     resetPlayer();
 
 
-    if(isLevelOne == true){
-    box1.position_x = 8;
-    box1.position_y = 10;
-    }
-
+    
     if(isLevelTwo == true){
     box1.position_x = 8;
     box1.position_y = 10;
@@ -332,6 +327,10 @@ void printInventory(){
 //Xavier
 void resetPlayer(){
  
+
+    box1.position_x = 8;
+    box1.position_y = 10;
+    map[1][1] = 'K';
     player.position_x = 16;
     player.position_y = 1;
     stepCount = 0;
@@ -339,6 +338,7 @@ void resetPlayer(){
     getKey = false;
     WIP.collected = false;
     WIP.projectileLevel = 15;
+    activated = false;
 }
 
 

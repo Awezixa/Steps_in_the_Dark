@@ -3,8 +3,10 @@
 #include "map.h"
 #include "box.h"
 #include "menu.h"
+#include "utils/sdl_utils.h"
 
 struct Box box1 = {8, 10, false, 0};
+bool activated = false;
 
 void moveBox()
 {
@@ -12,7 +14,7 @@ void moveBox()
         return;
 
     // 0 = left | 1 = up | 2 = right | 3 down
-
+    if (box1.beingGrabbed){
     if (box1.direction == 1)
     {
 
@@ -38,6 +40,7 @@ void moveBox()
         box1.position_x = player.position_x;
         box1.position_y = player.position_y + 1;
     }
+    }
 }
 
 void grabBox()
@@ -45,6 +48,7 @@ void grabBox()
     // We need to check if the player is close to the box.
     if (box1.beingGrabbed)
         box1.beingGrabbed = false;
+    
     // 0 = left | 1 = up | 2 = right | 3 down
     if (player.position_x + 1 == box1.position_x && player.position_y == box1.position_y)
     {
@@ -76,6 +80,10 @@ void pressurePlate()
         printf("The Locked Doors have been Unlocked!");
         plateActivated();
     }
+    else{
+        activated = false;
+
+    }
 }
 
 void plateActivated()
@@ -86,6 +94,7 @@ void plateActivated()
         {
             if (map[x][y] == 'H')
             {
+                activated = true;
                 (map[x][y] = 'Z');
             }
         }

@@ -9,6 +9,7 @@ struct Box {
     int direction; // 0 = left | 1 = up | 2 = right | 3 down
 };
 
+extern bool activated;
 extern struct Box box1;
 
 void moveBox();

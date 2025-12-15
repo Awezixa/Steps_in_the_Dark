@@ -7,6 +7,7 @@
 
 struct projectile WIP = {6, 10, false, 0, 15};
 bool thrown = false;
+
 /*
 features:
 
@@ -19,35 +20,15 @@ features:
 
 //Xavier
 void collectProjectile(){
-   if (WIP.collected)
-        WIP.collected = false;
-    else {
 
-        // 0 = left | 1 = up | 2 = right | 3 down
-        if (player.position_x + 1 == WIP.position_x && player.position_y == WIP.position_y) {
-                    WIP.direction = 1;
-                    WIP.collected = true;
-                    map[WIP.position_x][WIP.position_y] = 'Z';
-            } 
-            else if (player.position_x - 1 == WIP.position_x && player.position_y == WIP.position_y) {
-               
-                    WIP.direction = 3;
-                    WIP.collected = true;
-                    map[WIP.position_x][WIP.position_y] = 'Z';   
-            } 
-            else if (player.position_y - 1 < MAP_ROWS && player.position_x == WIP.position_x && player.position_y - 1 == WIP.position_y) {
-                    WIP.direction = 0;
-                    WIP.collected = true;
-                    map[WIP.position_x][WIP.position_y] = 'Z';
-            } 
-            else if (player.position_y + 1 < MAP_ROWS && player.position_x == WIP.position_x && player.position_y + 1 == WIP.position_y) {
-                WIP.direction = 2;
-                WIP.collected = true;
-                map[WIP.position_x][WIP.position_y] = 'Z';
-                
-            }
+        if(player.position_x == WIP.position_x && player.position_y == WIP.position_y)
+        {
+            WIP.collected = true;
+
+        }
+        //0 = left | 1 = up | 2 = right | 3 down
     } 
-}
+
 
 
 

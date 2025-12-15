@@ -44,10 +44,13 @@ static SDL_Texture *torchTexture = NULL;
 static SDL_Texture *bgTexture = NULL;
 static SDL_Texture *logoTexture = NULL;
 static SDL_Texture *projTexture = NULL;
+static SDL_Texture *uniLogo = NULL;
 
 static Sound menuMusic;
 static Sound playerWalk;
 static Sound blockedDoorUnlocked;
+
+// Pedro's Frankenstein Contraption
 
 // functions to render things
 void renderGame(void);
@@ -60,9 +63,9 @@ void renderCredits(void);
 void renderOptions(void);
 void renderTiles(void);
 void renderBox(void);
-void renderProjecetile(void);
-void renderCredits(void);
+void renderProjectile(void);
 void renderOptions(void);
+void renderProjRadius(void);
 
 // Other variables
 int opSelected = -1;
@@ -90,6 +93,7 @@ int main(void)
     bgTexture = sdl_load_texture(renderer, "Assets/mist.png");
     logoTexture = sdl_load_texture(renderer, "Assets/logoprototype.png");
     projTexture = sdl_load_texture(renderer, "Assets/STIDFlashBombTile.png");
+    uniLogo = sdl_load_texture(renderer, "Assets/IADElogo.jpg");
 
     // Sound Initialization
     init_sound("Assets/Sounds/MenuMusic.wav", &menuMusic);
@@ -110,7 +114,7 @@ int main(void)
             {
                 running = 0;
             }
-            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_SPACE || event.key.key == SDLK_KP_ENTER)
+            if (event.type == SDL_EVENT_KEY_DOWN && (event.key.key == SDLK_SPACE || event.key.key == SDLK_KP_ENTER))
             {
                 if (gameState() == INITIAL_STATE)
                 {
@@ -122,23 +126,24 @@ int main(void)
                     // play
                     if (opSelected == 0)
                     {
-                        setGameState(LEVEL_SELECT);
+                        //setGameState(LEVEL_SELECT);
                         playerSoundInitialization();
                         setGameState(INGAME);
                         stopSound(&menuMusic);
-                        loadMap("Maps/map1.txt");
+                        loadMap("Maps/map4.txt");
                         SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                         SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
                     // options
                     else if (opSelected == 1)
                     {
-                        renderOptions();
+                        // renderOptions();
                     }
                     // credits
                     else if (opSelected == 2)
                     {
-                        renderCredits();
+                        setGameState(CREDITS);
+                        // renderCredits();
                     }
                     // exit
                     else if (opSelected == 3)
@@ -146,39 +151,39 @@ int main(void)
                         running = 0;
                     }
                 }
-                if (gameState() == LEVEL_SELECT)
+            } 
+            if (event.type == SDL_EVENT_KEY_DOWN && gameState() == LEVEL_SELECT)
+            {
+                switch (event.key.key)
                 {
-                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_1)
-                    {
-                        setGameState(INGAME);
-                        loadMap("Environment/Maps/map1.txt");
-                        SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
-                        SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
-                    }
-                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_2)
-                    {
-                        setGameState(INGAME);
-                        loadMap("Environment/Maps/map2.txt");
-                        SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
-                        SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
-                    }
-                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_3)
-                    {
-                        setGameState(INGAME);
-                        loadMap("Environment/Maps/map3.txt");
-                        SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
-                        SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
-                    }
-                    if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_4)
-                    {
-                        setGameState(INGAME);
-                        loadMap("Environment/Maps/map4.txt");
-                        SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
-                        SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
-                    }
+                case SDLK_1: 
+                    setGameState(INGAME);
+                    loadMap("Environment/Maps/map1.txt");
+                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+                    break;
+                case SDLK_2:
+                    setGameState(INGAME);
+                    loadMap("Environment/Maps/map2.txt");
+                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+                    break;
+                case SDLK_3:
+                    setGameState(INGAME);
+                    loadMap("Environment/Maps/map3.txt");
+                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+                    break;
+                case SDLK_4:
+                    setGameState(INGAME);
+                    loadMap("Environment/Maps/map4.txt");
+                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+                    break;
+                default:
+                    break;
                 }
             }
-
             // Menu movement
             if (event.type == SDL_EVENT_KEY_DOWN && (event.key.key == SDLK_UP || event.key.key == SDLK_W))
             {
@@ -207,13 +212,12 @@ int main(void)
                 // level select
                 else if (opSelected == 1 && event.key.key == SDLK_SPACE)
                 {
-                    SDL_Log("Level Select");
                     setGameState(LEVEL_SELECT);
                 }
                 // options
                 else if (opSelected == 2 && event.key.key == SDLK_SPACE)
                 {
-                    renderOptions();
+                    // renderOptions();
                 }
                 // exit
                 else if (opSelected == 3 && event.key.key == SDLK_SPACE)
@@ -225,6 +229,15 @@ int main(void)
             if (gameState() == INGAME)
             {
                 checkInteraction();
+                moveBox();
+                pressurePlate();
+                collectProjectile();
+                if (activated == true)
+                {
+                    playSound(&blockedDoorUnlocked);
+                }
+                stopSound(&blockedDoorUnlocked);
+
                 if (torchLevel == 0)
                 {
                     playerDeath();
@@ -236,27 +249,46 @@ int main(void)
                     {
                     case SDLK_W:
                         movePlayer('W');
+                        //  if(box1.beingGrabbed == true){
+                        //   playSound(&boxPush);
+                        //   }else{
                         playSound(&playerWalk);
+                        WIP.direction = 3;
+                        //}
                         break;
                     case SDLK_A:
                         movePlayer('A');
                         playSound(&playerWalk);
+                        WIP.direction = 0;
                         break;
                     case SDLK_S:
                         movePlayer('S');
                         playSound(&playerWalk);
+                        WIP.direction = 1;
                         break;
                     case SDLK_D:
                         movePlayer('D');
                         playSound(&playerWalk);
+                        WIP.direction = 2;
                         break;
                     case SDLK_E:
-                        grabBox();
+                        if (box1.beingGrabbed == true)
+                        {
+                            box1.beingGrabbed = false;
+                        }
+                        else
+                        {
+                            movePlayer('E');
+                        }
+                        break;
+                    case SDLK_T:
+                        movePlayer('T');
                         break;
                     case SDLK_P:
                         setGameState(PAUSED);
                         opSelected = 4;
                         break;
+                        // cheats
 
                     default:
                         break;
@@ -275,14 +307,25 @@ int main(void)
         if (gameState() == MAIN_MENU)
             renderMainMenu();
         if (gameState() == LEVEL_SELECT)
-        {
             renderLevelSelect();
-        }
         if (gameState() == INGAME)
-            renderGame();
-        if (gameState() == PAUSED)
         {
+            renderGame();
+            stopSound(&menuMusic);
+        }
+        if (gameState() == PAUSED)
             renderPauseScreen();
+        if (gameState() == CREDITS)
+        {
+            renderCredits();
+            // if(event.key.key == SDLK_ESCAPE){
+            //     setGameState(MAIN_MENU);
+            // }
+        }
+
+        if (gameState() == OPTIONS)
+        {
+            // renderoptions();
         }
 
         // if (gameState() == FINISHED)
@@ -317,11 +360,22 @@ void renderBox()
     SDL_RenderTexture(renderer, boxTexture, NULL, &box_rect);
 }
 
-void renderProjecetile()
+void renderProjectile()
 {
     // Render the wizard at the boxes position
     SDL_FRect proj_rect = {TEXTURE_WIDTH * proj_get_col(), TEXTURE_WIDTH * proj_get_row(), TEXTURE_WIDTH, TEXTURE_HEIGHT};
-    SDL_RenderTexture(renderer, projTexture, NULL, &proj_rect);
+    if (WIP.collected == false)
+    {
+        SDL_RenderTexture(renderer, projTexture, NULL, &proj_rect);
+    }
+    else
+    {
+        SDL_RenderTexture(renderer, floorTexture, NULL, &proj_rect);
+    }
+}
+
+void renderProjRadius(void)
+{
 }
 
 // Screen renders
@@ -408,18 +462,7 @@ void renderMap()
             }
 
             // Max Radius
-            if (((x == player.position_x + 1 && y == player.position_y) 
-            || (x == player.position_x - 1 && y == player.position_y) 
-            || (x == player.position_x && y == player.position_y + 1) 
-            || (x == player.position_x && y == player.position_y - 1) 
-            || (x == player.position_x - 2 && y == player.position_y) 
-            || (x == player.position_x + 2 && y == player.position_y) 
-            || (x == player.position_x && y == player.position_y - 2) 
-            || (x == player.position_x && y == player.position_y + 2) 
-            || (x == player.position_x + 1 && y == player.position_y + 1) 
-            || (x == player.position_x - 1 && y == player.position_y + 1) 
-            || (x == player.position_x + 1 && y == player.position_y - 1) 
-            || (x == player.position_x - 1 && y == player.position_y - 1)) && (torchLevel > 10))
+            if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x - 2 && y == player.position_y) || (x == player.position_x + 2 && y == player.position_y) || (x == player.position_x && y == player.position_y - 2) || (x == player.position_x && y == player.position_y + 2) || (x == player.position_x + 1 && y == player.position_y + 1) || (x == player.position_x - 1 && y == player.position_y + 1) || (x == player.position_x + 1 && y == player.position_y - 1) || (x == player.position_x - 1 && y == player.position_y - 1)) && (torchLevel > 10))
             {
 
                 if (map_get_tile(x, y) == TILE_FLOOR)
@@ -450,74 +493,42 @@ void renderMap()
 
                     SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                 }
-              } // Medium Range
-                 else if (((x == player.position_x + 1 && y == player.position_y) 
-                 || (x == player.position_x - 1 && y == player.position_y) 
-                 || (x == player.position_x && y == player.position_y + 1) 
-                 || (x == player.position_x && y == player.position_y - 1)) && (torchLevel >= 6))
+            } // Medium Range
+            else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel >= 6))
+            {
+                if (map_get_tile(x, y) == TILE_FLOOR)
                 {
-                    if (map_get_tile(x, y) == TILE_FLOOR)
-                    {
-                        SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_WALL)
-                    {
-                        SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_DOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_TRAP)
-                    {
-
-                        SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                    {
-
-                        SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
-                    }
+                    SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
                 }
-                // Minimum Radius
-                else if (torchLevel < 6)
+                if (map_get_tile(x, y) == TILE_WALL)
+                {
+                    SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_DOOR)
                 {
 
-                    if (map_get_tile(x, y) == TILE_FLOOR)
-                    {
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_WALL)
-                    {
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_DOOR)
-                    {
+                    SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_TRAP)
+                {
 
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_TRAP)
-                    {
+                    SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+                {
 
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                    {
+                    SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+                {
 
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                    {
+                    SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
+                }
+            }
+            // Minimum Radius
+            else if (torchLevel < 6)
+            {
 
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                }else{
                 if (map_get_tile(x, y) == TILE_FLOOR)
                 {
                     SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
@@ -546,45 +557,74 @@ void renderMap()
 
                     SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
                 }
-                }
-            
-                
-                // Environmental Candle Lighting
-                if ((map[x][y] == 'L') || (x > 0 && map[x - 1][y] == 'L') || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L') || (y > 0 && map[x][y - 1] == 'L') || (y < MAP_COLS - 1 && map[x][y + 1] == 'L'))
+            }
+            else
+            {
+                if (map_get_tile(x, y) == TILE_FLOOR)
                 {
-                    if (map_get_tile(x, y) == TILE_FLOOR)
-                    {
-                        SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_WALL)
-                    {
-                        SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_DOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_TRAP)
-                    {
-
-                        SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                    {
-
-                        SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
-                    }
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
                 }
-                
+                if (map_get_tile(x, y) == TILE_WALL)
+                {
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_DOOR)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_TRAP)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+            }
+
+            // Environmental Candle Lighting
+            if ((map[x][y] == 'L') || (x > 0 && map[x - 1][y] == 'L') || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L') || (y > 0 && map[x][y - 1] == 'L') || (y < MAP_COLS - 1 && map[x][y + 1] == 'L'))
+            {
+                if (map_get_tile(x, y) == TILE_FLOOR)
+                {
+                    SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_WALL)
+                {
+                    SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_DOOR)
+                {
+
+                    SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_TRAP)
+                {
+
+                    SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+                {
+
+                    SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+                {
+
+                    SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
+                }
             }
         }
     }
+}
 
 void renderGame(void)
 {
@@ -597,9 +637,9 @@ void renderGame(void)
     SDL_RenderClear(renderer);                                   /* start with a blank canvas. */
 
     renderMap();
+    renderProjectile();
     renderPlayer();
     renderBox();
-    renderProjecetile();
 
     showText(renderer, 100, 0, "Steps in the Dark", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     showText(renderer, 300, 0, steps, (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
@@ -640,11 +680,48 @@ void renderPauseScreen(void)
     SDL_RenderPresent(renderer);
 }
 
+void renderCredits()
+{
+    const int charsize = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
+    char credits[1000];
 
-void renderCredits(void){
+    snprintf(credits, sizeof(credits), "Credits: Xavier Dos Santos, Trent Kirby, Pedro Alao. IADE University");
 
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+
+    showText(renderer, 20, 20, credits, (SDL_Color){255, 255, 255, 255});
+    SDL_RenderPresent(renderer);
 }
 
-void renderOptions(void){
+/*/ void renderOptions() {
+    char options[1000];
 
+    snprintf(options, sizeof(options),
+        "Options:\n"
+        "\n"
+        "Instructions:\n"
+        "To escape the Castle and exit to the next level, you will navigate the darkness "
+        "with the torch to find a key by solving puzzles with interactables in the level. "
+        "Then take the key and open the door to the next dungeon room.\n"
+        "\n"
+        "Movement:\n"
+        "W - Forward\n"
+        "S - Back\n"
+        "A - Left\n"
+        "D - Right\n"
+        "\n"
+        "Cheats:\n"
+        "C - Full Cheats\n"
+        "K - Give Key\n"
+        "F - Full Brightness\n"
+        "G - Deactivate Brightness\n"
+    );
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+
+    showText(renderer, 20, 20, options, (SDL_Color){255, 255, 255, 255});
+    SDL_RenderPresent(renderer);
 }
+/*/
