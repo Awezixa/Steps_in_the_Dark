@@ -190,6 +190,33 @@ int main(void)
                     opSelected = 0;
             }
 
+            if (event.type == SDL_EVENT_KEY_DOWN && gameState() == PAUSED)
+            {
+                SDL_Log("Here");
+                if (opSelected == 0 && event.key.key == SDLK_SPACE)
+                {
+                    setGameState(INGAME);
+                    loadMap("Maps/map1.txt");
+                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+                }
+                // level select
+                else if (opSelected == 1 && event.key.key == SDLK_SPACE)
+                {
+                    SDL_Log("Level Select");
+                    setGameState(LEVEL_SELECT);
+                }
+                // options
+                else if (opSelected == 2 && event.key.key == SDLK_SPACE)
+                {
+                }
+                // exit
+                else if (opSelected == 3 && event.key.key == SDLK_SPACE)
+                {
+                    running = 0;
+                }
+            }
+
             if (gameState() == INGAME)
             {
                 checkInteraction();
@@ -228,34 +255,6 @@ int main(void)
                     case SDLK_P:
                         setGameState(PAUSED);
                         opSelected = 4;
-                        if (event.type == SDL_EVENT_KEY_DOWN)
-                        {
-                            // continue
-                            if (gameState() == PAUSED)
-                            {
-                                if (opSelected == 0 && event.key.key == SDLK_SPACE)
-                                {
-                                    setGameState(INGAME);
-                                    loadMap("Maps/map1.txt");
-                                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
-                                    SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
-                                }
-                                // level select
-                                else if (opSelected == 1 && event.key.key == SDLK_SPACE)
-                                {
-                                    setGameState(LEVEL_SELECT);
-                                }
-                                // options
-                                else if (opSelected == 2 && event.key.key == SDLK_SPACE)
-                                {
-                                }
-                                // exit
-                                else if (opSelected == 3 && event.key.key == SDLK_SPACE)
-                                {
-                                    running = 0;
-                                }
-                            }
-                        }
                         break;
 
                     default:
