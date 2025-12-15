@@ -408,7 +408,18 @@ void renderMap()
             }
 
             // Max Radius
-            if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x - 2 && y == player.position_y) || (x == player.position_x + 2 && y == player.position_y) || (x == player.position_x && y == player.position_y - 2) || (x == player.position_x && y == player.position_y + 2) || (x == player.position_x + 1 && y == player.position_y + 1) || (x == player.position_x - 1 && y == player.position_y + 1) || (x == player.position_x + 1 && y == player.position_y - 1) || (x == player.position_x - 1 && y == player.position_y - 1)) && (torchLevel > 10))
+            if (((x == player.position_x + 1 && y == player.position_y) 
+            || (x == player.position_x - 1 && y == player.position_y) 
+            || (x == player.position_x && y == player.position_y + 1) 
+            || (x == player.position_x && y == player.position_y - 1) 
+            || (x == player.position_x - 2 && y == player.position_y) 
+            || (x == player.position_x + 2 && y == player.position_y) 
+            || (x == player.position_x && y == player.position_y - 2) 
+            || (x == player.position_x && y == player.position_y + 2) 
+            || (x == player.position_x + 1 && y == player.position_y + 1) 
+            || (x == player.position_x - 1 && y == player.position_y + 1) 
+            || (x == player.position_x + 1 && y == player.position_y - 1) 
+            || (x == player.position_x - 1 && y == player.position_y - 1)) && (torchLevel > 10))
             {
 
                 if (map_get_tile(x, y) == TILE_FLOOR)
@@ -439,39 +450,11 @@ void renderMap()
 
                     SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                 }
-            }
-            else
-            {
-                if (map_get_tile(x, y) == TILE_FLOOR)
-                {
-                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_WALL)
-                {
-                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_DOOR)
-                {
-
-                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_TRAP)
-                {
-
-                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                {
-
-                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                {
-
-                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                }
-                // Medium Radius
-                if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel <= 10))
+              } // Medium Range
+                 else if (((x == player.position_x + 1 && y == player.position_y) 
+                 || (x == player.position_x - 1 && y == player.position_y) 
+                 || (x == player.position_x && y == player.position_y + 1) 
+                 || (x == player.position_x && y == player.position_y - 1)) && (torchLevel >= 6))
                 {
                     if (map_get_tile(x, y) == TILE_FLOOR)
                     {
@@ -502,39 +485,8 @@ void renderMap()
                         SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                     }
                 }
-                else
-                {
-                    if (map_get_tile(x, y) == TILE_FLOOR)
-                    {
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_WALL)
-                    {
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_DOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_TRAP)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                }
                 // Minimum Radius
-                if (torchLevel <= 5)
+                else if (torchLevel < 6)
                 {
 
                     if (map_get_tile(x, y) == TILE_FLOOR)
@@ -565,7 +517,38 @@ void renderMap()
 
                         SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
                     }
+                }else{
+                if (map_get_tile(x, y) == TILE_FLOOR)
+                {
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
                 }
+                if (map_get_tile(x, y) == TILE_WALL)
+                {
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_DOOR)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_TRAP)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+                {
+
+                    SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
+                }
+                }
+            
+                
                 // Environmental Candle Lighting
                 if ((map[x][y] == 'L') || (x > 0 && map[x - 1][y] == 'L') || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L') || (y > 0 && map[x][y - 1] == 'L') || (y < MAP_COLS - 1 && map[x][y + 1] == 'L'))
                 {
@@ -598,41 +581,10 @@ void renderMap()
                         SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                     }
                 }
-                else
-                {
-                    if (map_get_tile(x, y) == TILE_FLOOR)
-                    {
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_WALL)
-                    {
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_DOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_TRAP)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                    if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                    {
-
-                        SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
-                    }
-                }
+                
             }
         }
     }
-}
 
 void renderGame(void)
 {
