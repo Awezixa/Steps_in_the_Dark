@@ -126,13 +126,13 @@ int main(void)
                     // play
                     if (opSelected == 0)
                     {
-                        //setGameState(LEVEL_SELECT);
-                        playerSoundInitialization();
-                        setGameState(INGAME);
-                        stopSound(&menuMusic);
-                        loadMap("Maps/map4.txt");
-                        SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
-                        SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
+                        setGameState(LEVEL_SELECT);
+                        // playerSoundInitialization();
+                        // setGameState(INGAME);
+                        // stopSound(&menuMusic);
+                        // loadMap("Maps/map4.txt");
+                        // SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                        // SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     }
                     // options
                     else if (opSelected == 1)
@@ -158,25 +158,25 @@ int main(void)
                 {
                 case SDLK_1: 
                     setGameState(INGAME);
-                    loadMap("Environment/Maps/map1.txt");
+                    loadMap("Maps/map1.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 case SDLK_2:
                     setGameState(INGAME);
-                    loadMap("Environment/Maps/map2.txt");
+                    loadMap("Maps/map2.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 case SDLK_3:
                     setGameState(INGAME);
-                    loadMap("Environment/Maps/map3.txt");
+                    loadMap("Maps/map3.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 case SDLK_4:
                     setGameState(INGAME);
-                    loadMap("Environment/Maps/map4.txt");
+                    loadMap("Maps/map4.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
@@ -201,11 +201,10 @@ int main(void)
 
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == PAUSED)
             {
-                SDL_Log("Here");
                 if (opSelected == 0 && event.key.key == SDLK_SPACE)
                 {
                     setGameState(INGAME);
-                    loadMap("Maps/map1.txt");
+                    //loadMap("Maps/map1.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                 }
@@ -231,12 +230,12 @@ int main(void)
                 checkInteraction();
                 moveBox();
                 pressurePlate();
-                collectProjectile();
-                if (activated == true)
-                {
-                    playSound(&blockedDoorUnlocked);
+                if(activated == true){
+                playSound(&blockedDoorUnlocked);  
                 }
                 stopSound(&blockedDoorUnlocked);
+                collectProjectile();
+                
 
                 if (torchLevel == 0)
                 {
@@ -289,7 +288,9 @@ int main(void)
                         opSelected = 4;
                         break;
                         // cheats
-
+                    case SDLK_K:
+                        movePlayer('K');
+                        break;
                     default:
                         break;
                     }
@@ -318,9 +319,9 @@ int main(void)
         if (gameState() == CREDITS)
         {
             renderCredits();
-            // if(event.key.key == SDLK_ESCAPE){
-            //     setGameState(MAIN_MENU);
-            // }
+            if(event.key.key == SDLK_ESCAPE){
+                setGameState(MAIN_MENU);
+            }
         }
 
         if (gameState() == OPTIONS)
@@ -447,17 +448,14 @@ void renderMap()
             // Constant Texture
             if (map_get_tile(x, y) == TILE_KEY)
             {
-
                 SDL_RenderTexture(renderer, keyTexture, NULL, &dst_rect);
             }
             if (map_get_tile(x, y) == TILE_TORCH)
             {
-
                 SDL_RenderTexture(renderer, torchTexture, NULL, &dst_rect);
             }
             if (map_get_tile(x, y) == TILE_MIST)
             {
-
                 SDL_RenderTexture(renderer, bgTexture, NULL, &dst_rect);
             }
 
@@ -603,22 +601,18 @@ void renderMap()
                 }
                 if (map_get_tile(x, y) == TILE_DOOR)
                 {
-
                     SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
                 }
                 if (map_get_tile(x, y) == TILE_TRAP)
                 {
-
                     SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
                 }
                 if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
                 {
-
                     SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
                 }
                 if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
                 {
-
                     SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                 }
             }
