@@ -61,6 +61,8 @@ void renderOptions(void);
 void renderTiles(void);
 void renderBox(void);
 void renderProjecetile(void);
+void renderCredits(void);
+void renderOptions(void);
 
 // Other variables
 int opSelected = -1;
@@ -120,7 +122,7 @@ int main(void)
                     // play
                     if (opSelected == 0)
                     {
-                        // setGameState(LEVEL_SELECT);
+                        setGameState(LEVEL_SELECT);
                         playerSoundInitialization();
                         setGameState(INGAME);
                         stopSound(&menuMusic);
@@ -131,10 +133,12 @@ int main(void)
                     // options
                     else if (opSelected == 1)
                     {
+                        renderOptions();
                     }
                     // credits
                     else if (opSelected == 2)
                     {
+                        renderCredits();
                     }
                     // exit
                     else if (opSelected == 3)
@@ -209,6 +213,7 @@ int main(void)
                 // options
                 else if (opSelected == 2 && event.key.key == SDLK_SPACE)
                 {
+                    renderOptions();
                 }
                 // exit
                 else if (opSelected == 3 && event.key.key == SDLK_SPACE)
@@ -232,22 +237,18 @@ int main(void)
                     case SDLK_W:
                         movePlayer('W');
                         playSound(&playerWalk);
-                        stepCounter();
                         break;
                     case SDLK_A:
                         movePlayer('A');
                         playSound(&playerWalk);
-                        stepCounter();
                         break;
                     case SDLK_S:
                         movePlayer('S');
                         playSound(&playerWalk);
-                        stepCounter();
                         break;
                     case SDLK_D:
                         movePlayer('D');
                         playSound(&playerWalk);
-                        stepCounter();
                         break;
                     case SDLK_E:
                         grabBox();
@@ -685,4 +686,13 @@ void renderPauseScreen(void)
 
     showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 34)) / 2), 475, "<< PRESS SPACE TO SELECT OPTION >>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
+}
+
+
+void renderCredits(void){
+
+}
+
+void renderOptions(void){
+
 }
