@@ -61,7 +61,6 @@ static SDL_Texture *sanityMeterMiddleFull = NULL;
 static SDL_Texture *sanityMeterEndFull = NULL;
 static SDL_Texture *playerPanicTexture = NULL;
 
-
 static Sound menuMusic;
 static Sound playerWalk;
 static Sound blockedDoorUnlocked;
@@ -89,21 +88,18 @@ void panicMode(void);
 
 static void set_menu_presentation(void)
 {
-
     SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-
     SDL_SetWindowFullscreen(window, true);
 }
 
 static void set_nearest(SDL_Texture *t)
 {
     if (t)
-        SDL_SetTextureScaleMode(t, SDL_SCALEMODE_NEAREST);
+    SDL_SetTextureScaleMode(t, SDL_SCALEMODE_NEAREST);
 }
 
 // Other variables
 int opSelected = -1;
-
 
 int main(void)
 {
@@ -112,7 +108,6 @@ int main(void)
     window = sdl_initialize_window(APP_NAME, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT);
     renderer = sdl_initialize_renderer(window);
     sdl_initialize_audio();
-
     set_menu_presentation();
 
     // intialize the textures
@@ -122,13 +117,15 @@ int main(void)
     trapTexture = sdl_load_texture(renderer, "Assets/gamewoodtilecracked.png");
     playerTexture = sdl_load_texture(renderer, "Assets/character.png");
     boxTexture = sdl_load_texture(renderer, "Assets/STIDBox.png");
-    if(activated == true){
+    if (activated == true)
+    {
         pressurePlateTexture = sdl_load_texture(renderer, "Assets/STIDPressurePlateActivated.png");
     }
-    else{
+    else
+    {
         pressurePlateTexture = sdl_load_texture(renderer, "Assets/STIDPressurePlate.png");
     }
-    
+
     mistTexture = sdl_load_texture(renderer, "Assets/mist.png");
     doorTexture = sdl_load_texture(renderer, "Assets/STIDExitDoor.png");
     blockedDoorTexture = sdl_load_texture(renderer, "Assets/STIDBlockedDoor.png");
@@ -140,18 +137,18 @@ int main(void)
     inventoryEmpty = sdl_load_texture(renderer, "Assets/inventorybackground.png");
     inventoryBomb = sdl_load_texture(renderer, "Assets/inventorybomb.png");
     inventoryKey = sdl_load_texture(renderer, "Assets/inventorykey.png");
-    bombBroken = sdl_load_texture (renderer, "Assets/STIDFlashBombBroken.png");
-    torchMeterFirstFull = sdl_load_texture (renderer, "Assets/gamemeterONEfull.png");
-    torchMeterFirstEmpty = sdl_load_texture (renderer, "Assets/gamemeterONEempty.png");
-    torchMeterMiddleFull = sdl_load_texture (renderer, "Assets/gamemeterMIDDLEfull.png");
-    torchMeterMiddleEmpty = sdl_load_texture (renderer, "Assets/gamemeterMIDDLEempty.png");
-    torchMeterEndFull = sdl_load_texture (renderer, "Assets/gamemeterENDfull.png");
-    torchMeterEndEmpty = sdl_load_texture (renderer, "Assets/gamemeterENDempty.png");
-    mistPanicTexture = sdl_load_texture (renderer, "Assets/mistpanic.png");
-    sanityMeterFirstFull = sdl_load_texture (renderer, "Assets/sanityONEfull.png");
-    sanityMeterMiddleFull = sdl_load_texture (renderer, "Assets/sanityMIDDLEfull.png");
-    sanityMeterEndFull = sdl_load_texture (renderer, "Assets/sanityENDfull.png");
-    playerPanicTexture = sdl_load_texture (renderer, "Assets/characterpanic.png");
+    bombBroken = sdl_load_texture(renderer, "Assets/STIDFlashBombBroken.png");
+    torchMeterFirstFull = sdl_load_texture(renderer, "Assets/gamemeterONEfull.png");
+    torchMeterFirstEmpty = sdl_load_texture(renderer, "Assets/gamemeterONEempty.png");
+    torchMeterMiddleFull = sdl_load_texture(renderer, "Assets/gamemeterMIDDLEfull.png");
+    torchMeterMiddleEmpty = sdl_load_texture(renderer, "Assets/gamemeterMIDDLEempty.png");
+    torchMeterEndFull = sdl_load_texture(renderer, "Assets/gamemeterENDfull.png");
+    torchMeterEndEmpty = sdl_load_texture(renderer, "Assets/gamemeterENDempty.png");
+    mistPanicTexture = sdl_load_texture(renderer, "Assets/mistpanic.png");
+    sanityMeterFirstFull = sdl_load_texture(renderer, "Assets/sanityONEfull.png");
+    sanityMeterMiddleFull = sdl_load_texture(renderer, "Assets/sanityMIDDLEfull.png");
+    sanityMeterEndFull = sdl_load_texture(renderer, "Assets/sanityENDfull.png");
+    playerPanicTexture = sdl_load_texture(renderer, "Assets/characterpanic.png");
 
     set_nearest(floorTexture);
     set_nearest(wallTexture);
@@ -176,7 +173,7 @@ int main(void)
     init_sound("Assets/Sounds/InGameMusic.wav", &InGameMusic);
     init_sound("Assets/Sounds/boxPush.wav", &boxPush);
     init_sound("Assets/Sounds/TorchInteract.wav", &TorchInteract);
-    
+
     // Game loop
     int running = 1;
     const Uint32 FRAME_MS = 16; // ~60 FPS
@@ -209,7 +206,7 @@ int main(void)
                     // options
                     else if (opSelected == 1)
                     {
-                        renderOptions();
+                        setGameState(OPTIONS);
                     }
                     // credits
                     else if (opSelected == 2)
@@ -221,6 +218,9 @@ int main(void)
                     {
                         running = 0;
                     }
+                    // if(gameState() == FINISHED){
+                    //     setGameState(MAIN_MENU);
+                    // }
                 }
             }
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == LEVEL_SELECT)
@@ -263,6 +263,7 @@ int main(void)
                     break;
                 }
             }
+
             // Menu movement
             if (event.type == SDL_EVENT_KEY_DOWN && (event.key.key == SDLK_UP || event.key.key == SDLK_W))
             {
@@ -278,10 +279,10 @@ int main(void)
                     opSelected = 0;
             }
 
-            //Paused loop
+            // Paused loop
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == PAUSED)
             {
-                if (opSelected == 0 && event.key.key == SDLK_SPACE)
+                if (opSelected == 0 && (event.key.key == SDLK_SPACE) || (event.key.key == SDLK_ESCAPE))
                 {
                     setGameState(INGAME);
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
@@ -301,97 +302,134 @@ int main(void)
                 else if (opSelected == 3 && event.key.key == SDLK_SPACE)
                 {
                     setGameState(MAIN_MENU);
-                }               
+                }
+            }
+
+            if (event.type == SDL_EVENT_KEY_DOWN &&
+                event.key.key == SDLK_ESCAPE)
+            {
+                switch (gameState())
+                {
+                case CREDITS:
+                case OPTIONS:
+                case LEVEL_SELECT:
+                    setGameState(MAIN_MENU);
+                    break;
+
+                case INGAME:
+                    setGameState(PAUSED);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
+            if (event.type == SDL_EVENT_KEY_DOWN &&
+                event.key.key == SDLK_SPACE &&
+                gameState() == FINISHED)
+            {
+                setGameState(MAIN_MENU);
+            }
+
+            // Ingame loop
+            if (gameState() == INGAME)
+            {
+                checkInteraction();
+                panicMode();
+                moveBox();
+                plateActivated();
+                if (activated == true)
+                {
+                    playSound(&blockedDoorUnlocked);
+                }
+                stopSound(&blockedDoorUnlocked);
+                collectProjectile();
+
+                if (torchLevel == 0)
+                {
+                    playerDeath();
                 }
 
-                //Ingame loop
-                if (gameState() == INGAME)
+                // Player movement
+                if (event.type == SDL_EVENT_KEY_DOWN)
                 {
-                    checkInteraction();
-                    panicMode();
-                    moveBox();
-                    plateActivated();
-                    if (activated == true)
+                    switch (event.key.key)
                     {
-                        playSound(&blockedDoorUnlocked);
-                    }
-                    stopSound(&blockedDoorUnlocked);
-                    collectProjectile();
-
-                    if (torchLevel == 0)
-                    {
-                        playerDeath();
-                    }
-
-                    
-
-                    // Player movement
-                    if (event.type == SDL_EVENT_KEY_DOWN)
-                    {
-                        switch (event.key.key)
+                    case SDLK_W:
+                        movePlayer('W');
+                        if (box1.beingGrabbed == true)
                         {
-                        case SDLK_W:
-                            movePlayer('W');
-                              if(box1.beingGrabbed == true){
-                               playSound(&boxPush);
-                            }else{
-                            playSound(&playerWalk);
-                            }
-                            WIP.direction = 3;
-                            //}
-                            break;
-                        case SDLK_A:
-                            movePlayer('A');
-                            if(box1.beingGrabbed == true){
-                               playSound(&boxPush);
-                            }else{
-                            playSound(&playerWalk);
-                            }
-                            WIP.direction = 0;
-                            break;
-                        case SDLK_S:
-                            movePlayer('S');
-                            if(box1.beingGrabbed == true){
-                               playSound(&boxPush);
-                            }else{
-                            playSound(&playerWalk);
-                            }
-                            WIP.direction = 1;
-                            break;
-                        case SDLK_D:
-                            movePlayer('D');
-                            if(box1.beingGrabbed == true){
-                               playSound(&boxPush);
-                            }else{
-                            playSound(&playerWalk);
-                            }
-                            WIP.direction = 2;
-                            break;
-                        case SDLK_E:
-                            if (box1.beingGrabbed == true)
-                            {
-                                box1.beingGrabbed = false;
-                            }
-                            else
-                            {
-                                movePlayer('E');
-                            }
-                            break;
-                        case SDLK_T:
-                            movePlayer('T');
-                            break;
-                        case SDLK_P:
-                            setGameState(PAUSED);
-                            opSelected = 4;
-                            break;
-                            // cheats
-                        case SDLK_K:
-                            movePlayer('K');
-                            break;
-                        default:
-                            break;
+                            playSound(&boxPush);
                         }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
+                        WIP.direction = 3;
+                        //}
+                        break;
+                    case SDLK_A:
+                        movePlayer('A');
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
+                        WIP.direction = 0;
+                        break;
+                    case SDLK_S:
+                        movePlayer('S');
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
+                        WIP.direction = 1;
+                        break;
+                    case SDLK_D:
+                        movePlayer('D');
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
+                        WIP.direction = 2;
+                        break;
+                    case SDLK_E:
+                        if (box1.beingGrabbed == true)
+                        {
+                            box1.beingGrabbed = false;
+                        }
+                        else
+                        {
+                            movePlayer('E');
+                        }
+                        break;
+                    case SDLK_T:
+                        movePlayer('T');
+                        break;
+                    case SDLK_P:
+                        setGameState(PAUSED);
+                        opSelected = 4;
+                        break;
+                        // cheats
+                    case SDLK_K:
+                        movePlayer('K');
+                        break;
+                    default:
+                        break;
                     }
+                }
 
                 // if (map[player.position_x][player.position_y] == 'T'){
                 //     playerTexture = sdl_load_texture(renderer, "Assets/gamewoodtilebroken.png");
@@ -400,6 +438,8 @@ int main(void)
                 // Temporary Sound Fix
             }
         }
+
+        // Game states
         if (gameState() == INITIAL_STATE)
             renderInitialScreen();
         if (gameState() == MAIN_MENU)
@@ -414,13 +454,9 @@ int main(void)
         if (gameState() == PAUSED)
             renderPauseScreen();
         if (gameState() == CREDITS)
-        {
-            renderCredits();            
-        }
+            renderCredits();
         if (gameState() == OPTIONS)
-        {
             renderOptions();
-        }
         if (gameState() == FINISHED)
             renderGameFinished();
 
@@ -443,22 +479,27 @@ void renderPlayer()
 {
     // Render the wizard at the player's position
     SDL_FRect explorer_rect = {TEXTURE_WIDTH * player_get_col(), TEXTURE_WIDTH * player_get_row(), TEXTURE_WIDTH, TEXTURE_HEIGHT};
-    if (panic == true){
+    if (panic == true)
+    {
         SDL_RenderTexture(renderer, playerPanicTexture, NULL, &explorer_rect);
-    }else if (panic == false){
+    }
+    else if (panic == false)
+    {
         SDL_RenderTexture(renderer, playerTexture, NULL, &explorer_rect);
     }
-    
 }
 
 void renderBox()
 {
     // Render the wizard at the boxes position
     SDL_FRect box_rect = {TEXTURE_WIDTH * box_get_col(), TEXTURE_WIDTH * box_get_row(), TEXTURE_WIDTH, TEXTURE_HEIGHT};
-    if (panic == true){
-    SDL_RenderTexture(renderer, mistPanicTexture, NULL, &box_rect);
-    }else if (panic == false){
-    SDL_RenderTexture(renderer, boxTexture, NULL, &box_rect);
+    if (panic == true)
+    {
+        SDL_RenderTexture(renderer, mistPanicTexture, NULL, &box_rect);
+    }
+    else if (panic == false)
+    {
+        SDL_RenderTexture(renderer, boxTexture, NULL, &box_rect);
     }
 }
 
@@ -468,23 +509,27 @@ void renderProjectile()
     SDL_FRect proj_rect = {TEXTURE_WIDTH * proj_get_col(), TEXTURE_WIDTH * proj_get_row(), TEXTURE_WIDTH, TEXTURE_HEIGHT};
     if (WIP.collected == false)
     {
-    if (thrown == false){
-        if (panic == true){
-            SDL_RenderTexture(renderer, mistPanicTexture, NULL, &proj_rect);
-        }else if (panic == false){
-        SDL_RenderTexture(renderer, projTexture, NULL, &proj_rect);
+        if (thrown == false)
+        {
+            if (panic == true)
+            {
+                SDL_RenderTexture(renderer, mistPanicTexture, NULL, &proj_rect);
+            }
+            else if (panic == false)
+            {
+                SDL_RenderTexture(renderer, projTexture, NULL, &proj_rect);
+            }
         }
-    }
-    else if(thrown == true){
-        SDL_RenderTexture(renderer, bombBroken, NULL, &proj_rect);
-    }
+        else if (thrown == true)
+        {
+            SDL_RenderTexture(renderer, bombBroken, NULL, &proj_rect);
+        }
     }
     else
     {
         SDL_RenderTexture(renderer, floorTexture, NULL, &proj_rect);
     }
 }
-
 
 void renderProjRadius(void)
 {
@@ -573,7 +618,7 @@ void renderMainMenu(void)
 
     SDL_FRect logoRect = {200, 100, 591, 198};
     SDL_RenderTexture(renderer, bgTexture, NULL, &logoRect);
-    
+
     // Show Start Game Option
     if (opSelected == 0)
         showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "-> PLAY", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
@@ -620,12 +665,12 @@ void renderMap()
             renderProjRadius();
             SDL_FRect dst_rect = {TEXTURE_WIDTH * y, TEXTURE_HEIGHT * x, TEXTURE_WIDTH, TEXTURE_HEIGHT};
             // Constant Texture
-            
+
             if (map_get_tile(x, y) == TILE_KEY)
-            { 
+            {
                 SDL_RenderTexture(renderer, keyTexture, NULL, &dst_rect);
             }
-             
+
             if (map_get_tile(x, y) == TILE_TORCH)
             {
                 SDL_RenderTexture(renderer, torchTexture, NULL, &dst_rect);
@@ -665,7 +710,6 @@ void renderMap()
                 {
                     SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                 }
-                
 
             } // Medium Range
             else if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1)) && (torchLevel >= 6))
@@ -697,7 +741,6 @@ void renderMap()
                 {
                     SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                 }
-               
             }
 
             // Minimum Radius
@@ -727,7 +770,6 @@ void renderMap()
                 {
                     SDL_RenderTexture(renderer, mistPanicTexture, NULL, &dst_rect);
                 }
-               
             }
             else
             {
@@ -755,40 +797,39 @@ void renderMap()
                 {
                     SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
                 }
-               
             }
 
             // Environmental Candle Lighting
-            if(panic == false){
-            if ((map[x][y] == 'L') || (x > 0 && map[x - 1][y] == 'L') || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L') || (y > 0 && map[x][y - 1] == 'L') || (y < MAP_COLS - 1 && map[x][y + 1] == 'L'))
+            if (panic == false)
             {
-                if (map_get_tile(x, y) == TILE_FLOOR)
+                if ((map[x][y] == 'L') || (x > 0 && map[x - 1][y] == 'L') || (x < MAP_ROWS - 1 && map[x + 1][y] == 'L') || (y > 0 && map[x][y - 1] == 'L') || (y < MAP_COLS - 1 && map[x][y + 1] == 'L'))
                 {
-                    SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
+                    if (map_get_tile(x, y) == TILE_FLOOR)
+                    {
+                        SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
+                    }
+                    if (map_get_tile(x, y) == TILE_WALL)
+                    {
+                        SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
+                    }
+                    if (map_get_tile(x, y) == TILE_DOOR)
+                    {
+                        SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
+                    }
+                    if (map_get_tile(x, y) == TILE_TRAP)
+                    {
+                        SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
+                    }
+                    if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+                    {
+                        SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
+                    }
+                    if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+                    {
+                        SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
+                    }
                 }
-                if (map_get_tile(x, y) == TILE_WALL)
-                {
-                    SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_DOOR)
-                {
-                    SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_TRAP)
-                {
-                    SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
-                {
-                    SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
-                }
-                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
-                {
-                    SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
-                }
-                
             }
-        }
         }
     }
 }
@@ -809,10 +850,9 @@ void renderGame(void)
     renderBox();
     renderPlayer();
 
-
     showText(renderer, 100, 0, "Steps in the Dark", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     showText(renderer, 300, 0, steps, (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
-    //SDL_RenderDebugTextFormat(renderer, (float)((APP_WIDTH - (charsize * 46)) / 2), APP_HEIGHT - charsize, "(This program has been running for %" SDL_PRIu64 " seconds.)", SDL_GetTicks() / 1000);
+    // SDL_RenderDebugTextFormat(renderer, (float)((APP_WIDTH - (charsize * 46)) / 2), APP_HEIGHT - charsize, "(This program has been running for %" SDL_PRIu64 " seconds.)", SDL_GetTicks() / 1000);
 
     SDL_RenderPresent(renderer); /* put it all on the screen! */
 }
@@ -854,7 +894,7 @@ void renderCredits()
     const int charsize = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
     char credits[1000];
 
-    snprintf(credits, sizeof(credits), "Credits: Xavier Dos Santos, Trent Kirby, Pedro Alao, Nèlio  Codices. IADE University");
+    snprintf(credits, sizeof(credits), "Credits: Xavier Dos Santos, Trent Kirby, Pedro Alao, Nelio  Codices. IADE University");
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
@@ -863,29 +903,29 @@ void renderCredits()
     SDL_RenderPresent(renderer);
 }
 
-void renderOptions(void) {
+void renderOptions(void)
+{
     char options[1000];
 
     snprintf(options, sizeof(options),
-        "Options:\n"
-        "\n"
-        "Instructions:\n"
-        "To escape the Castle and exit to the next level, you will navigate the darkness "
-        "with the torch to find a key by solving puzzles with interactables in the level. "
-        "Then take the key and open the door to the next dungeon room.\n"
-        "\n"
-        "Movement:\n"
-        "W - Forward\n"
-        "S - Back\n"
-        "A - Left\n"
-        "D - Right\n"
-        "\n"
-        "Cheats:\n"
-        "C - Full Cheats\n"
-        "K - Give Key\n"
-        "F - Full Brightness\n"
-        "G - Deactivate Brightness\n"
-    );
+             "Options:\n"
+             "\n"
+             "Instructions:\n"
+             "To escape the Castle and exit to the next level, you will navigate the darkness "
+             "with the torch to find a key by solving puzzles with interactables in the level. "
+             "Then take the key and open the door to the next dungeon room.\n"
+             "\n"
+             "Movement:\n"
+             "W - Forward\n"
+             "S - Back\n"
+             "A - Left\n"
+             "D - Right\n"
+             "\n"
+             "Cheats:\n"
+             "C - Full Cheats\n"
+             "K - Give Key\n"
+             "F - Full Brightness\n"
+             "G - Deactivate Brightness\n");
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
@@ -894,22 +934,29 @@ void renderOptions(void) {
     SDL_RenderPresent(renderer);
 }
 
-void renderUI(){
+void renderUI()
+{
 
     // INVENTORY UI
     SDL_FRect inv_rect1 = {0, TEXTURE_WIDTH * 18, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect inv_rect2 = {TEXTURE_HEIGHT, TEXTURE_WIDTH * 18, TEXTURE_WIDTH, TEXTURE_HEIGHT};
 
-    if(WIP.collected == false){
-    SDL_RenderTexture(renderer, inventoryEmpty, NULL, &inv_rect1);
-    }else{
-    SDL_RenderTexture (renderer, inventoryBomb, NULL, &inv_rect1);
+    if (WIP.collected == false)
+    {
+        SDL_RenderTexture(renderer, inventoryEmpty, NULL, &inv_rect1);
+    }
+    else
+    {
+        SDL_RenderTexture(renderer, inventoryBomb, NULL, &inv_rect1);
     }
 
-    if(getKey == false){
-    SDL_RenderTexture(renderer, inventoryEmpty, NULL, &inv_rect2);
-    }else{
-    SDL_RenderTexture (renderer, inventoryKey, NULL, &inv_rect2);
+    if (getKey == false)
+    {
+        SDL_RenderTexture(renderer, inventoryEmpty, NULL, &inv_rect2);
+    }
+    else
+    {
+        SDL_RenderTexture(renderer, inventoryKey, NULL, &inv_rect2);
     }
 
     // TORCH METER UI
@@ -924,66 +971,95 @@ void renderUI(){
     SDL_FRect torchm9 = {TEXTURE_HEIGHT * 16, TEXTURE_WIDTH * 18, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect torchm10 = {TEXTURE_HEIGHT * 17, TEXTURE_WIDTH * 18, TEXTURE_WIDTH, TEXTURE_HEIGHT};
 
-    if (torchLevel >= 6){
+    if (torchLevel >= 6)
+    {
         SDL_RenderTexture(renderer, torchMeterFirstFull, NULL, &torchm1);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterFirstEmpty, NULL, &torchm1);
     }
-   
-    if(torchLevel >= 7){
+
+    if (torchLevel >= 7)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm2);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm2);
     }
 
-    if(torchLevel >= 8){
+    if (torchLevel >= 8)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm3);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm3);
     }
 
-    if(torchLevel >= 9){
+    if (torchLevel >= 9)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm4);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm4);
     }
 
-    if(torchLevel >= 10){
+    if (torchLevel >= 10)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm5);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm5);
     }
 
-    if(torchLevel >= 11){
+    if (torchLevel >= 11)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm6);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm6);
     }
 
-    if(torchLevel >= 12){
+    if (torchLevel >= 12)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm7);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm7);
     }
 
-    if(torchLevel >= 13){
+    if (torchLevel >= 13)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm8);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm8);
     }
 
-    if(torchLevel >= 14){
+    if (torchLevel >= 14)
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleFull, NULL, &torchm9);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &torchm9);
     }
-    
-    if(torchLevel == 15){
+
+    if (torchLevel == 15)
+    {
         SDL_RenderTexture(renderer, torchMeterEndFull, NULL, &torchm10);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterEndEmpty, NULL, &torchm10);
     }
-
 
     // SANITY METER UI
 
@@ -993,56 +1069,73 @@ void renderUI(){
     SDL_FRect sanitym4 = {TEXTURE_HEIGHT * 16, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect sanitym5 = {TEXTURE_HEIGHT * 17, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
 
-    if (torchLevel >= 1){
+    if (torchLevel >= 1)
+    {
         SDL_RenderTexture(renderer, sanityMeterFirstFull, NULL, &sanitym1);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterFirstEmpty, NULL, &sanitym1);
     }
 
-    if (torchLevel >= 2){
+    if (torchLevel >= 2)
+    {
         SDL_RenderTexture(renderer, sanityMeterMiddleFull, NULL, &sanitym2);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &sanitym2);
     }
 
-    if (torchLevel >= 3){
+    if (torchLevel >= 3)
+    {
         SDL_RenderTexture(renderer, sanityMeterMiddleFull, NULL, &sanitym3);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &sanitym3);
     }
 
-    if (torchLevel >= 4){
+    if (torchLevel >= 4)
+    {
         SDL_RenderTexture(renderer, sanityMeterMiddleFull, NULL, &sanitym4);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterMiddleEmpty, NULL, &sanitym4);
     }
 
-    if (torchLevel >= 5){
+    if (torchLevel >= 5)
+    {
         SDL_RenderTexture(renderer, sanityMeterEndFull, NULL, &sanitym5);
-    }else{
+    }
+    else
+    {
         SDL_RenderTexture(renderer, torchMeterEndEmpty, NULL, &sanitym5);
     }
-
 }
 
-void panicMode(){
+void panicMode()
+{
 
-  
-    if (torchLevel < 6){
+    if (torchLevel < 6)
+    {
         panic = true;
     }
-    if (torchLevel > 6){
+    if (torchLevel > 6)
+    {
         panic = false;
     }
-   // if (panic == true){
+    // if (panic == true){
     // playSound(&panicMusic);
-   // }
-   // if (panic == false){
-   // stopSound(&panicMusic);
-   // }
+    // }
+    // if (panic == false){
+    // stopSound(&panicMusic);
+    // }
 }
 
-void renderGameFinished(void){
+void renderGameFinished(void)
+{
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
