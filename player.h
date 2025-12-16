@@ -13,7 +13,7 @@ struct Player {
     bool isDead;
 };
 
-
+extern bool panic;
 
 extern struct Player player;
 
@@ -26,7 +26,7 @@ void printInventory();
 bool isTileWalkable(char t);
 void playerDeath();
 void checkInteraction();
-void playerDeathCounter();
+int playerDeathCounter();
 void choosePlayerName();
 void sanityDisplay();
 void printInventory();

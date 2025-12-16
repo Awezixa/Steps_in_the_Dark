@@ -19,6 +19,7 @@ bool isLevelOne = false;
 bool isLevelTwo = false;
 bool isLevelThree = false;
 bool isLevelFour = false;
+bool panic = false;
 static Sound deathSound;
 static Sound torchInteractSound;
 static Sound getKeySound;
@@ -271,9 +272,14 @@ void checkInteraction(){
 
 }
 
-//Pedro
-void playerDeathCounter() {
-    deathCounter++;
+//Pedro/Trent
+int playerDeathCounter() {
+   deathCounter++;
+   if (torchLevel > 0 )
+    {
+       torchDim();
+   }
+   return deathCounter;
 }
 
 //Pedro
@@ -326,7 +332,7 @@ void printInventory(){
 
 //Xavier
 void resetPlayer(){
- 
+
 
     box1.position_x = 8;
     box1.position_y = 10;
@@ -339,6 +345,7 @@ void resetPlayer(){
     WIP.collected = false;
     WIP.projectileLevel = 15;
     activated = false;
+    panic = false;
 }
 
 
