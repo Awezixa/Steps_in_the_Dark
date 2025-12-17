@@ -178,7 +178,6 @@ void movePlayer(char dir)
             throwProjectile();
             playSound(&bombThrow);
         }
-
         break;
         // cheats
         // activate full brigtness cheat
@@ -220,7 +219,7 @@ char readUserInput()
 // Xavier & Trent
 bool isTileWalkable(char t)
 {
-    return (t != 'W' && t != 'H');
+    return (t != 'W' && t != 'H');   
 }
 
 // Xaiver & Trent
