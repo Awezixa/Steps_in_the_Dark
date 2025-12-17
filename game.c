@@ -405,6 +405,10 @@ int main(void)
                 stopSound(&blockedDoorUnlocked);
                 collectProjectile();
 
+                if (fullBrightOn == true){
+                    torchLevel = 15;
+                }
+
                 if (torchLevel == 0)
                 {
                     playerDeath();
@@ -617,7 +621,8 @@ void renderProjRadius(void)
         for (int y = 0; y < MAP_COLS; y++)
         {
             SDL_FRect dst_rect = {TEXTURE_WIDTH * y, TEXTURE_HEIGHT * x, TEXTURE_WIDTH, TEXTURE_HEIGHT};
-
+            
+        
             if (thrown == true && ((x == WIP.position_x + 1 && y == WIP.position_y) || (x == WIP.position_x - 1 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 1) || (x == WIP.position_x && y == WIP.position_y - 1) || (x == WIP.position_x + 1 && y == WIP.position_y + 1) || (x == WIP.position_x - 1 && y == WIP.position_y + 1) || (x == WIP.position_x + 1 && y == WIP.position_y - 1) || (x == WIP.position_x - 1 && y == WIP.position_y - 1) || (x == WIP.position_x + 2 && y == WIP.position_y) || (x == WIP.position_x - 2 && y == WIP.position_y) || (x == WIP.position_x && y == WIP.position_y + 2) || (x == WIP.position_x && y == WIP.position_y - 2)) && WIP.projectileLevel > 10)
             {
                 if (map_get_tile(x, y) == TILE_FLOOR)
@@ -760,7 +765,7 @@ void renderMap()
             {
                 SDL_RenderTexture(renderer, bgTexture, NULL, &dst_rect);
             }
-
+                if (fullBrightOn == false){
             // Max Radius
             if (((x == player.position_x + 1 && y == player.position_y) || (x == player.position_x - 1 && y == player.position_y) || (x == player.position_x && y == player.position_y + 1) || (x == player.position_x && y == player.position_y - 1) || (x == player.position_x - 2 && y == player.position_y) || (x == player.position_x + 2 && y == player.position_y) || (x == player.position_x && y == player.position_y - 2) || (x == player.position_x && y == player.position_y + 2) || (x == player.position_x + 1 && y == player.position_y + 1) || (x == player.position_x - 1 && y == player.position_y + 1) || (x == player.position_x + 1 && y == player.position_y - 1) || (x == player.position_x - 1 && y == player.position_y - 1)) && (torchLevel > 10))
             {
@@ -851,9 +856,11 @@ void renderMap()
                 {
                     SDL_RenderTexture(renderer, mistPanicTexture, NULL, &dst_rect);
                 }
-            }
-            else
-            {
+            
+            
+
+                }else{
+            
                 if (map_get_tile(x, y) == TILE_FLOOR)
                 {
                     SDL_RenderTexture(renderer, mistTexture, NULL, &dst_rect);
@@ -910,11 +917,42 @@ void renderMap()
                         SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
                     }
                 }
-            }
+            
+ 
         }
+    } else if(fullBrightOn == true){
+        
+                if (map_get_tile(x, y) == TILE_FLOOR)
+                {
+                    SDL_RenderTexture(renderer, floorTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_WALL)
+                {
+                    SDL_RenderTexture(renderer, wallTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_DOOR)
+                {
+
+                    SDL_RenderTexture(renderer, doorTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_TRAP)
+                {
+
+                    SDL_RenderTexture(renderer, trapTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_PRESSUREPLATE)
+                {
+
+                    SDL_RenderTexture(renderer, pressurePlateTexture, NULL, &dst_rect);
+                }
+                if (map_get_tile(x, y) == TILE_LOCKEDDOOR)
+                {
+                    SDL_RenderTexture(renderer, blockedDoorTexture, NULL, &dst_rect);
+                }
     }
 }
-
+}
+}
 void renderGame(void)
 {
     const int charsize = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
@@ -989,31 +1027,31 @@ void renderCredits()
 void renderOptions(void)
 {
     char options[1000];
-
     snprintf(options, sizeof(options),
-             "Options:"
-             "\n"
-             "Instructions:"
+             "Options:");
+    snprintf(options, sizeof(options),
+             "Instructions:");
+    snprintf(options, sizeof(options),        
              "To escape the Castle and exit to the next level, you will navigate the darkness "
              "with the torch to find a key by solving puzzles with interactables in the level. "
-             "Then take the key and open the door to the next dungeon room.\n"
-             "\n"
-             "Movement:\n"
-             "W - Forward\n"
-             "S - Back\n"
-             "A - Left\n"
-             "D - Right\n"
-             "\n"
-             "Cheats:\n"
-             "C - Full Cheats\n"
-             "K - Give Key\n"
-             "F - Full Brightness\n"
-             "G - Deactivate Brightness\n");
-
+             "Then take the key and open the door to the next dungeon room.");
+    snprintf(options, sizeof(options),
+             "Movement:"
+             "W - Forward"
+             "S - Back"
+             "A - Left"
+             "D - Right");
+    snprintf(options, sizeof(options),
+             "Cheats:"
+             "C - Full Cheats"
+             "K - Give Key"
+             "F - Full Brightness"
+             "G - Deactivate Brightness");
+             
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    showText(renderer, 20, 20, options, (SDL_Color){255, 255, 255, 255});
+    showText(renderer, 10, 10, options, (SDL_Color){255, 255, 255, 255});
     SDL_RenderPresent(renderer);
 }
 

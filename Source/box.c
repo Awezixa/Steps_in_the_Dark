@@ -8,6 +8,7 @@
 bool activated = false;
 
 struct Box box1 = {8, 10, false, 0};
+static Sound blockedDoorUnlocked;
 
 void boxPositioning(){
 if (isLevelOne == true){
@@ -17,6 +18,10 @@ box1.position_y = 10;}
 if (isLevelTwo == true){
 box1.position_x = 4;
 box1.position_y = 4;}
+
+if (isLevelThree == true){
+box1.position_x = 8;
+box1.position_y = 10;}
 
 if (isLevelFour == true){
 box1.position_x = 3;
@@ -93,6 +98,8 @@ void grabBox()
 
 void plateActivated()
 {
+    init_sound("Assets/Sounds/blockedDoorUnlocked.wav", &blockedDoorUnlocked);
+
     for (int x = 0; x < MAP_ROWS; x++)
     {
         for (int y = 0; y < MAP_COLS; y++)
@@ -100,6 +107,7 @@ void plateActivated()
             if (map[x][y] == 'H' && map[box1.position_x][box1.position_y] == 'P')
             {
                 activated = true;
+                playSound(&blockedDoorUnlocked);
                 (map[x][y] = 'Z');
             }
         }
