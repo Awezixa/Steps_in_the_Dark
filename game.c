@@ -334,17 +334,16 @@ int main(void)
             // Paused loop
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == PAUSED)
             {
-                SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                 if (opSelected == 0 && (event.key.key == SDLK_SPACE || event.key.key == SDLK_ESCAPE))
                 {
-                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(INGAME);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                 }
                 // level select
                 else if (opSelected == 1 && event.key.key == SDLK_SPACE)
                 {
-                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(LEVEL_SELECT);
                 }
                 // options
