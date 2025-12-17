@@ -191,7 +191,8 @@ int main(void)
     set_nearest(boxCarry);
     set_nearest(boxHighlight);
 
-
+    playerSoundInitialization();
+    
     // Sound Initialization
     init_sound("Assets/Sounds/MenuMusic.wav", &menuMusic);
     init_sound("Assets/Sounds/PlayerWalk.wav", &playerWalk);
@@ -987,9 +988,9 @@ void renderOptions(void)
     char options[1000];
 
     snprintf(options, sizeof(options),
-             "Options:\n"
+             "Options:"
              "\n"
-             "Instructions:\n"
+             "Instructions:"
              "To escape the Castle and exit to the next level, you will navigate the darkness "
              "with the torch to find a key by solving puzzles with interactables in the level. "
              "Then take the key and open the door to the next dungeon room.\n"
