@@ -14,7 +14,6 @@ extern struct Box box1;
 
 void moveBox();
 void grabBox();
-void pressurePlate();
 void plateActivated();
 int box_get_row(void);
 int box_get_col(void);

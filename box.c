@@ -73,18 +73,6 @@ void grabBox()
 }
 
 
-void pressurePlate()
-{
-    if (map[box1.position_x][box1.position_y] == 'P')
-    {
-        printf("The Locked Doors have been Unlocked!");
-        plateActivated();
-    }
-    else{
-        activated = false;
-
-    }
-}
 
 void plateActivated()
 {
@@ -92,7 +80,7 @@ void plateActivated()
     {
         for (int y = 0; y < MAP_COLS; y++)
         {
-            if (map[x][y] == 'H')
+            if (map[x][y] == 'H' && map[box1.position_x][box1.position_y] == 'P')
             {
                 activated = true;
                 (map[x][y] = 'Z');

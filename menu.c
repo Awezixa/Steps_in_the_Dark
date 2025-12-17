@@ -120,7 +120,7 @@ void endLevel(){
     box1.beingGrabbed = false;
     getKey = false;
     thrown = false;
-    setGameState(LEVEL_SELECT);
+    setGameState(FINISHED);
  }
 
 

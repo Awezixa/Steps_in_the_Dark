@@ -29,7 +29,7 @@ void printMap()
     {
         printf("\n");
     }
-    pressurePlate();
+    plateActivated();
     printDebugStats();
     printf("\n\n");
     if (fullBrightOn == false)
