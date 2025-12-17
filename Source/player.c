@@ -221,7 +221,7 @@ void movePlayer(char dir)
         WIP.collected = true;
         break;
     }
-}
+}}
 
 // Xavier
 char readUserInput()

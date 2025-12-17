@@ -1052,7 +1052,7 @@ void renderOptions(void)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    showText(renderer, 10, 10, options, (SDL_Color){255, 255, 255, 255});
+    showText(renderer, 20, 20, options, (SDL_Color){255, 255, 255, 255});
     SDL_RenderPresent(renderer);
 }
 
