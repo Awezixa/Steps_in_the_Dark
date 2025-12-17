@@ -350,6 +350,14 @@ void resetPlayer()
     {
         map[1][1] = 'K';
     }
+     if (isLevelTwo == true)
+    {
+        map[7][7] = 'K';
+    }
+    if (isLevelThree == true)
+    {
+        map[2][2] = 'K';
+    }
     if (isLevelFour == true)
     {
         map[8][8] = 'K';
