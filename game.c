@@ -736,9 +736,10 @@ void renderLevelSelect(void)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    SDL_FRect logoRect = {0, 0, 1080, 1920};
-    SDL_RenderTexture(renderer, levelSelectBg, NULL, &logoRect);
-    showText(renderer, 300, 150, "1. Level 1    2. Level 2      3. Level 3      4. Level 4", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+    SDL_FRect logoRect = {200, 0, 591, 198};
+    SDL_RenderTexture(renderer, logoTexture, NULL, &logoRect);
+
+    showText(renderer, 300, 250, "1. Level 1    2. Level 2      3. Level 3      4. Level 4", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
 
@@ -1019,7 +1020,6 @@ void renderCredits()
     SDL_RenderClear(renderer);
 
 
-
     showText(renderer, 20, 20, credits, (SDL_Color){255, 255, 255, 255});
     SDL_RenderPresent(renderer);
 }
@@ -1183,13 +1183,11 @@ void renderUI()
     }
 
     // SANITY METER UI
-
     SDL_FRect sanitym1 = {TEXTURE_HEIGHT * 13, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect sanitym2 = {TEXTURE_HEIGHT * 14, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect sanitym3 = {TEXTURE_HEIGHT * 15, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect sanitym4 = {TEXTURE_HEIGHT * 16, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
     SDL_FRect sanitym5 = {TEXTURE_HEIGHT * 17, TEXTURE_WIDTH * 19, TEXTURE_WIDTH, TEXTURE_HEIGHT};
-
     if (torchLevel >= 1)
     {
         SDL_RenderTexture(renderer, sanityMeterFirstFull, NULL, &sanitym1);

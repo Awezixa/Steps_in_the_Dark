@@ -192,7 +192,6 @@ void movePlayer(char dir)
             throwProjectile();
             playSound(&bombThrow);
         }
-
         break;
         // cheats
         // activate full brigtness cheat
@@ -221,8 +220,8 @@ void movePlayer(char dir)
         WIP.collected = true;
         break;
     }
-}}
-
+    }
+}
 // Xavier
 char readUserInput()
 {
@@ -234,7 +233,7 @@ char readUserInput()
 // Xavier & Trent
 bool isTileWalkable(char t)
 {
-    return (t != 'W' && t != 'H');
+    return (t != 'W' && t != 'H');   
 }
 
 // Xaiver & Trent

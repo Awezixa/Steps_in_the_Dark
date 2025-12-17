@@ -11,6 +11,7 @@ struct Box box1 = {8, 10, false, 0};
 static Sound blockedDoorUnlocked;
 
 void boxPositioning(){
+    
 if (isLevelOne == true){
 box1.position_x = 8;
 box1.position_y = 10;}
@@ -27,6 +28,7 @@ if (isLevelFour == true){
 box1.position_x = 3;
 box1.position_y = 2;   
 }
+
 }
 
 
@@ -40,19 +42,16 @@ void moveBox()
     if (box1.beingGrabbed){
     if (box1.direction == 1)
     {
-
         box1.position_x = player.position_x + 1;
         box1.position_y = player.position_y;
     }
     else if (box1.direction == 3)
     {
-
         box1.position_x = player.position_x - 1;
         box1.position_y = player.position_y;
     }
     else if (box1.direction == 0)
     {
-
         box1.position_x = player.position_x;
         box1.position_y = player.position_y - 1;
     }
@@ -67,7 +66,6 @@ void moveBox()
 
 void grabBox()
 {
-    // We need to check if the player is close to the box.
     if (box1.beingGrabbed)
         box1.beingGrabbed = false;
     
