@@ -16,8 +16,8 @@ box1.position_x = 8;
 box1.position_y = 10;}
 
 if (isLevelTwo == true){
-box1.position_x = 8;
-box1.position_y = 10;}
+box1.position_x = 4;
+box1.position_y = 4;}
 
 if (isLevelThree == true){
 box1.position_x = 8;
@@ -59,7 +59,6 @@ void moveBox()
     else
     {
         // is 2 here. everything else failed.
-
         box1.position_x = player.position_x;
         box1.position_y = player.position_y + 1;
     }
