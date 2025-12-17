@@ -5,8 +5,26 @@
 #include "menu.h"
 #include "utils/sdl_utils.h"
 
-struct Box box1 = {8, 10, false, 0};
 bool activated = false;
+
+struct Box box1 = {8, 10, false, 0};
+
+void boxPositioning(){
+if (isLevelOne == true){
+box1.position_x = 8;
+box1.position_y = 10;}
+
+if (isLevelTwo == true){
+box1.position_x = 8;
+box1.position_y = 10;}
+
+if (isLevelFour == true){
+box1.position_x = 3;
+box1.position_y = 2;   
+}
+}
+
+
 
 void moveBox()
 {

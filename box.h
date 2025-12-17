@@ -17,7 +17,7 @@ void grabBox();
 void plateActivated();
 int box_get_row(void);
 int box_get_col(void);
-
+void boxPositioning(void);
 
 
 

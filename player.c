@@ -23,18 +23,27 @@ bool panic = false;
 static Sound deathSound;
 static Sound torchInteractSound;
 static Sound getKeySound;
+static Sound TorchInteract;
+static Sound blockedDoorUnlocked;
+
 
 
 struct Player player = {16, 1, false};
 
 //Sound Initialization
-void playerSoundInitialization(){
- init_sound("Assets/Sounds/DeathSound.wav", &deathSound);
- init_sound("Assets/Sounds/TorchInteract.wav", &torchInteractSound);
- init_sound("Assets/Sounds/GetKeySound.wav", &getKeySound);
- 
-}
 
+void playerSoundInitialization(){
+    init_sound("Assets/Sounds/DeathSound.wav", &deathSound);
+    init_sound("Assets/Sounds/TorchInteract.wav", &torchInteractSound);
+    init_sound("Assets/Sounds/GetKeySound.wav", &getKeySound);
+    init_sound("Assets/Sounds/TorchInteract.wav", &TorchInteract);
+    init_sound("Assets/Sounds/blockedDoorUnlocked.wav", &blockedDoorUnlocked);
+    if (activated == true)
+                {
+                    playSound(&blockedDoorUnlocked);
+                }
+                stopSound(&blockedDoorUnlocked);
+}
 
 // Trent & Xavier
 void movePlayer(char dir)
@@ -45,13 +54,13 @@ void movePlayer(char dir)
     case 'W':
     case 'w':
         if( box1.beingGrabbed == true) {
+            
         if (isTileWalkable(map[player.position_x - 1][player.position_y]) && isTileWalkable(map[box1.position_x-1][box1.position_y]))
         {
-        
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
-        }
-            
+        }  
+            playerWalkSound();
             player.position_x--;
             stepCounter();
         }
@@ -63,7 +72,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            
+            playerWalkSound();
             player.position_x--;
             stepCounter();
         }}
@@ -78,7 +87,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            
+            playerWalkSound();
             player.position_y--;
             stepCounter();     
         }}
@@ -89,7 +98,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-        
+            playerWalkSound();
             player.position_y--;
             stepCounter();
         }}
@@ -104,6 +113,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+            playerWalkSound();
             player.position_x++;
             stepCounter();   
         }}
@@ -114,6 +124,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+            playerWalkSound();
             player.position_x++;
             stepCounter();
         }}
@@ -128,6 +139,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
             endLevel();
         }
+            playerWalkSound();
             player.position_y++;
             stepCounter();
         }}
@@ -138,6 +150,7 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
+            playerWalkSound();
             player.position_y++;
             stepCounter();
         }}
@@ -156,9 +169,6 @@ void movePlayer(char dir)
         if (WIP.collected == true)
         {
             throwProjectile();
-        }
-        else{
-            printf("You dont have the projectile.");
         }
        
        break;
@@ -223,23 +233,7 @@ int stepCounter(void){
 void playerDeath(){
     playSound(&deathSound);
     resetPlayer();
-
-
-    
-    if(isLevelTwo == true){
-    box1.position_x = 8;
-    box1.position_y = 10;
-    }
-
-    if(isLevelThree == true){
-        box1.position_x = 8;
-        box1.position_y = 10;
-    }
-    if(isLevelFour == true){
-        box1.position_x = 3;
-        box1.position_y = 2;
-    }    
-    box1.beingGrabbed = false;
+    boxPositioning();
     playerDeathCounter();
     
 }
@@ -249,6 +243,7 @@ void checkInteraction(){
     printf("You have walked %d steps\n", stepCount);
     switch (map[player.position_x][player.position_y]) {
         case 'T':
+            box1.beingGrabbed = false;
             playerDeath();
             break;
 
@@ -265,7 +260,7 @@ void checkInteraction(){
 
         case 'L':
             torchInteract();
-            playSound(&torchInteractSound);
+            playSound(&TorchInteract);
             break;
     }
     
@@ -336,7 +331,10 @@ void resetPlayer(){
 
     box1.position_x = 8;
     box1.position_y = 10;
-    map[1][1] = 'K';
+    if (isLevelOne == true){
+        map[1][1] = 'K';}
+    if (isLevelFour == true){
+        map[8][8] = 'K';}
     player.position_x = 16;
     player.position_y = 1;
     stepCount = 0;
@@ -358,3 +356,4 @@ int player_get_col(void)
 {
     return player.position_y;
 }
+

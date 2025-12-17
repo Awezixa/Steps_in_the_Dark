@@ -116,6 +116,7 @@ void endLevel(){
     if(isLevelFour == true){
         box1.position_x = 3;
         box1.position_y = 2;
+        
     }    
     box1.beingGrabbed = false;
     getKey = false;

@@ -60,13 +60,15 @@ static SDL_Texture *sanityMeterFirstFull = NULL;
 static SDL_Texture *sanityMeterMiddleFull = NULL;
 static SDL_Texture *sanityMeterEndFull = NULL;
 static SDL_Texture *playerPanicTexture = NULL;
+static SDL_Texture *boxCarry = NULL;
+static SDL_Texture *boxHighlight = NULL;
 
 static Sound menuMusic;
-static Sound playerWalk;
-static Sound blockedDoorUnlocked;
 static Sound InGameMusic;
+static Sound playerWalk;
 static Sound boxPush;
-static Sound TorchInteract;
+
+
 
 // Pedro's Frankenstein Contraption
 
@@ -85,6 +87,7 @@ void renderOptions(void);
 void renderProjRadius(void);
 void renderUI(void);
 void panicMode(void);
+
 
 static void set_menu_presentation(void)
 {
@@ -126,6 +129,7 @@ int main(void)
         pressurePlateTexture = sdl_load_texture(renderer, "Assets/STIDPressurePlate.png");
     }
 
+    
     mistTexture = sdl_load_texture(renderer, "Assets/mist.png");
     doorTexture = sdl_load_texture(renderer, "Assets/STIDExitDoor.png");
     blockedDoorTexture = sdl_load_texture(renderer, "Assets/STIDBlockedDoor.png");
@@ -149,6 +153,8 @@ int main(void)
     sanityMeterMiddleFull = sdl_load_texture(renderer, "Assets/sanityMIDDLEfull.png");
     sanityMeterEndFull = sdl_load_texture(renderer, "Assets/sanityENDfull.png");
     playerPanicTexture = sdl_load_texture(renderer, "Assets/characterpanic.png");
+    boxCarry = sdl_load_texture(renderer, "Assets/STIDBoxCarry.png");
+    boxHighlight = sdl_load_texture(renderer, "Assets/STIDBoxHighlight.png");
 
     set_nearest(floorTexture);
     set_nearest(wallTexture);
@@ -165,15 +171,31 @@ int main(void)
     set_nearest(logoTexture);
     set_nearest(projTexture);
     set_nearest(uniLogo);
+    set_nearest(inventoryEmpty);
+    set_nearest(inventoryBomb);
+    set_nearest(inventoryKey);
+    set_nearest(bombBroken);
+    set_nearest(torchMeterFirstFull);
+    set_nearest(torchMeterFirstEmpty);
+    set_nearest(torchMeterMiddleFull);
+    set_nearest(torchMeterMiddleEmpty);
+    set_nearest(torchMeterEndFull);
+    set_nearest(torchMeterEndEmpty);
+    set_nearest(mistPanicTexture);
+    set_nearest(sanityMeterFirstFull);
+    set_nearest(sanityMeterMiddleFull);
+    set_nearest(sanityMeterEndFull);
+    set_nearest(playerPanicTexture);
+    set_nearest(boxCarry);
+    set_nearest(boxHighlight);
+
 
     // Sound Initialization
     init_sound("Assets/Sounds/MenuMusic.wav", &menuMusic);
-    init_sound("Assets/Sounds/PlayerWalk.wav", &playerWalk);
-    init_sound("Assets/Sounds/blockedDoorUnlocked.wav", &blockedDoorUnlocked);
     init_sound("Assets/Sounds/InGameMusic.wav", &InGameMusic);
+    init_sound("Assets/Sounds/PlayerWalk.wav", &playerWalk);
     init_sound("Assets/Sounds/boxPush.wav", &boxPush);
-    init_sound("Assets/Sounds/TorchInteract.wav", &TorchInteract);
-
+  
     // Game loop
     int running = 1;
     const Uint32 FRAME_MS = 16; // ~60 FPS
@@ -234,6 +256,12 @@ int main(void)
                 case SDLK_1:
                     setGameState(INGAME);
                     isLevelOne = true;
+                    isLevelTwo = false;
+                    isLevelThree = false;
+                    isLevelFour = false;
+                    resetPlayer();
+                    boxPositioning();
+                    stopSound(&menuMusic);
                     loadMap("Maps/map1.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
@@ -241,6 +269,12 @@ int main(void)
                 case SDLK_2:
                     setGameState(INGAME);
                     isLevelTwo = true;
+                    isLevelOne = false;
+                    isLevelThree = false;
+                    isLevelFour = false;
+                    resetPlayer();
+                    boxPositioning();
+                    stopSound(&menuMusic);
                     loadMap("Maps/map2.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
@@ -248,6 +282,12 @@ int main(void)
                 case SDLK_3:
                     setGameState(INGAME);
                     isLevelThree = true;
+                    isLevelTwo = false;
+                    isLevelOne = false;
+                    isLevelFour = false;
+                    resetPlayer();
+                    boxPositioning();
+                    stopSound(&menuMusic);
                     loadMap("Maps/map3.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
@@ -255,6 +295,12 @@ int main(void)
                 case SDLK_4:
                     setGameState(INGAME);
                     isLevelFour = true;
+                    isLevelTwo = false;
+                    isLevelThree = false;
+                    isLevelOne = false;
+                    resetPlayer();
+                    boxPositioning();
+                    stopSound(&menuMusic);
                     loadMap("Maps/map4.txt");
                     SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
@@ -336,16 +382,13 @@ int main(void)
             if (gameState() == INGAME)
             {
                 checkInteraction();
+                playerSoundInitialization();
                 panicMode();
                 moveBox();
                 plateActivated();
-                if (activated == true)
-                {
-                    playSound(&blockedDoorUnlocked);
-                }
-                stopSound(&blockedDoorUnlocked);
                 collectProjectile();
 
+                
                 if (torchLevel == 0)
                 {
                     playerDeath();
@@ -358,51 +401,22 @@ int main(void)
                     {
                     case SDLK_W:
                         movePlayer('W');
-                        if (box1.beingGrabbed == true)
-                        {
-                            playSound(&boxPush);
-                        }
-                        else
-                        {
-                            playSound(&playerWalk);
-                        }
+                        playerWalkSound();
                         WIP.direction = 3;
-                        //}
                         break;
                     case SDLK_A:
                         movePlayer('A');
-                        if (box1.beingGrabbed == true)
-                        {
-                            playSound(&boxPush);
-                        }
-                        else
-                        {
-                            playSound(&playerWalk);
-                        }
+                        playerWalkSound();
                         WIP.direction = 0;
                         break;
                     case SDLK_S:
                         movePlayer('S');
-                        if (box1.beingGrabbed == true)
-                        {
-                            playSound(&boxPush);
-                        }
-                        else
-                        {
-                            playSound(&playerWalk);
-                        }
+                        playerWalkSound();
                         WIP.direction = 1;
                         break;
                     case SDLK_D:
                         movePlayer('D');
-                        if (box1.beingGrabbed == true)
-                        {
-                            playSound(&boxPush);
-                        }
-                        else
-                        {
-                            playSound(&playerWalk);
-                        }
+                        playerWalkSound();
                         WIP.direction = 2;
                         break;
                     case SDLK_E:
@@ -425,6 +439,15 @@ int main(void)
                         // cheats
                     case SDLK_K:
                         movePlayer('K');
+                        break;
+                        case SDLK_F:
+                        movePlayer('F');
+                        break;
+                        case SDLK_G:
+                        movePlayer('G');
+                        break;
+                        case SDLK_J:
+                        movePlayer('J');
                         break;
                     default:
                         break;
@@ -499,10 +522,20 @@ void renderBox()
     }
     else if (panic == false)
     {
+        if (box1.beingGrabbed == true){
+            SDL_RenderTexture(renderer, boxCarry, NULL, &box_rect);
+        }else if (box1.beingGrabbed == false){
+            if ((player.position_x + 1 == box1.position_x && player.position_y == box1.position_y) 
+            || (player.position_x - 1 == box1.position_x && player.position_y == box1.position_y)
+            || (player.position_y - 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y - 1 == box1.position_y)
+            || (player.position_y + 1 < MAP_ROWS && player.position_x == box1.position_x && player.position_y + 1 == box1.position_y)){
+                SDL_RenderTexture(renderer, boxHighlight, NULL, &box_rect);
+            }else{
         SDL_RenderTexture(renderer, boxTexture, NULL, &box_rect);
+        }
     }
 }
-
+}
 void renderProjectile()
 {
     // Render the wizard at the boxes position
@@ -1126,12 +1159,12 @@ void panicMode()
     {
         panic = false;
     }
-    // if (panic == true){
-    // playSound(&panicMusic);
-    // }
-    // if (panic == false){
-    // stopSound(&panicMusic);
-    // }
+     if (panic == true){
+     playSound(&InGameMusic);
+     }
+     if (panic == false){
+     stopSound(&InGameMusic);
+     }
 }
 
 void renderGameFinished(void)
@@ -1142,4 +1175,15 @@ void renderGameFinished(void)
     showText(renderer, 100, 400, "You completed the Room. Onto the Next!!", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     showText(renderer, 300, 500, "Press Space to exit", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
+}
+
+
+void playerWalkSound(){
+    if (box1.beingGrabbed == true)
+        {
+            playSound(&boxPush);
+        }
+    else{
+            playSound(&playerWalk);
+        }
 }
