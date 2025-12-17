@@ -9,7 +9,7 @@
 #include "projectile.h"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include "Utils/sdl_utils.h" 
+#include "../Utils/sdl_utils.h" 
 
 int stepCount = 0;
 int deathCounter = 0;
