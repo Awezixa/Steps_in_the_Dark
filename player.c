@@ -60,7 +60,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }  
-            playerWalkSound();
             player.position_x--;
             stepCounter();
         }
@@ -72,7 +71,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_x--;
             stepCounter();
         }}
@@ -87,7 +85,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_y--;
             stepCounter();     
         }}
@@ -98,7 +95,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_y--;
             stepCounter();
         }}
@@ -113,7 +109,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_x++;
             stepCounter();   
         }}
@@ -124,7 +119,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_x++;
             stepCounter();
         }}
@@ -139,7 +133,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_y++;
             stepCounter();
         }}
@@ -150,7 +143,6 @@ void movePlayer(char dir)
         if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
-            playerWalkSound();
             player.position_y++;
             stepCounter();
         }}
@@ -328,7 +320,7 @@ void printInventory(){
 //Xavier
 void resetPlayer(){
 
-
+    box1.beingGrabbed = false;
     box1.position_x = 8;
     box1.position_y = 10;
     if (isLevelOne == true){
