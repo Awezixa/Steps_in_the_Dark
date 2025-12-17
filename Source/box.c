@@ -3,7 +3,7 @@
 #include "map.h"
 #include "box.h"
 #include "menu.h"
-#include "utils/sdl_utils.h"
+#include "../Utils/sdl_utils.h"
 
 bool activated = false;
 

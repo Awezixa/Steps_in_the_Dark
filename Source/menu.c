@@ -6,7 +6,7 @@
 #include "doorAndKeys.h"
 #include "box.h"
 #include "projectile.h"
-#include "Utils/sdl_utils.h"
+#include "../Utils/sdl_utils.h"
 #include "gamestate.h"
 
 
@@ -104,8 +104,8 @@ void endLevel(){
     }
         
     if(isLevelTwo == true){
-        box1.position_x = 8;
-        box1.position_y = 10;
+        box1.position_x = 4;
+        box1.position_y = 4;
     }
     
     if(isLevelThree == true){
