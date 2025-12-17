@@ -37,7 +37,6 @@ void playerSoundInitialization()
     init_sound("Assets/Sounds/GetKeySound.wav", &getKeySound);
     init_sound("Assets/Sounds/TorchInteract.wav", &TorchInteract);
     init_sound("Assets/Sounds/BombThrow.wav", &bombThrow);
-    
 }
 
 // Trent & Xavier
@@ -138,33 +137,9 @@ void movePlayer(char dir)
 
     case 'D':
     case 'd':
-     if( box1.beingGrabbed == true) {
-        if (isTileWalkable(map[player.position_x][player.position_y + 1]) && isTileWalkable(map[box1.position_x][box1.position_y+1]))
-        {   
-       
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
-            endLevel();
-        }
-            player.position_y++;
-            stepCounter();
-        }}
-          else if( box1.beingGrabbed == false) {
-             if (isTileWalkable(map[player.position_x][player.position_y+1]))
+        if (box1.beingGrabbed == true)
         {
             if (isTileWalkable(map[player.position_x][player.position_y + 1]) && isTileWalkable(map[box1.position_x][box1.position_y + 1]))
-            {
-
-                if ((map[player.position_x][player.position_y] == 'D') && (getKey = true))
-                {
-                    endLevel();
-                }
-                player.position_y++;
-                stepCounter();
-            }
-        }
-        else if (box1.beingGrabbed == false)
-        {
-            if (isTileWalkable(map[player.position_x][player.position_y + 1]))
             {
 
                 if ((map[player.position_x][player.position_y] == 'D') && (getKey == true))
@@ -175,6 +150,17 @@ void movePlayer(char dir)
                 stepCounter();
             }
         }
+        else if (isTileWalkable(map[player.position_x][player.position_y + 1]))
+        {
+
+            if ((map[player.position_x][player.position_y] == 'D') && (getKey == true))
+            {
+                endLevel();
+            }
+            player.position_y++;
+            stepCounter();
+        }
+
         break;
     case 'P':
     case 'p':
@@ -221,7 +207,7 @@ void movePlayer(char dir)
         WIP.collected = true;
         break;
     }
-}}
+}
 
 // Xavier
 char readUserInput()
