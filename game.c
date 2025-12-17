@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include "utils/sdl_utils.h"
-#include "map.h"
-#include "player.h"
-#include "box.h"
-#include "cheats.h"
-#include "doorAndKeys.h"
-#include "menu.h"
-#include "projectile.h"
-#include "torch.h"
-#include "gamestate.h"
+#include "Utils/sdl_utils.h"
+#include "Source/map.h"
+#include "Source/player.h"
+#include "Source/box.h"
+#include "Source/cheats.h"
+#include "Source/doorAndKeys.h"
+#include "Source/menu.h"
+#include "Source/projectile.h"
+#include "Source/torch.h"
+#include "Source/gamestate.h"
 
 // Definitions
 #define APP_NAME "Steps in the Dark"
@@ -62,13 +62,16 @@ static SDL_Texture *sanityMeterEndFull = NULL;
 static SDL_Texture *playerPanicTexture = NULL;
 static SDL_Texture *boxCarry = NULL;
 static SDL_Texture *boxHighlight = NULL;
+static SDL_Texture *levelSelectBg = NULL;
 
+//Music intialization
 static Sound menuMusic;
 static Sound InGameMusic;
 static Sound playerWalk;
+static Sound blockedDoorUnlocked;
+static Sound InGameMusic;
 static Sound boxPush;
-
-
+static Sound TorchInteract;
 
 // Pedro's Frankenstein Contraption
 
@@ -88,10 +91,9 @@ void renderProjRadius(void);
 void renderUI(void);
 void panicMode(void);
 
-
-static void set_menu_presentation(void)
+static void set_menu_presentation(int width, int height)
 {
-    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    SDL_SetRenderLogicalPresentation(renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     SDL_SetWindowFullscreen(window, true);
 }
 
@@ -111,7 +113,7 @@ int main(void)
     window = sdl_initialize_window(APP_NAME, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT);
     renderer = sdl_initialize_renderer(window);
     sdl_initialize_audio();
-    set_menu_presentation();
+    set_menu_presentation(APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT);
 
     // intialize the textures
     floorTexture = sdl_load_texture(renderer, "Assets/floor.png");
@@ -129,7 +131,6 @@ int main(void)
         pressurePlateTexture = sdl_load_texture(renderer, "Assets/STIDPressurePlate.png");
     }
 
-    
     mistTexture = sdl_load_texture(renderer, "Assets/mist.png");
     doorTexture = sdl_load_texture(renderer, "Assets/STIDExitDoor.png");
     blockedDoorTexture = sdl_load_texture(renderer, "Assets/STIDBlockedDoor.png");
@@ -155,6 +156,7 @@ int main(void)
     playerPanicTexture = sdl_load_texture(renderer, "Assets/characterpanic.png");
     boxCarry = sdl_load_texture(renderer, "Assets/STIDBoxCarry.png");
     boxHighlight = sdl_load_texture(renderer, "Assets/STIDBoxHighlight.png");
+    levelSelectBg = sdl_load_texture(renderer, "Assets/LevelBackground.png");
 
     set_nearest(floorTexture);
     set_nearest(wallTexture);
@@ -192,10 +194,12 @@ int main(void)
 
     // Sound Initialization
     init_sound("Assets/Sounds/MenuMusic.wav", &menuMusic);
-    init_sound("Assets/Sounds/InGameMusic.wav", &InGameMusic);
     init_sound("Assets/Sounds/PlayerWalk.wav", &playerWalk);
+    init_sound("Assets/Sounds/blockedDoorUnlocked.wav", &blockedDoorUnlocked);
+    init_sound("Assets/Sounds/InGameMusic.wav", &InGameMusic);
     init_sound("Assets/Sounds/boxPush.wav", &boxPush);
-  
+    init_sound("Assets/Sounds/TorchInteract.wav", &TorchInteract);
+
     // Game loop
     int running = 1;
     const Uint32 FRAME_MS = 16; // ~60 FPS
@@ -220,31 +224,33 @@ int main(void)
                 }
                 if (gameState() == MAIN_MENU)
                 {
+                    playSound(&menuMusic);
                     // play
                     if (opSelected == 0)
                     {
                         setGameState(LEVEL_SELECT);
+                        SDL_SetRenderLogicalPresentation(renderer, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     }
                     // options
                     else if (opSelected == 1)
                     {
                         setGameState(OPTIONS);
+                        SDL_SetRenderLogicalPresentation(renderer, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     }
                     // credits
                     else if (opSelected == 2)
                     {
                         setGameState(CREDITS);
+                        SDL_SetRenderLogicalPresentation(renderer, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     }
                     // exit
                     else if (opSelected == 3)
                     {
                         running = 0;
                     }
-                    // if(gameState() == FINISHED){
-                    //     setGameState(MAIN_MENU);
-                    // }
                 }
             }
+            
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == LEVEL_SELECT)
             {
                 if (event.key.key == SDLK_ESCAPE)
@@ -263,7 +269,7 @@ int main(void)
                     boxPositioning();
                     stopSound(&menuMusic);
                     loadMap("Maps/map1.txt");
-                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 case SDLK_2:
@@ -276,7 +282,7 @@ int main(void)
                     boxPositioning();
                     stopSound(&menuMusic);
                     loadMap("Maps/map2.txt");
-                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 case SDLK_3:
@@ -289,7 +295,7 @@ int main(void)
                     boxPositioning();
                     stopSound(&menuMusic);
                     loadMap("Maps/map3.txt");
-                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 case SDLK_4:
@@ -302,7 +308,7 @@ int main(void)
                     boxPositioning();
                     stopSound(&menuMusic);
                     loadMap("Maps/map4.txt");
-                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                     break;
                 default:
@@ -328,10 +334,11 @@ int main(void)
             // Paused loop
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == PAUSED)
             {
-                if (opSelected == 0 && (event.key.key == SDLK_SPACE) || (event.key.key == SDLK_ESCAPE))
+                SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+                if (opSelected == 0 && (event.key.key == SDLK_SPACE || event.key.key == SDLK_ESCAPE))
                 {
                     setGameState(INGAME);
-                    SDL_SetWindowSize(window, APP_HEIGHT, APP_WIDTH);
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                 }
                 // level select
@@ -348,6 +355,7 @@ int main(void)
                 else if (opSelected == 3 && event.key.key == SDLK_SPACE)
                 {
                     setGameState(MAIN_MENU);
+                    opSelected = -1;
                 }
             }
 
@@ -375,6 +383,7 @@ int main(void)
                 event.key.key == SDLK_SPACE &&
                 gameState() == FINISHED)
             {
+                SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                 setGameState(MAIN_MENU);
             }
 
@@ -382,13 +391,16 @@ int main(void)
             if (gameState() == INGAME)
             {
                 checkInteraction();
-                playerSoundInitialization();
                 panicMode();
                 moveBox();
                 plateActivated();
+                if (activated == true)
+                {
+                    playSound(&blockedDoorUnlocked);
+                }
+                stopSound(&blockedDoorUnlocked);
                 collectProjectile();
 
-                
                 if (torchLevel == 0)
                 {
                     playerDeath();
@@ -401,22 +413,51 @@ int main(void)
                     {
                     case SDLK_W:
                         movePlayer('W');
-                        playerWalkSound();
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
                         WIP.direction = 3;
+                        //}
                         break;
                     case SDLK_A:
                         movePlayer('A');
-                        playerWalkSound();
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
                         WIP.direction = 0;
                         break;
                     case SDLK_S:
                         movePlayer('S');
-                        playerWalkSound();
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
                         WIP.direction = 1;
                         break;
                     case SDLK_D:
                         movePlayer('D');
-                        playerWalkSound();
+                        if (box1.beingGrabbed == true)
+                        {
+                            playSound(&boxPush);
+                        }
+                        else
+                        {
+                            playSound(&playerWalk);
+                        }
                         WIP.direction = 2;
                         break;
                     case SDLK_E:
@@ -467,6 +508,7 @@ int main(void)
             renderInitialScreen();
         if (gameState() == MAIN_MENU)
             renderMainMenu();
+            
         if (gameState() == LEVEL_SELECT)
             renderLevelSelect();
         if (gameState() == INGAME)
@@ -640,7 +682,7 @@ void renderInitialScreen(void)
     SDL_FRect logoRect = {200, 100, 591, 198};
     SDL_RenderTexture(renderer, logoTexture, NULL, &logoRect);
 
-    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 25)) / 2), 475, "<< PRESS SPACE TO START>>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 25)) / 2), 500, "<< PRESS SPACE TO START>>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
 
@@ -649,7 +691,7 @@ void renderMainMenu(void)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    SDL_FRect logoRect = {200, 100, 591, 198};
+    SDL_FRect logoRect = {50, 100, 591, 198};
     SDL_RenderTexture(renderer, bgTexture, NULL, &logoRect);
 
     // Show Start Game Option
@@ -685,6 +727,8 @@ void renderLevelSelect(void)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
+    SDL_FRect logoRect = {0, 0, 1080, 1920};
+    SDL_RenderTexture(renderer, levelSelectBg, NULL, &logoRect);
     showText(renderer, 300, 150, "1. Level 1    2. Level 2      3. Level 3      4. Level 4", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
@@ -927,10 +971,12 @@ void renderCredits()
     const int charsize = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
     char credits[1000];
 
-    snprintf(credits, sizeof(credits), "Credits: Xavier Dos Santos, Trent Kirby, Pedro Alao, Nelio  Codices. IADE University");
+    snprintf(credits, sizeof(credits), "Credits: Xavier Dos Santos, Trent Kirby, Pedro Alao, Nelio  Codices");
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
+
+
 
     showText(renderer, 20, 20, credits, (SDL_Color){255, 255, 255, 255});
     SDL_RenderPresent(renderer);
