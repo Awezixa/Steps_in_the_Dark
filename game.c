@@ -22,7 +22,7 @@
 #define APP_WIDTH 18 * TEXTURE_WIDTH
 #define APP_HEIGHT 20 * TEXTURE_HEIGHT
 
-#define APP_MAINMENU_WIDTH 1000
+#define APP_MAINMENU_WIDTH 960
 #define APP_MAINMENU_HEIGHT 400
 
 static SDL_Window *window = NULL;
@@ -108,7 +108,6 @@ int opSelected = -1;
 
 int main(void)
 {
-
     // Initialize SDL Systems.
     window = sdl_initialize_window(APP_NAME, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT);
     renderer = sdl_initialize_renderer(window);
@@ -236,9 +235,9 @@ int main(void)
                     else if (opSelected == 1)
                     {
                         setGameState(OPTIONS);
-                        SDL_SetRenderLogicalPresentation(renderer, APP_MAINMENU_WIDTH, APP_MAINMENU_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+                        SDL_SetRenderLogicalPresentation(renderer, APP_MAINMENU_WIDTH*2, APP_MAINMENU_HEIGHT/2, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     }
-                    // credits
+                    // creditsF
                     else if (opSelected == 2)
                     {
                         setGameState(CREDITS);
@@ -335,26 +334,29 @@ int main(void)
             // Paused loop
             if (event.type == SDL_EVENT_KEY_DOWN && gameState() == PAUSED)
             {
-                SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+                SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                 if (opSelected == 0 && (event.key.key == SDLK_SPACE || event.key.key == SDLK_ESCAPE))
                 {
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(INGAME);
-                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     SDL_SetWindowTitle(window, "Steps in the Dark - In Game");
                 }
                 // level select
                 else if (opSelected == 1 && event.key.key == SDLK_SPACE)
                 {
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(LEVEL_SELECT);
                 }
                 // options
                 else if (opSelected == 2 && event.key.key == SDLK_SPACE)
                 {
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(OPTIONS);
                 }
                 // exit
                 else if (opSelected == 3 && event.key.key == SDLK_SPACE)
-                {
+                {   
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(MAIN_MENU);
                     opSelected = -1;
                 }
@@ -368,10 +370,12 @@ int main(void)
                 case CREDITS:
                 case OPTIONS:
                 case LEVEL_SELECT:
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT/2, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(MAIN_MENU);
                     break;
 
                 case INGAME:
+                    SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                     setGameState(PAUSED);
                     break;
 
@@ -423,7 +427,6 @@ int main(void)
                             playSound(&playerWalk);
                         }
                         WIP.direction = 3;
-                        //}
                         break;
                     case SDLK_A:
                         movePlayer('A');
@@ -475,6 +478,7 @@ int main(void)
                         movePlayer('T');
                         break;
                     case SDLK_P:
+                        SDL_SetRenderLogicalPresentation(renderer, APP_WIDTH*2, APP_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
                         setGameState(PAUSED);
                         opSelected = 4;
                         break;
@@ -482,13 +486,13 @@ int main(void)
                     case SDLK_K:
                         movePlayer('K');
                         break;
-                        case SDLK_F:
+                    case SDLK_F:
                         movePlayer('F');
                         break;
-                        case SDLK_G:
+                    case SDLK_G:
                         movePlayer('G');
                         break;
-                        case SDLK_J:
+                    case SDLK_J:
                         movePlayer('J');
                         break;
                     default:
@@ -941,29 +945,29 @@ void renderPauseScreen(void)
     SDL_RenderClear(renderer);
 
     if (opSelected == 0)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "-> CONTINUE", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 50, "-> CONTINUE", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 50, "   CONTINUE", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 50, "   CONTINUE", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
     // Show Select Level Option
     if (opSelected == 1)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "-> LEVEL SELECT", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 100, "-> LEVEL SELECT", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 100, "   LEVEL SELECT", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 100, "   LEVEL SELECT", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
     // Show Options Option
     if (opSelected == 2)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "-> OPTIONS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 150, "-> OPTIONS", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 150, "   OPTIONS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 150, "   OPTIONS", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
     // Show Exit Option
     if (opSelected == 3)
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 200, "-> MAIN MENU", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 200, "-> MAIN MENU", (SDL_Color){255, 255, 0, SDL_ALPHA_OPAQUE});
     else
-        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 15)) / 2), 200, "   MAIN MENU", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+        showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 200, "   MAIN MENU", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
 
-    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * 34)) / 2), 475, "<< PRESS SPACE TO SELECT OPTION >>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
+    showText(renderer, (float)((APP_MAINMENU_WIDTH - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) / 2), 475, "<< PRESS SPACE TO SELECT OPTION >>", (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE});
     SDL_RenderPresent(renderer);
 }
 
