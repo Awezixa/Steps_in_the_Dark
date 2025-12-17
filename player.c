@@ -24,7 +24,7 @@ static Sound deathSound;
 static Sound torchInteractSound;
 static Sound getKeySound;
 static Sound TorchInteract;
-static Sound blockedDoorUnlocked;
+static Sound bombThrow;
 
 
 
@@ -37,12 +37,8 @@ void playerSoundInitialization(){
     init_sound("Assets/Sounds/TorchInteract.wav", &torchInteractSound);
     init_sound("Assets/Sounds/GetKeySound.wav", &getKeySound);
     init_sound("Assets/Sounds/TorchInteract.wav", &TorchInteract);
-    init_sound("Assets/Sounds/blockedDoorUnlocked.wav", &blockedDoorUnlocked);
-    if (activated == true)
-                {
-                    playSound(&blockedDoorUnlocked);
-                }
-                stopSound(&blockedDoorUnlocked);
+    init_sound("Assets/Sounds/BombThrow.wav", &bombThrow);
+    
 }
 
 // Trent & Xavier
@@ -130,7 +126,7 @@ void movePlayer(char dir)
         if (isTileWalkable(map[player.position_x][player.position_y + 1]) && isTileWalkable(map[box1.position_x][box1.position_y+1]))
         {   
        
-        if ((map[player.position_x][player.position_y] == 'D') && (getKey = true)){
+        if ((map[player.position_x][player.position_y] == 'D') && (getKey == true)){
             endLevel();
         }
             player.position_y++;
@@ -161,6 +157,7 @@ void movePlayer(char dir)
         if (WIP.collected == true)
         {
             throwProjectile();
+            playSound(&bombThrow);
         }
        
        break;
