@@ -688,7 +688,7 @@ void renderCredits()
     SDL_RenderPresent(renderer);
 }
 
-/*/ void renderOptions() {
+ void renderOptions() {
     char options[1000];
 
     snprintf(options, sizeof(options),
